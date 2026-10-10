@@ -1,7 +1,7 @@
 -- Station Assistant 0.2: single-player / local session host.
 -- Copy Bridge.Token from the mod settings here. NEVER put an OpenAI API key here.
 local TOKEN = "PASTE_LOCAL_BRIDGE_TOKEN_HERE"
-local BASE = "http://127.0.0.2:18765"
+local BASE = "http://localhost:18765"
 local headers = { ["X-Station-Token"] = TOKEN }
 local ui = ss.ui.surface("assistant")
 ss.ui.activate("assistant")
