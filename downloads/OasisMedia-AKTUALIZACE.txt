@@ -1,0 +1,16 @@
+OASIS MEDIA 0.1.1 — aktualizace z 0.1.0
+
+PowerShell ukázal Requested format is not available. Verze 0.1.0 vyžadovala obraz
+se zvukem v jednom souboru; 0.1.1 umí samostatné H.264 video a AAC audio spojit.
+
+1. Stáhni FFmpeg pro Windows x64:
+   https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip
+2. Rozbal ZIP. Ze složky bin zkopíruj ffmpeg.exe a ffprobe.exe do E:\OasisMediaTools.
+   V této složce musí nyní být yt-dlp.exe, deno.exe, ffmpeg.exe a ffprobe.exe.
+3. Úplně vypni Stationeers a nahraď složku mods\OasisMedia novou z tohoto balíčku.
+4. Konfiguraci v BepInEx/config ponech. Token ani YtDlpPath neměň.
+5. Spusť hru. Stávající skript na čipu je kompatibilní — není nutné jej znovu vkládat.
+6. Znovu otestuj https://www.youtube.com/watch?v=jNQXAC9IVRw.
+
+Prošly kontroly serveru/panelu a lokální syntetické spojení obrazu se zvukem.
+Skutečný YouTube download a přehrávání v Unity ještě vyžadují ověření ve hře.

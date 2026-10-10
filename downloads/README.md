@@ -29,3 +29,7 @@ Starší `StationAssistant-0.1.0.zip` používá OpenAI; pro Gemini použij výh
 ## Oasis Media 0.1.0 — experimental independent video mod
 
 [Download prototype](OasisMedia-0.1.0.zip) · [Czech installation](OasisMedia-INSTALACE.txt) · [chip script](media.lua). Requires external official yt-dlp.exe + deno.exe and experimental ScriptedScreens media. Progressive public MP4 only, max 128 MB; live YouTube/native playback not yet verified. Assistant installation stays independent.
+
+## Oasis Media 0.1.1 — latest media prototype
+
+[Download](OasisMedia-0.1.1.zip) · [Update from 0.1.0](OasisMedia-AKTUALIZACE.txt). Adds separate H.264/AAC track merging with external FFmpeg. Existing chip script/token/config remain compatible. Requires ffmpeg.exe and ffprobe.exe alongside yt-dlp.exe/deno.exe. 26 backend checks, UI checks and synthetic local FFmpeg merge passed; live YouTube/Unity playback still requires in-game verification.

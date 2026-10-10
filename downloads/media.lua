@@ -1,4 +1,4 @@
--- Oasis Media 0.1.0: local world/session host. Separate token from Oasis chat!
+-- Oasis Media 0.1.1: local world/session host. Separate token from Oasis chat!
 local TOKEN = "PASTE_OASIS_MEDIA_TOKEN_HERE"
 local BASE = "http://localhost:18766"
 local headers = {["X-Oasis-Media-Token"]=TOKEN}
@@ -22,7 +22,7 @@ local function el(id,kind,x,y,w,h,props,events)
 end
 el("bg","panel",0,0,W,H,{},nil)
 el("title","label",M,12*S,W-2*M,32*S,{text="O A S I S  /  MEDIA"})
-local status=el("status","label",M,46*S,W-2*M,26*S,{text="YouTube prototyp • veřejné MP4 • max. 128 MB"})
+local status=el("status","label",M,46*S,W-2*M,26*S,{text="YouTube prototyp • H.264 + AAC • max. 128 MB"})
 local vy,vh=82*S,H-82*S-142*S
 local vw=math.min(W-2*M,vh*16/9)
 local video=el("video","media",(W-vw)/2,vy,vw,vh,{url="",playing="false",volume=tostring(volume),loop="false"})

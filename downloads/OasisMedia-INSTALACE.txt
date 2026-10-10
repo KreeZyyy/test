@@ -1,4 +1,4 @@
-OASIS MEDIA 0.1.0 — první prototyp, video + zvuk na herním panelu
+OASIS MEDIA 0.1.1 — první prototyp, video + zvuk na herním panelu
 
 Samostatný mod. Station Assistant ani jeho klíč/token neměň.
 Přehrávání skutečného YouTube videa ve Stationeers ještě není ověřeno.
@@ -15,7 +15,11 @@ Přehrávání skutečného YouTube videa ve Stationeers ještě není ověřeno
    https://github.com/denoland/deno/releases/latest/download/deno-x86_64-pc-windows-msvc.zip
    Rozbal deno.exe do STEJNÉ složky jako yt-dlp.exe.
    Deno je JavaScript runtime potřebný pro současný YouTube extractor.
-   Oba programy jsou samostatné bezplatné závislosti; v tomto ZIPu nejsou.
+   Přidej také FFmpeg pro Windows x64 (Gyan Essentials build):
+   https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip
+   Z rozbaleného ZIPu otevři složku bin a zkopíruj ffmpeg.exe a ffprobe.exe
+   vedle yt-dlp.exe a deno.exe. Není nutné nastavovat systémový PATH.
+   Pomocné programy nejsou součástí ZIPu modu.
 
 3. Spusť LaunchPad, zaškrtni Oasis Media a dej Load Mods.
    V Mod Settings pro Oasis Media nastav Player -> YtDlpPath:
@@ -41,10 +45,12 @@ Přehrávání skutečného YouTube videa ve Stationeers ještě není ověřeno
 
 OMEZENÍ PROTOTYPU
 - Jen místní svět/session host na tomto PC; nejde o synchronizovaný multiplayer přehrávač.
-- Jen veřejné video dostupné jako společný H.264/AAC MP4 do 720p; kvalita může být jen 360p.
-- Mnohá videa dnes mají obraz a zvuk odděleně. Ta tato verze nepřehraje.
+- Veřejné video s dostupným H.264 obrazem do 720p a AAC zvukem.
+- Obraz a zvuk se mohou stáhnout odděleně; FFmpeg je spojí do MP4 bez překódování.
+- Videa dostupná jen v jiných kodecích zatím nejsou podporována.
 - Bez přihlášení, cookies, playlistů, živého YouTube vysílání a DRM videí.
-- Limit 128 MB na video, maximálně jedna příprava současně, časový limit 3 minuty.
+- Limit 128 MB na výsledné video a 384 MB na dočasné soubory při spojování.
+  Maximálně jedna příprava současně, časový limit 3 minuty.
 - Dočasná kopie se ukládá do Windows TEMP\OasisMedia a maže při výměně videa a zavření modu.
   Při pádu hry může zůstat v TEMP; můžeš ji po vypnutí hry smazat.
 - Stop ovládá přehrávání, ne právě probíhající přípravu.
@@ -54,6 +60,7 @@ OMEZENÍ PROTOTYPU
 
 OVĚŘENO V CLOUDU
 Sestavení DLL proti dodaným knihovnám hry: 0 chyb, 0 varování.
-21 kontrol backendu: odkazy, autentizace, úlohy, místní MP4 a HTTP Range/HEAD.
+26 kontrol backendu: odkazy, autentizace, úlohy, místní MP4 a HTTP Range/HEAD.
 Lua: 5 poměrů stran, vstup, příprava/polling, Play/Pauza/Stop/hlasitost, chyby a timeout.
-Kontroly používají náhradní downloader; živý YouTube a Unity dekodér potřebují test ve hře.
+Lokálně ověřeno také spojení syntetického H.264 obrazu a AAC zvuku do MP4 pomocí FFmpeg.
+Kontroly YouTube používají náhradní downloader; živý YouTube a Unity dekodér potřebují test ve hře.
