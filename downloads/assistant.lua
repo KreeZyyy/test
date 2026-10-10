@@ -1,4 +1,4 @@
--- OASIS UI 1.0 — works with Station Assistant 0.2.1 (no DLL update).
+-- OASIS UI 1.1 — works with Station Assistant 0.2.1 (no DLL update).
 -- Keep your LOCAL Bridge.Token here. Never paste a Gemini API key into Lua.
 local TOKEN = "PASTE_LOCAL_BRIDGE_TOKEN_HERE"
 local BASE = "http://localhost:18765"
@@ -99,8 +99,8 @@ local function render_history()
     if #history==0 then
         bubble("welcome","OASIS","Ahoj, jsem Oasis. Napiš mi otázku — odpovím ti česky a můžu ji i přečíst.",false)
     end
-    -- Latest exchange first: your question is above its answer; scroll down for older exchanges.
-    for i=#history,1,-1 do
+    -- Chat order: oldest at the top, newest at the bottom; each question precedes its answer.
+    for i=1,#history do
         local t=history[i]
         bubble("turn_"..i.."_you","TY",t.question,true)
         bubble("turn_"..i.."_oasis","OASIS",t.pending and "Přemýšlím…" or (t.error and "Nepodařilo se odpovědět: "..t.error or t.reply),false)

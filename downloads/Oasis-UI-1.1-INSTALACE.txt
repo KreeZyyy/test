@@ -1,0 +1,14 @@
+﻿Oasis UI 1.1 — historie jako chat
+
+Opravuje pořadí: starší zprávy nahoře, nové dole. Tvoje otázka je před odpovědí Oasis.
+
+1. Otevři Oasis-UI-1.1.lua a doplň svůj místní Bridge.Token do TOKEN.
+2. Nahraď skript v IC10Editoru a potvrď. Hru nemusíš restartovat.
+3. Jakmile je historie delší než displej, k novým zprávám posuň historii dolů.
+
+Veřejná dokumentace ScrollView uvádí posouvání kolečkem a scrollbar,
+ale neuvádí nastavení pozice. Automatické posunutí dolů zde zatím není.
+
+Aktualizace zdroje chipu může ovlivnit obnovu ic.persist podle verze modu
+(a shody source hash). Po uložení nové verze skriptu se další historie
+ukládá pod stejným klíčem oasis.chat.v1. API klíč do Lua nepatří.
