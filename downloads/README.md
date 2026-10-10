@@ -25,3 +25,7 @@ Starší `StationAssistant-0.1.0.zip` používá OpenAI; pro Gemini použij výh
 0.2.1: oprava místního HTTP listeneru — přijímá i localhost. Po aktualizaci DLL restartuj hru a v Lua použij `http://localhost:18765`.
 
 0.2.2: opravené systémové pokyny pro přirozený rozhovor bez vesmírné role. Aktualizace DLL vyžaduje restart hry; UI 1.2 v chipu není potřeba měnit.
+
+## Oasis Media 0.1.0 — experimental independent video mod
+
+[Download prototype](OasisMedia-0.1.0.zip) · [Czech installation](OasisMedia-INSTALACE.txt) · [chip script](media.lua). Requires external official yt-dlp.exe + deno.exe and experimental ScriptedScreens media. Progressive public MP4 only, max 128 MB; live YouTube/native playback not yet verified. Assistant installation stays independent.

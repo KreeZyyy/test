@@ -1,0 +1,59 @@
+OASIS MEDIA 0.1.0 — první prototyp, video + zvuk na herním panelu
+
+Samostatný mod. Station Assistant ani jeho klíč/token neměň.
+Přehrávání skutečného YouTube videa ve Stationeers ještě není ověřeno.
+
+1. Vypni Stationeers. Rozbal složku OasisMedia do:
+   Dokumenty\My Games\Stationeers\mods
+   Výsledná cesta musí obsahovat mods\OasisMedia\About\About.xml.
+
+2. Vytvoř například E:\OasisMediaTools.
+   Stáhni oficiální Windows x64 yt-dlp.exe:
+   https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe
+   Ulož jej do E:\OasisMediaTools\yt-dlp.exe.
+   Stáhni oficiální Deno pro Windows x64:
+   https://github.com/denoland/deno/releases/latest/download/deno-x86_64-pc-windows-msvc.zip
+   Rozbal deno.exe do STEJNÉ složky jako yt-dlp.exe.
+   Deno je JavaScript runtime potřebný pro současný YouTube extractor.
+   Oba programy jsou samostatné bezplatné závislosti; v tomto ZIPu nejsou.
+
+3. Spusť LaunchPad, zaškrtni Oasis Media a dej Load Mods.
+   V Mod Settings pro Oasis Media nastav Player -> YtDlpPath:
+   E:\OasisMediaTools\yt-dlp.exe
+   Zkopíruj Bridge -> Token (token tohoto modu, ne token asistenta).
+
+4. StationeersLua: zapni AllowHttp a AllowHttpLocalhost.
+   ScriptedScreens: zapni EnableExperimentalVideo a AllowMediaPlayback.
+   EnableMediaLocally musí být zapnuté na klientovi.
+   Pokud máš vlastní omezení AllowedMediaTypes, povol MP4.
+   Ulož nastavení a ÚPLNĚ restartuj hru.
+
+5. Pro přehrávač použij DRUHÝ čip/panel, aby zůstal Oasis chat zachovaný.
+   Otevři scripts\media.lua v Poznámkovém bloku.
+   Nahraď PASTE_OASIS_MEDIA_TOKEN_HERE tokenem Oasis Media.
+   Zkopíruj celý skript do Lua editoru čipu a potvrď Confirm.
+
+6. Vlož HTTPS odkaz na jedno krátké veřejné YouTube video a klikni Načíst video.
+   Příprava může trvat až 3 minuty; přehrávání začne až po stažení videa.
+   Na panelu jsou Play/Pauza, Stop a hlasitost −/+.
+   ScriptedScreens má prostorový zvuk a reaguje na atmosféru: testuj v přetlakové místnosti.
+   Zkontroluj také jeho ClientMasterVolume; Ctrl+Alt+kolečko mění hlasitost obrazovky.
+
+OMEZENÍ PROTOTYPU
+- Jen místní svět/session host na tomto PC; nejde o synchronizovaný multiplayer přehrávač.
+- Jen veřejné video dostupné jako společný H.264/AAC MP4 do 720p; kvalita může být jen 360p.
+- Mnohá videa dnes mají obraz a zvuk odděleně. Ta tato verze nepřehraje.
+- Bez přihlášení, cookies, playlistů, živého YouTube vysílání a DRM videí.
+- Limit 128 MB na video, maximálně jedna příprava současně, časový limit 3 minuty.
+- Dočasná kopie se ukládá do Windows TEMP\OasisMedia a maže při výměně videa a zavření modu.
+  Při pádu hry může zůstat v TEMP; můžeš ji po vypnutí hry smazat.
+- Stop ovládá přehrávání, ne právě probíhající přípravu.
+- Stav Video připraveno potvrzuje místní soubor, ne úspěšné dekódování herním přehrávačem.
+- YouTube může změnit své rozhraní; v případě chyby aktualizuj oficiální yt-dlp/Deno.
+- Používej videa, k jejichž přehrávání a dočasnému stažení máš oprávnění.
+
+OVĚŘENO V CLOUDU
+Sestavení DLL proti dodaným knihovnám hry: 0 chyb, 0 varování.
+21 kontrol backendu: odkazy, autentizace, úlohy, místní MP4 a HTTP Range/HEAD.
+Lua: 5 poměrů stran, vstup, příprava/polling, Play/Pauza/Stop/hlasitost, chyby a timeout.
+Kontroly používají náhradní downloader; živý YouTube a Unity dekodér potřebují test ve hře.
