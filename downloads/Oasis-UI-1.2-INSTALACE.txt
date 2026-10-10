@@ -1,0 +1,17 @@
+﻿Oasis UI 1.2 — přirozenější rozhovor
+
+Doplň místní Bridge.Token v Oasis-UI-1.2.lua, nahraď skript v IC10Editoru a potvrď.
+Žádná změna DLL ani restart hry nejsou potřeba. API klíč zůstává v nastavení modu.
+
+Změny:
+- Pokyny žádají přímou odpověď bez neustálého představování.
+- Běžné otázky nemají být převáděné do smyšlených sci-fi faktů.
+- Omezení senzorů se mají připomínat jen u dotazů na skutečný stav hry.
+- Do každého dotazu se přidává krátký kontext předchozích úspěšných výměn.
+  Kvůli limitu požadavku jde jen o nejnovější část konverzace, dlouhé zprávy
+  se v kontextu zkracují. Celá viditelná historie nemusí být v kontextu modelu.
+- Zobrazení historie, W/H rozložení, hlas a synchronizace vstupu zůstávají.
+
+Ověřeno: skutečný Lua skript s náhradami API, zahrnutí předchozí odpovědi,
+oddělení aktuální otázky a délka požadavku do 1950 bajtů, ostatní UI testy.
+Konkrétní formulaci odpovědi generuje Gemini; přirozenost ověřte v rozhovoru.

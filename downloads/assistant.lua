@@ -1,4 +1,4 @@
--- OASIS UI 1.1 — works with Station Assistant 0.2.1 (no DLL update).
+-- OASIS UI 1.2 — works with Station Assistant 0.2.1 (no DLL update).
 -- Keep your LOCAL Bridge.Token here. Never paste a Gemini API key into Lua.
 local TOKEN = "PASTE_LOCAL_BRIDGE_TOKEN_HERE"
 local BASE = "http://localhost:18765"
@@ -115,15 +115,31 @@ local function finish(message)
     status:set_props({text=message})
     ui:commit()
 end
+local function conversation_prompt(current)
+    local instruction="Jsi Oasis. Nepředstavuj se v každé odpovědi. Odpovídej přímo a přirozeně na aktuální zprávu. Nevymýšlej sci-fi fakta o skutečném světě. Omezení senzorů připomínej jen při dotazu na stav hry.\n"
+    local ending="\nAktuální zpráva hráče: "..current
+    local budget=1950-#instruction-#ending
+    if budget<0 then return nil end
+    local context={}
+    for i=#history,math.max(1,#history-3),-1 do
+        local t=history[i]
+        if not t.pending and not t.error and t.reply and t.reply~="" then
+            local piece="Hráč: "..cut(t.question,250).."\nOasis: "..cut(t.reply,500).."\n"
+            if #piece<=budget then table.insert(context,1,piece); budget=budget-#piece end
+        end
+    end
+    return instruction..table.concat(context)..ending
+end
 local function send()
     if job or request then return end
     if TOKEN=="PASTE_LOCAL_BRIDGE_TOKEN_HERE" then finish("Doplň místní Bridge Token do skriptu."); return end
     if not question:find("%S") then finish("Nejdřív napiš zprávu pro Oasis."); return end
-    if #question>1900 then finish("Zpráva je moc dlouhá. Prosím zkrať ji."); return end
+    local prompt=conversation_prompt(question)
+    if not prompt then finish("Zpráva je moc dlouhá. Prosím zkrať ji."); return end
     active={question=question,reply="",pending=true}
     history[#history+1]=active
     while #history>12 do table.remove(history,1) end
-    local ok,id=pcall(ic.http.post,BASE.."/ask",util.json.encode({question="Jmenuješ se Oasis. Zpráva hráče: "..question,speak=speak}),"application/json",headers,10)
+    local ok,id=pcall(ic.http.post,BASE.."/ask",util.json.encode({question=prompt,speak=speak}),"application/json",headers,10)
     if not ok then finish("HTTP není dostupné. Ověř AllowHttp a AllowHttpLocalhost."); return end
     request,request_kind,elapsed=id,"ask",0
     question=""; input:set_props({value=""})
