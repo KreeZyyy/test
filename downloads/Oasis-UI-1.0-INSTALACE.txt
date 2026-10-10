@@ -1,0 +1,35 @@
+﻿OASIS — nové rozhraní 1.0
+
+Funguje s již nainstalovaným Station Assistant 0.2.1.
+Žádná výměna DLL ani restart hry nejsou potřeba.
+
+1. Otevři Oasis-UI-1.0.lua v Poznámkovém bloku.
+2. Doplň svůj současný místní Bridge.Token do TOKEN na začátku skriptu.
+   Nepoužívej Gemini klíč. Ten zůstává v konfiguraci modu.
+3. Celý skript vlož do IC10Editoru místo původního a klikni Confirm.
+4. Napiš otázku. Text se po dokončení vstupu zobrazí i ve vstupním poli.
+   Po Odeslat se vstup vyčistí a tvoje zpráva se objeví v historii.
+
+Novinky:
+- Oasis: tmavá zelená obrazovka, vektorový znak s jemným pulzováním.
+- Rozložení používá W a H podle poměru stran konzole; malým obrazovkám
+  zvyšuje virtuální rozlišení pro čitelný text. Pozadí vyplňuje celý displej.
+- Historie zobrazuje tvoje otázky i odpovědi Oasis. Nejnovější výměna je
+  nahoře, starší najdeš posouváním dolů. Dlouhé odpovědi jsou v posuvné ploše.
+- V běhu drží až 12 výměn; nejnovější část ukládá do ic.persist na chipu
+  pro vypnutí/zapnutí a uložení/načtení světa. Velmi dlouhá uložená historie
+  se zkracuje, aby nepřekročila výchozí limit chipu.
+- Vymazat historii vyžaduje druhé kliknutí pro potvrzení.
+- Hlas lze dál vypnout. Síťové chyby ukazují konkrétní hlášení.
+
+Staré dotazy z původního panelu nejdou obnovit, protože je původní verze
+neukládala. Historie slouží k zobrazení; Gemini zatím dostává vždy jednu
+aktuální otázku, nikoliv celou historii konverzace.
+
+Znak Vectoru je ozdobný. Pokud Vector není aktivní, základní panel,
+texty, tlačítka i historie zůstanou použitelné.
+
+Ověřeno: syntaxe Lua 5.2; chování skutečného skriptu s náhradami API,
+synchronizace vstupu, historie, obnovení a vymazání, chyby, timeouty,
+a umístění ovládacích prvků při čtyřech poměrech stran.
+Nový vzhled a posouvání ve skutečné hře ještě vyžadují ověření na tvém PC.

@@ -1,4 +1,14 @@
-# Station Assistant
+# Oasis — palubní asistent
+
+## Nové rozhraní Oasis UI 1.0
+
+Stáhni [Oasis-UI-1.0.zip](Oasis-UI-1.0.zip?raw=true) nebo otevři [Lua skript](Oasis-UI-1.0.lua).
+Používá již nainstalovaný Station Assistant 0.2.1, žádná aktualizace DLL ani restart nejsou potřeba. Doplň svůj místní bridge token a nahraj nový Lua skript do chipu.
+
+Panel využívá W/H konzole, přidává vektorový znak Oasis, historii otázek i odpovědí, uchování nejnovější historie na chipu a opravuje zobrazení napsaného textu. Nové dotazy jdou Gemini stále jednotlivě. Ověřeno náhradami API na čtyřech poměrech stran; vzhled ve skutečné hře ještě vyžaduje ověření. Podrobnosti v INSTALACE.txt uvnitř ZIPu.
+
+---
+
 
 ## Aktuální verze: 0.2.1 — Gemini + hlas Windows
 
