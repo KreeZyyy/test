@@ -33,3 +33,7 @@ Starší `StationAssistant-0.1.0.zip` používá OpenAI; pro Gemini použij výh
 ## Oasis Media 0.1.1 — latest media prototype
 
 [Download](OasisMedia-0.1.1.zip) · [Update from 0.1.0](OasisMedia-AKTUALIZACE.txt). Adds separate H.264/AAC track merging with external FFmpeg. Existing chip script/token/config remain compatible. Requires ffmpeg.exe and ffprobe.exe alongside yt-dlp.exe/deno.exe. 26 backend checks, UI checks and synthetic local FFmpeg merge passed; live YouTube/Unity playback still requires in-game verification.
+
+## Oasis Browser 0.1.0 — separate browser feasibility prototype
+
+[Download](OasisBrowser-0.1.0.zip) · [Czech installation](OasisBrowser-INSTALACE.txt) · [chip script](browser.lua). Projects installed Chrome, using a temporary profile and native Chrome audio, onto a ScriptedScreens panel at about 3–5 FPS. Does not require yt-dlp/FFmpeg. 15 checks passed with real Chromium plus Lua layout/action tests. Actual Unity texture/pointer integration and YouTube video/audio remain unverified until tested in-game. This is an external Chrome projection, not a browser engine embedded into Unity.

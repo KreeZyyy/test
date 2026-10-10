@@ -1,0 +1,67 @@
+OASIS BROWSER 0.1.0 — pokusný živý web na herním panelu
+
+Toto je samostatný mod; Oasis chat ani Oasis Media nenahrazuj.
+Používá nainstalovaný Google Chrome v NOVÉM dočasném profilu.
+Chrome běží jako samostatný proces/okno a mod přenáší jeho obraz do hry.
+Nejde o Chromium zabudovaný přímo do Unity. První prototyp přenáší přibližně
+3–5 snímků za sekundu; video nebude stejně plynulé jako předchozí MP4 přehrávač.
+Zvuk hraje přímo z Chrome, takže nezávisí na atmosféře hry.
+
+1. Úplně vypni Stationeers.
+2. Rozbal složku OasisBrowser do Dokumenty\My Games\Stationeers\mods.
+   Výsledná cesta: mods\OasisBrowser\About\About.xml.
+3. Spusť hru. V LaunchPadu povol Oasis Browser a klikni Load Mods.
+   Mod automaticky zkusí najít nainstalovaný Google Chrome.
+   Otevře se nové samostatné okno Chrome — můžeš se Alt+Tab vrátit do hry.
+   OKNO NEZAVÍREJ, jinak přestane fungovat i panel. Můžeš ho nechat za hrou.
+4. V nastavení Oasis Browser najdi Bridge -> Token.
+   V scripts\browser.lua nahraď PASTE_OASIS_BROWSER_TOKEN_HERE tímto tokenem.
+   Nikam nepatří Gemini klíč ani token chatového/media modu.
+5. Skript vlož do samostatného Lua čipu s herním panelem a dej Confirm.
+   Pokud chceš použít dosavadní video panel, můžeš na něm nahradit jen Lua skript.
+6. StationeersLua musí mít zapnuté AllowHttp a AllowHttpLocalhost.
+   Nový browser panel nepotřebuje EnableExperimentalVideo ani FFmpeg/yt-dlp.
+7. Do spodního pole napiš název videa nebo HTTPS YouTube odkaz a dej Hledat/Otevřít.
+   Klikání a kolečko přímo na promítaném webu zajišťuje mod, ne Lua skript.
+   První YouTube stránka může vyžadovat souhlas s cookies — vyber možnost na webu.
+   Bez přihlášení nemusí fungovat obsah omezený věkem ani požadavky na ověření.
+   Video může potřebovat kliknutí na Play kvůli pravidlům automatického přehrávání.
+
+OVLÁDÁNÍ
+- YouTube: domovská stránka. Obnovit: znovu načíst aktuální stránku.
+- Nahoru/Dolů: posun webu; kolečko by mělo také fungovat přímo nad obrazem.
+- Vložit text: nejprve klikni do webového textového pole, napiš text do spodního
+  pole modu a dej Vložit text. Enter pošle klávesu Enter do Chrome.
+- Vložení názvu přes Hledat/Otevřít nevyžaduje ovládat vyhledávací pole webu.
+- Hlasitost nastavuješ v přehrávači YouTube nebo směšovači zvuku Windows pro Chrome.
+
+POKUD JE PANEL PRÁZDNÝ
+- Ověř, že Oasis Browser je načtený a jeho nové okno Chrome skutečně existuje.
+- V Mod Settings -> Browser -> ChromePath musí být cesta ke skutečnému chrome.exe.
+  Typicky C:\Program Files\Google\Chrome\Application\chrome.exe.
+- Změna cesty/portů vyžaduje úplný restart hry.
+- Výchozí control port je 18767; Chrome debug port je 9223. Nejsou porty již obsazené?
+- Zkontroluj BepInEx\LogOutput.log a hledej Oasis Browser. Pošli jen příslušné
+  chyby, nikoliv konfigurační soubor s tokenem.
+- Pokud obraz jde, ale klikání ne, zkus rozhraní panelu aktivovat/interface mode.
+  Jako diagnostiku můžeš klikat přímo v novém Chrome okně a sledovat změny ve hře.
+
+OMEZENÍ / OVĚŘENÍ
+- Jeden sdílený browser pro všechny jeho panely v místním světě; multiplayer není ověřený.
+- Nepoužívej přihlášení ani osobní údaje. Profil je dočasný a po ukončení se má smazat.
+- Osobní Chrome profil se nepoužívá. Rozšíření jsou v tomto profilu vypnutá.
+- Chrome má místní debug rozhraní; nerozšiřuj je do sítě ani neotvírej firewall port.
+- Uživatelův Windows Chrome běží se svým běžným sandboxem.
+- Přenos obrazu přes PNG je dražší než nativní zabudovaný browser; prototyp je
+  určen pro ověření cesty a ovládání, nikoliv plynulé dlouhé sledování videa.
+- Zavírej hru normálně, aby mod ukončil svůj Chrome a smazal dočasný profil.
+  Při pádu mohou zůstat soubory ve Windows TEMP\OasisBrowser.
+
+V CLOUDU OVĚŘENO
+- DLL sestavená proti dodaným knihovnám hry: bez chyb/varování.
+- 15 kontrol se skutečným Chromium: PNG obraz, kliknutí, posouvání, text,
+  autentizované HTTP ovládání a validace YouTube adres.
+- Lua panel: 5 poměrů stran, 16:9 obraz, stav připojení, vyhledávání/text/scroll/chyby.
+- Konkrétní napojení do ScriptedScreens používá runtime Unity UI reflexi podle
+  ověřené struktury Vector modu. Obraz a klikání v samotné hře nejsou zatím ověřené.
+- YouTube video se zvukem v tomto novém browseru zatím musíš ověřit na svém PC.
