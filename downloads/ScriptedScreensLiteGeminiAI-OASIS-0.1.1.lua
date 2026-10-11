@@ -157,6 +157,7 @@ return GeminiAI
 end)()
 local ai = GeminiAI.new({
     token=TOKEN, base=BASE,
+    audio_start_grace=0, -- Stop at WAV duration without the extra 0.25 seconds.
     system_prompt="Jsi Oasis. Odpovídej přímo a přirozeně česky, stručně pro čtení nahlas. Nepředstavuj se opakovaně. Herní stav znáš jen z informací ve zprávě.",
     voice="Kore", speech_style="Speak naturally in Czech, calm and friendly.",
 })

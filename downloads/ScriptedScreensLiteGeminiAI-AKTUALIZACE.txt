@@ -15,3 +15,7 @@ příčina uvnitř ScriptedScreens ani oprava ve hře zatím nejsou potvrzené.
 zkrátit; ve vlastní Lua lze upravit audio_start_grace (výchozí 0.25 s).
 
 Ověření: 55 C# a 33 Lua kontrol prošlo, bez placených Google požadavků.
+
+Úprava OASIS: audio_start_grace=0, aby časovač nepřidával 0.25 s.
+Obrázek About/thumb.png má 903120 bajtů, pod herním limitem 1 MiB.
+Chyba memory_io_error hlášená uživatelem stále není vyřešena.
