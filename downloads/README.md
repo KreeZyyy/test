@@ -1,3 +1,15 @@
+## ScriptedScreensLiteGeminiAI 0.1.2 — KreeZy
+
+[Stáhnout ZIP](ScriptedScreensLiteGeminiAI-0.1.2.zip?raw=true) · [Nový OASIS.lua](ScriptedScreensLiteGeminiAI-OASIS-0.1.2.lua?raw=true) · [Aktualizace](ScriptedScreensLiteGeminiAI-AKTUALIZACE.txt) · [Zdrojový projekt](ScriptedScreensLiteGeminiAI-0.1.2-source.zip?raw=true)
+
+Nová verze zkracuje dočasnou cestu paměti, která u nahlášené Windows instalace dosahovala 278 znaků, na 189. Hlas má explicitní loop=false, koncové ochranné ticho a zastavení uvnitř ticha. Audio cache drží maximálně 5 WAV; mažou se nejstarší nechráněné soubory a při plné chráněné cache zůstává text. Náhled je široký, s okraji a RGBA PNG pod 1 MiB.
+
+Aktualizuj **DLL i Lua** a zachovej konfiguraci/data. Nejdřív použij **Test paměti** a **Test bez Gemini** (tři místní tóny). Tyto testy nevyžadují API klíč ani nečerpají Google kvótu. **Znovu hlas** opakuje uložený WAV bez dalšího Google požadavku.
+
+Prošlo 77 C# a 40 Lua kontrol, Release sestavení bez chyb/varování. Příčina opakování uvnitř ScriptedScreens není potvrzená; jde o změnu WAV a časovou pojistku. Uživatel ověřil základní AI/TTS ve starší verzi, nové přehrávání/Windows zápis/thumbnail vyžadují herní ověření. Multiplayer a Linux loader nejsou ověřeny. WorldId nastavuj ručně pro každý save; audio URL musí být dostupná všem hráčům.
+
+---
+
 ## ScriptedScreensLiteGeminiAI 0.1.1 — KreeZy
 
 [Stáhnout ZIP](ScriptedScreensLiteGeminiAI-0.1.1.zip?raw=true) · [Nový OASIS.lua](ScriptedScreensLiteGeminiAI-OASIS-0.1.1.lua?raw=true) · [Aktualizace](ScriptedScreensLiteGeminiAI-AKTUALIZACE.txt) · [Zdrojový projekt](ScriptedScreensLiteGeminiAI-0.1.1-source.zip?raw=true)

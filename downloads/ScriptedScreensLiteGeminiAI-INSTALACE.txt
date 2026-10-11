@@ -1,4 +1,4 @@
-ScriptedScreensLiteGeminiAI 0.1.1 — testovací verze
+ScriptedScreensLiteGeminiAI 0.1.2 — testovací verze
 
 1. Rozbal složku ScriptedScreensLiteGeminiAI do své složky Stationeers/mods.
    Na serveru použij serverovou složku mods a povol mod v LaunchPad modconfigu.
@@ -14,7 +14,8 @@ ScriptedScreensLiteGeminiAI 0.1.1 — testovací verze
 7. Na hostiteli povol StationeersLua [Features] AllowHttp a AllowHttpLocalhost.
    Pro hlas musí být povolené přehrávání médií ScriptedScreens u serveru/klientů.
 8. Restartuj a nahraj examples/OASIS.lua do Lua chipu ve ScriptedScreens zařízení.
-   Nejdřív vyzkoušej text bez hlasu, potom krátkou hlasovou odpověď.
+   Nejdřív klikni Test paměti a Test bez Gemini (3 tóny), které nečerpají kvótu.
+   Pak zkus krátkou hlasovou odpověď, pokud má Google účet dostupnou kvótu.
 
 MULTIPLAYER:
 V konfiguraci [Media] BindAddress = 0.0.0.0 a PublicBaseUrl nastav na URL
@@ -30,11 +31,13 @@ Zdrojový projekt je v samostatném -source.zip.
 
 Paměť: 25 konverzací, max 20 výměn, omezený kontext. Plná paměť vrací chybu.
 Audio vytváří online Gemini TTS a ScriptedScreens jej přehrává ze zařízení.
+MaxAudioFiles=5: starší nechráněné WAV se smažou, při plné chráněné cache je jen text.
+Podrobnosti nové paměti, hlasu a diagnostiky jsou v AKTUALIZACE.txt.
 Windows hlas, PowerShell ani mikrofon se nepoužívají. Jedna konfigurace,
 stejná DLL pro Windows/Linux runtime kompatibilní s hrou a loaderem.
 
 OVĚŘENÍ:
-Prošlo 55 C# a 33 Lua kontrol. Uživatel ověřil Gemini a hlas ve hře v 0.1.0.
-Opravy přehrávání a paměti v 0.1.1 ještě vyžadují herní test. Nejde o potvrzený hotový multiplayer release.
+Prošlo 77 C# a 40 Lua kontrol. Uživatel ověřil Gemini a hlas ve hře v 0.1.0.
+Opravy přehrávání a paměti v 0.1.2 ještě vyžadují herní test. Nejde o potvrzený hotový multiplayer release.
 TTS dostupnost, kvóty a případné náklady určuje tvůj Google projekt.
 Více v README.md. Klíče, tokeny a konfiguraci s klíči nesdílej.
