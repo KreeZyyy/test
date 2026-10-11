@@ -17,7 +17,7 @@ using Assets.Scripts.Serialization;
 
 namespace CustomSpeakerSounds
 {
-    [StationeersMod("kreezy.customspeakersounds", "Custom Speaker Sounds", "0.1.1")]
+    [StationeersMod("kreezy.customspeakersounds", "Custom Speaker Sounds", "0.1.2")]
     public class Plugin : ModBehaviour
     {
         static readonly SortedDictionary<int, GameAudioClipsData> clips = new SortedDictionary<int, GameAudioClipsData>();
@@ -36,7 +36,7 @@ namespace CustomSpeakerSounds
             try
             {
                 new Harmony("kreezy.customspeakersounds").PatchAll(typeof(Plugin).Assembly);
-                Info("0.1.1 loaded; waiting for the game's existing initialized AudioManager. No singleton creation. IDs 100..199; sounds/<id>_<name>.<ext>");
+                Info("0.1.2 loaded; waiting for the game's existing initialized AudioManager. No singleton creation. IDs 100..199; sounds/<id>_<name>.<ext>");
             }
             catch (Exception ex) { enabled = false; Error("Patch installation failed: " + ex); }
         }
@@ -85,7 +85,7 @@ namespace CustomSpeakerSounds
                     AudioClip clip = DownloadHandlerAudioClip.GetContent(req);
                     if (clip == null) continue;
                     clip.name = "KreeZy.CustomSpeaker." + id;
-                    var data = new GameAudioClipsData { Name = clip.name, NameHash = Animator.StringToHash(clip.name), ChannelName = "Large", Looping = false, RandomStartTime = false };
+                    var data = new GameAudioClipsData { Name = clip.name, NameHash = Animator.StringToHash(clip.name), ChannelName = "Large", Looping = false, RandomStartTime = false, ConcurrencyIds = new List<int>() };
                     data.Clips.Add(clip);
                     var audio = new AudioData(); audio.AudioClipsData.Add(data);
                     try
