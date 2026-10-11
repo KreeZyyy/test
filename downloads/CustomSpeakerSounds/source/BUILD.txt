@@ -1,0 +1,1 @@
+Copy Stationeers.User.props.example to Stationeers.User.props and set your local dependency paths. Run dotnet build -c Release. Requires .NET SDK 8 and installed game/LaunchPad/BepInEx DLLs; do not redistribute them. Only CustomSpeakerSounds.dll belongs in the mod root.

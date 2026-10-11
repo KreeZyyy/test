@@ -1,0 +1,6 @@
+<Project><PropertyGroup>
+<BepInExDirectory>E:\SteamLibrary\steamapps\common\Stationeers\BepInEx\core</BepInExDirectory>
+<LaunchPadDirectory>PATH_TO_StationeersLaunchPad_DLL_DIRECTORY</LaunchPadDirectory>
+<UnityManagedDirectory>E:\SteamLibrary\steamapps\common\Stationeers\rocketstation_Data\Managed</UnityManagedDirectory>
+<GameManagedDirectory>E:\SteamLibrary\steamapps\common\Stationeers\rocketstation_Data\Managed</GameManagedDirectory>
+</PropertyGroup></Project>
