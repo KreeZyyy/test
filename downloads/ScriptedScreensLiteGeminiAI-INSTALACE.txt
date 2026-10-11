@@ -1,0 +1,40 @@
+ScriptedScreensLiteGeminiAI 0.1.0 — testovací verze
+
+1. Rozbal složku ScriptedScreensLiteGeminiAI do své složky Stationeers/mods.
+   Na serveru použij serverovou složku mods a povol mod v LaunchPad modconfigu.
+2. Vyžaduje BepInEx 5.x, StationeersLaunchPad, StationeersLua a ScriptedScreens.
+3. Spusť hostitele/server jednou a pak ho ukonči. Vytvoří konfiguraci:
+   BepInEx/config/oasis.stationeers.scriptedscreenslitegeminiai.cfg
+4. V [Gemini] ApiKey vyplň svůj Google AI Studio API klíč.
+   Výchozí textový model je gemini-3.1-flash-lite; TTS gemini-3.8-flash-lite-tts.
+   Pokud účet nabízí jiné modely, změň nastavení podle README.md.
+5. V [Memory] WorldId zvol vlastní název pro daný svět (před změnou save ho změň).
+6. Pouze [Bridge] Token zkopíruj do TOKEN v examples/OASIS.lua.
+   Do Lua NIKDY nepatří Gemini API klíč.
+7. Na hostiteli povol StationeersLua [Features] AllowHttp a AllowHttpLocalhost.
+   Pro hlas musí být povolené přehrávání médií ScriptedScreens u serveru/klientů.
+8. Restartuj a nahraj examples/OASIS.lua do Lua chipu ve ScriptedScreens zařízení.
+   Nejdřív vyzkoušej text bez hlasu, potom krátkou hlasovou odpověď.
+
+MULTIPLAYER:
+V konfiguraci [Media] BindAddress = 0.0.0.0 a PublicBaseUrl nastav na URL
+hostitele/serveru dostupnou všem hráčům, např. http://192.168.1.50:18767 pro LAN.
+Zpřístupni jen audio port 18767, nikoli control API port 18766.
+Lua BASE zůstává http://localhost:18766, protože Lua běží na hostiteli.
+Pro veřejné hráče potřebuješ dostupnou veřejnou adresu/port nebo HTTPS proxy.
+
+CO OBSAHUJE BALÍČEK:
+DLL modu + Newtonsoft.Json.dll, český README.md, API.md, OASIS.lua,
+geminiai.lua pro library chip a minimal.lua jako nejmenší ukázku.
+Zdrojový projekt je v samostatném -source.zip.
+
+Paměť: 25 konverzací, max 20 výměn, omezený kontext. Plná paměť vrací chybu.
+Audio vytváří online Gemini TTS a ScriptedScreens jej přehrává ze zařízení.
+Windows hlas, PowerShell ani mikrofon se nepoužívají. Jedna konfigurace,
+stejná DLL pro Windows/Linux runtime kompatibilní s hrou a loaderem.
+
+OVĚŘENÍ:
+Sestavení a testy s náhradami API prošly. Skutečné Google API a hra zatím
+nejsou ověřené. Nejde o potvrzený hotový multiplayer release.
+TTS dostupnost, kvóty a případné náklady určuje tvůj Google projekt.
+Více v README.md. Klíče, tokeny a konfiguraci s klíči nesdílej.

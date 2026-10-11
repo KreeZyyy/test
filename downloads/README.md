@@ -1,3 +1,13 @@
+## ScriptedScreensLiteGeminiAI 0.1.0 — Gemini text + prostorový hlas
+
+[Stáhnout mod ZIP](ScriptedScreensLiteGeminiAI-0.1.0.zip?raw=true) · [Česká instalace](ScriptedScreensLiteGeminiAI-INSTALACE.txt) · [Zdrojový projekt](ScriptedScreensLiteGeminiAI-0.1.0-source.zip?raw=true)
+
+Nový samostatný AI mod pro StationeersLua a ScriptedScreens. Vrací text a URL hlasu z Gemini TTS; přehrávání ze zařízení řeší ScriptedScreens. Konfigurovatelné preference z Lua, 25 konverzací a omezený kontext. API klíč pouze v konfiguraci hostitele. Pro multiplayer musí být audio URL dostupná všem hráčům. WorldId se zatím nastavuje ručně per save. Nejde o aktualizaci starého StationAssistant DLL.
+
+Sestavení a 50 C# + 28 Lua kontrol prošlo. Skutečné Gemini API, běh ve hře a multiplayerové přehrávání zatím neověřené. Testovací verze.
+
+---
+
 # Oasis — palubní asistent
 
 ## Nové rozhraní Oasis UI 1.2
