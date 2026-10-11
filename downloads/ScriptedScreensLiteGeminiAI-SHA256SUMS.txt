@@ -1,2 +1,2 @@
-97be53396db02f5f0df20bff3b94b02775f7b9b8b769ec631308d522dcdc6b96  ScriptedScreensLiteGeminiAI-0.1.3.zip
-fd2810c2211937e310d61f0bdb1c7feff5bd578d97203ce53deea9ba7f26bdeb  ScriptedScreensLiteGeminiAI-0.1.3-source.zip
+c229278ffda7b82a4f17ab06fd17ac89b8cb2fb5fbb245946560dd7cc085db28  ScriptedScreensLiteGeminiAI-0.1.4.zip
+194d89ee2b809cab60adc827d1b90cca1035e94992fdaf7393a0ec80f4dda05d  ScriptedScreensLiteGeminiAI-0.1.4-source.zip

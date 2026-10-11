@@ -1,57 +1,14 @@
-ScriptedScreensLiteGeminiAI 0.1.3 — KreeZy
+ScriptedScreensLiteGeminiAI 0.1.4 — KreeZy
 
-NOVÉ V 0.1.3:
-Volitelný lokální Piper místo Gemini TTS. Postup a cesty viz PIPER-INSTALACE.txt.
-Výchozí Provider=Gemini zůstává pro kompatibilitu, nastav Provider=Piper.
-Nové tlačítko Test Piperu vytvoří český hlas bez Google a bez ukládání chatu.
-Žádný automatický přechod na online TTS při chybě. Gemini dál poskytuje text.
+NOVÉ: Piper dostává vyčištěný text bez Markdown značek. Odkazy čte jako jejich
+název, ne URL; obrázky a bloky kódu nečte. Odpověď na obrazovce a chat v paměti
+zůstávají původní. Již vytvořené WAV se nemění — odešli novou otázku.
 
-AKTUALIZACE:
-1. Vypni hru.
-2. Přepiš soubory ve složce modu obsahem ZIPu, včetně About/thumb.png.
-   Nemaž konfiguraci BepInEx/config ani datovou složku.
-3. Nahraj nový examples/OASIS.lua do chipu. Do TOKEN doplň stávající Bridge Token.
-   Je nutné aktualizovat DLL i Lua. API klíč patří pouze do konfigurace.
-4. Restartuj hru. Nová položka [Limits] MaxAudioFiles má výchozí hodnotu 5.
-   DataDirectory a WorldId zachovej; konfigurace se automaticky doplní.
+Vypni hru, přepiš soubory modu ZIPem a zachovej konfiguraci i datovou složku.
+Piper nastavení z 0.1.3 dál platí. Přiložený OASIS.lua má stejné API; pokud už
+používáš Lua 0.1.3, není nutné kvůli této opravě přepisovat chip.
+Nezměnil se hlasový model ani ochranné ticho/časovač přehrávání.
+Pro instalaci Piperu viz PIPER-INSTALACE.txt.
 
-NEJDŘÍV TESTY BEZ GEMINI:
-- Test paměti: zápis, přepsání a čtení z konverzační složky. Nezmění chat,
-  nevolá Gemini a dočasný testovací soubor smaže. Při úspěchu se ukáže potvrzení.
-- Zapni hlas a klikni Test tónů: mají zaznít tři krátké tóny JEDNOU,
-  potom ticho. Soubor vytvoří mod místně, bez textového nebo hlasového API.
-  Tento soubor se počítá do limitu pěti WAV. Při plné chráněné cache počkej.
-- Znovu hlas: přehraje poslední uloženou hlasovou odpověď, bez dalšího
-  Gemini požadavku. Smazané nebo prošlé URL už nelze přehrát.
-- Teprve po těchto testech zkus krátký nový dotaz, pokud má Google účet kvótu.
-  Starší WAV nemají nové ochranné ticho; hlasová změna platí pro nově vytvořené WAV.
-
-ZMĚNY:
-Paměť: dočasný soubor má krátký vlastní název místo dlouhého názvu JSON+GUID.
-U nahlášené instalace to zkracuje cestu z 278 na 189 znaků; výsledný JSON má
-241 znaků. Odstraňuje to překročení běžného limitu cesty Windows při zápisu.
-Pokud chyba přetrvá, zobrazí se krok zápisu, bezpečný HRESULT a délka cesty.
-Kontext zůstává v RAM při chybě disku. Úspěšný další zápis uloží i nedávný RAM kontext.
-
-Hlas: explicitní loop=false, unikátní sound ID a dva koncové sekundy ticha.
-Žádné řečené vzorky se neodstraňují. Časovač zastaví přehrávání jednu sekundu
-před koncem WAV, uvnitř ochranného ticha, s výchozím audio_start_grace=0.
-To dává prostor běžnému hernímu ticku (~0.5 s), aby nepropustil začátek další smyčky.
-Nejde o opravu kódu ScriptedScreens; přesná příčina jeho opakování není potvrzená.
-Pauza hry, dlouhé načítání nebo mimořádně pomalý tick mohou časování ovlivnit.
-Multiplayerové načítání/přehrávání této verze ještě není ověřeno.
-
-Soubory: [Limits] MaxAudioFiles=5. Nejstarší nechráněný WAV se smaže před uložením
-nového. Chráněný stahovaný soubor ani soubor v odhadovaném okně přehrávání se
-nemaže. Okno je délka WAV + 15 sekund od dokončení stažení; nový soubor má
-15 sekund na doručení odpovědi. Při obsazení všech míst zůstane odpověď textová.
-Mod rezervuje dostupné místo před TTS, takže plná chráněná cache TTS nespouští.
-TTL 30 minut a limity 64 MiB celkem / 8 MiB na soubor zůstávají aktivní.
-Audio úklid nevymazává textovou historii. Startup uklidí starší nechráněné WAV.
-
-Obrázek: široký, bez textu, větší okraje pro ořez LaunchPadu, standardní RGBA PNG
-pod 1 MiB. Zobrazení v herním Workshop menu vyžaduje kontrolu po restartu.
-
-OVĚŘENÍ: 79 C#, 22 procesních Piper a 45 Lua kontrol, Release DLL bez chyb a varování.
-Žádné živé Google požadavky nebo uživatelské klíče nebyly použity.
-Windows herní test, běh Linux loaderu a multiplayer zatím neprovedeny.
+OVĚŘENÍ: 79 kontrol jádra, 45 Lua a 28 Piper/procesních kontrol.
+Žádné živé Google požadavky. Syntézu skutečného modelu na Windows ověř ve hře.

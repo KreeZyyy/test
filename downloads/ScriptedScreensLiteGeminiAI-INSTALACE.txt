@@ -1,4 +1,4 @@
-ScriptedScreensLiteGeminiAI 0.1.3 — testovací verze
+ScriptedScreensLiteGeminiAI 0.1.4 — testovací verze
 
 1. Rozbal složku ScriptedScreensLiteGeminiAI do své složky Stationeers/mods.
    Na serveru použij serverovou složku mods a povol mod v LaunchPad modconfigu.
@@ -38,7 +38,7 @@ stejná DLL pro Windows/Linux runtime kompatibilní s hrou a loaderem.
 
 OVĚŘENÍ:
 Prošlo 79 C#, 22 procesních Piper a 45 Lua kontrol. Uživatel ověřil Gemini a hlas ve hře v 0.1.0.
-Opravy přehrávání a paměti v 0.1.3 ještě vyžadují herní test. Nejde o potvrzený hotový multiplayer release.
+Opravy přehrávání a paměti v 0.1.4 ještě vyžadují herní test. Nejde o potvrzený hotový multiplayer release.
 TTS dostupnost, kvóty a případné náklady určuje tvůj Google projekt.
 Více v README.md. Klíče, tokeny a konfiguraci s klíči nesdílej.
 

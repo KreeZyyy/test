@@ -1,3 +1,13 @@
+## ScriptedScreensLiteGeminiAI 0.1.4 — KreeZy
+
+[Stáhnout ZIP](ScriptedScreensLiteGeminiAI-0.1.4.zip?raw=true) · [OASIS.lua](ScriptedScreensLiteGeminiAI-OASIS-0.1.4.lua?raw=true) · [Zdrojový projekt](ScriptedScreensLiteGeminiAI-0.1.4-source.zip?raw=true)
+
+Piper už dostává text bez značek Markdownu: zvýraznění, nadpisy a seznamy převede na běžný text, z odkazů ponechá názvy, obrázky a bloky kódu nečte. Text na obrazovce i v uložené konverzaci zůstává původní. Nastavení Piperu z 0.1.3 platí dál; stačí vypnout hru a přepsat soubory modu, Lua 0.1.3 je kompatibilní. Hotové WAV se nemění, testuj novou otázku.
+
+Prošlo 28 kontrol Piperu včetně vyčištěného textu na vstupu procesu a 45 Lua kontrol. Release sestavení bez chyb a varování. Procesní test používá náhradní CLI; reálný hlas ověř ve hře. Žádné Google volání při testech.
+
+---
+
 ## ScriptedScreensLiteGeminiAI 0.1.3 — KreeZy
 
 [Stáhnout ZIP](ScriptedScreensLiteGeminiAI-0.1.3.zip?raw=true) · [Nový OASIS.lua](ScriptedScreensLiteGeminiAI-OASIS-0.1.3.lua?raw=true) · [Návod Piper](ScriptedScreensLiteGeminiAI-PIPER-INSTALACE.txt) · [Zdrojový projekt](ScriptedScreensLiteGeminiAI-0.1.3-source.zip?raw=true)

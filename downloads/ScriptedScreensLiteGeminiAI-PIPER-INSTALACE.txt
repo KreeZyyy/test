@@ -1,4 +1,4 @@
-PIPER — lokální český hlas (0.1.3)
+PIPER — lokální český hlas (0.1.4)
 
 Piper vytvoří WAV místně; přehrává ho zařízení ScriptedScreens ve hře.
 Gemini nadále poskytuje text. Lokální hlas nečerpá Gemini TTS kvótu.
@@ -43,3 +43,10 @@ Runtime ani hlasový model nejsou součástí ZIPu modu. Použij důvěryhodný 
 pro svůj systém a respektuj licence runtime/modelu. Linux potřebuje Linux binary.
 Skutečná syntéza českým modelem na Windows vyžaduje ověření ve hře; procesní
 kontroly zde používají náhradní CLI, nikoli neuronový model.
+
+Verze 0.1.4 před Piperem převádí Markdown na mluvený text: zvýraznění a značky
+nadpisů/seznamů odstraní, z odkazů ponechá názvy, bloky kódu a obrázky vynechá.
+Text na obrazovce i v paměti se nemění. Již vytvořené WAV se nemění; testuj
+novou odpověď. Gemini TTS zůstává beze změny. Samotné jednotky, záporná čísla
+a podtržítka v identifikátorech zůstávají. Text bez mluvitelného obsahu vrátí
+chybu hlasu, zobrazená odpověď zůstane dostupná.
