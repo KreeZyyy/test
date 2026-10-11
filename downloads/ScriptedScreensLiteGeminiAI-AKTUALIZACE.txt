@@ -1,0 +1,17 @@
+Aktualizace na 0.1.1 — KreeZy
+1. Vypni hru a přepiš soubory modu složkou ze ZIPu.
+2. Nemaž BepInEx/config ani datovou složku: klíč, Bridge Token a historie zůstanou.
+3. Nahraj nový examples/OASIS.lua do chipu a doplň svůj stávající Bridge Token.
+   Je potřeba aktualizovat DLL i Lua; nový skript používá délku WAV z backendu.
+4. Restartuj hru.
+
+Autor je KreeZy, přibyl About/thumb.png.
+Ukládání konverzací nepoužívá File.Replace ani Flush(true); při chybě zápisu
+zůstane kontext v RAM a zobrazí se bezpečný kód chyby.
+Zvuk má unikátní ID, ochranu proti opakovanému spuštění stejné odpovědi a
+časované zastavení podle délky WAV. Jde o pojistku proti pozorované smyčce;
+příčina uvnitř ScriptedScreens ani oprava ve hře zatím nejsou potvrzené.
+Časování začíná při požadavku na přehrávání. Pomalé načítání může konec
+zkrátit; ve vlastní Lua lze upravit audio_start_grace (výchozí 0.25 s).
+
+Ověření: 55 C# a 33 Lua kontrol prošlo, bez placených Google požadavků.

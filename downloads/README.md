@@ -1,10 +1,10 @@
-## ScriptedScreensLiteGeminiAI 0.1.0 — Gemini text + prostorový hlas
+## ScriptedScreensLiteGeminiAI 0.1.1 — KreeZy
 
-[Stáhnout mod ZIP](ScriptedScreensLiteGeminiAI-0.1.0.zip?raw=true) · [Česká instalace](ScriptedScreensLiteGeminiAI-INSTALACE.txt) · [Zdrojový projekt](ScriptedScreensLiteGeminiAI-0.1.0-source.zip?raw=true)
+[Stáhnout ZIP](ScriptedScreensLiteGeminiAI-0.1.1.zip?raw=true) · [Nový OASIS.lua](ScriptedScreensLiteGeminiAI-OASIS-0.1.1.lua?raw=true) · [Aktualizace](ScriptedScreensLiteGeminiAI-AKTUALIZACE.txt) · [Zdrojový projekt](ScriptedScreensLiteGeminiAI-0.1.1-source.zip?raw=true)
 
-Nový samostatný AI mod pro StationeersLua a ScriptedScreens. Vrací text a URL hlasu z Gemini TTS; přehrávání ze zařízení řeší ScriptedScreens. Konfigurovatelné preference z Lua, 25 konverzací a omezený kontext. API klíč pouze v konfiguraci hostitele. Pro multiplayer musí být audio URL dostupná všem hráčům. WorldId se zatím nastavuje ručně per save. Nejde o aktualizaci starého StationAssistant DLL.
+Autor KreeZy, nový About/thumb.png, přenositelné ukládání konverzací s kontextem v RAM při chybě disku. Lua používá unikátní ID zvuku, ochranu proti opětovnému spuštění stejného jobu a časované zastavení podle délky WAV. Aktualizuj DLL i Lua, konfiguraci a data zachovej.
 
-Sestavení a 50 C# + 28 Lua kontrol prošlo. Skutečné Gemini API, běh ve hře a multiplayerové přehrávání zatím neověřené. Testovací verze.
+Prošlo 55 C# a 33 Lua kontrol bez živých Google požadavků. Uživatel ověřil Gemini text/TTS i zvuk ve hře v 0.1.0; opravy 0.1.1 potřebují herní test. Příčina opakování uvnitř ScriptedScreens není potvrzená. Multiplayer není ověřen; audio URL musí být dostupná hráčům. WorldId se nastavuje ručně pro každý save.
 
 ---
 
