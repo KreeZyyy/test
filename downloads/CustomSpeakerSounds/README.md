@@ -1,7 +1,13 @@
-# Custom Speaker Sounds 0.1.3 — TEST
+# Custom SoundAlerts 0.2.0 — TEST
 Autor: KreeZy. Řešení přidání herních zvukových událostí vychází z MIT projektu Sovana122/Sationeers-CustomSound, větve speaker (6d5ad7892cb947eaed2fe7377048fe1dd211982f).
 
-## Úprava seznamu 0.1.3
+## Společný SoundAlert 0.2.0
+Vlastní soubory se nyní registrují do společného AudioManager._clipsDataSoundAlertLookup pod ID z názvu souboru. Výbava implementující ISoundAlert tak může přehrát stejný soubor jako Speaker. Zápis custom ID do SetLogicValue používá nativní setter SoundAlert, který zachovává běžné síťové příznaky a přehrávání, a obchází pouze vanilla omezení na původní ID. Zápisy ostatních hodnot zůstávají původní. Podpora konkrétních zařízení čeká na herní test; nezařazujeme zařízení jen podle podobného názvu logické proměnné.
+První test Hard Suitu: transmitter nastav na oblek, připoj jako d0 a nahraj test-hardsuit.ic10. Mají zaznít stejné tři tóny jako ze Speakeru. Registr r0 čte vybranou hodnotu před zastavením (očekáváme 100). Ověř také vlastní soubory 101 a 102 a původní funkční hlášku 41.
+Pro aktualizaci zachovej složku CustomSpeakerSounds a soubory sounds; nový název modu v LaunchPadu je Custom SoundAlerts. Neinstaluj druhou kopii vedle původní. ZIP obsahuje nový test, DLL, About i zdroj. Žádné nové zařízení se nevytváří.
+Společný seznam LogicType.SoundAlert ve Stationpedii dostává vlastní položky. Přenos souborů ze serveru stále není implementován, multiplayer není ověřen.
+
+## Zachovaná úprava seznamu 0.1.3
 Seznam v Stationpedii nyní obsahuje jen původní položky a úspěšně načtené vlastní soubory. Prázdná rezervovaná ID se nezobrazují jako Unused. ID z názvů souborů zůstávají stejná (100_test.wav = 100, 101_Ferrari.mp3 = 101). Tabulka názvů se sestaví jednou až po načtení všech souborů, z uchované kopie původního seznamu; načtení druhého souboru tak nepřepisuje první název. Dříve vytvořené stránky Speakeru se při dokončení načítání aktualizují.
 Příčina předchozího chybějícího testu pod ID 100 není bez logu potvrzená. Každé selhání načtení nyní vypíše ID, název souboru a chybu; dokončení vypíše Sound list committed: 100=test, 101=Ferrari. Při dalším testu ověř obě položky a přehrání obou ID. Stationpedia Ascended a nativní vykreslení seznamu čekají na ověření ve hře.
 
@@ -9,7 +15,7 @@ Příčina předchozího chybějícího testu pod ID 100 není bez logu potvrzen
 Vlastní GameAudioClipsData nyní explicitně inicializuje ConcurrencyIds na prázdný seznam. Herní konstruktor tento seznam nevytváří a metody AddConcurrencySubscriptions/RemoveConcurrencySubscriptions jej bez kontroly čtou. Opravuje tím konkrétní příčinu výjimky při přehrání/zastavení vlastního zvuku. První přehrání už uživatel ohlásil; opravené zastavení a opakované spuštění ještě čeká na test ve hře.
 
 ## Zachovaná oprava inicializace správce
-Verze 0.1.0 kontrolovala AudioManager.Instance už před vytvořením herního správce. Getter v dodané herní DLL volá Create() a může vytvořit nevybavený singleton. Verze 0.1.3 getter vůbec nevolá: vyhledává pouze existující AudioManager a čeká na AudioSourcePrefab, LoadedChannelData a MixerGroups. Je to oprava konkrétního mechanismu, který může způsobit chyby při načítání světa; výsledek ve hře zatím není ověřen.
+Verze 0.1.0 kontrolovala AudioManager.Instance už před vytvořením herního správce. Getter v dodané herní DLL volá Create() a může vytvořit nevybavený singleton. Verze 0.2.0 getter vůbec nevolá: vyhledává pouze existující AudioManager a čeká na AudioSourcePrefab, LoadedChannelData a MixerGroups. Je to oprava konkrétního mechanismu, který může způsobit chyby při načítání světa; výsledek ve hře zatím není ověřen.
 Diagnostika se nově zapisuje přímo do BepInEx/LogOutput.log pod CustomSpeakerSounds.
 
 ## Instalace a první test
@@ -25,9 +31,9 @@ Další soubory: 101_varovani.wav, 102_kyslik.ogg… Platí ID 100 až 199, jedn
 Použij s d0 SoundAlert 101 nebo s d0 Mode 101. Pro opětovné přehrání nejprve nastav SoundAlert 0, počkej aspoň jeden tick a teprve potom vyber ID. Neposílej stejné ID každým tickem. Hlasitost řídí Volume a přehrávání probíhá přes nativní zvuk Speakeru. Původní zvuky se nenahrazují.
 
 ## Rozsah ověření
-Sestaveno proti dodané Assembly-CSharp.dll. Prošlo 17 kontrolami sestaveného IL: getter singletonu není volán ani z korutiny, mod nevytváří správce, kontroluje jeho připravenost a zachovává nativní registraci zvuků. Zkontrolovány podpisy Speaker.SetLogicValue, InteractMode, zvukové události a načítání AudioManageru. Unity a hra zde neběží: prostorový zvuk, ukončení přehrávání a kompatibilita s jinými mody čekají na herní test.
+Sestaveno proti dodané Assembly-CSharp.dll. Prošlo 21 kontrolami sestaveného IL: getter singletonu není volán ani z korutiny, mod nevytváří správce, kontroluje jeho připravenost a zachovává nativní registraci zvuků. Zkontrolovány podpisy Speaker.SetLogicValue, InteractMode, zvukové události a načítání AudioManageru. Unity a hra zde neběží: prostorový zvuk, ukončení přehrávání a kompatibilita s jinými mody čekají na herní test.
 Build hlásí konflikt referencí System.Net.Http 4.1.2/4.2.0 pocházející z herní DLL; mod nepoužívá HttpClient. Distribuce obsahuje pouze vlastní modovou DLL, nikoli herní sestavení.
-Verze 0.1.3 neobsahuje přenos souborů ze serveru. Multiplayer není ověřen; všechny strany by zatím potřebovaly shodné soubory a ID. Testuj na kopii světa: při odebrání modu zůstane ve světě uložený vlastní Mode, který je vhodné před odebráním resetovat na 0.
+Verze 0.2.0 neobsahuje přenos souborů ze serveru. Multiplayer není ověřen; všechny strany by zatím potřebovaly shodné soubory a ID. Testuj na kopii světa: při odebrání modu zůstane ve světě uložený vlastní Mode, který je vhodné před odebráním resetovat na 0.
 Ovládání tlačítkem Speakeru může procházet i rezervované mezery mezi vanilla zvuky a ID 100; pro tento test používej IC10. Mezery jsou nyní v seznamu Stationpedie skryté.
 
 ## Zdroj

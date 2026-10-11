@@ -18,7 +18,7 @@ using Assets.Scripts.UI;
 
 namespace CustomSpeakerSounds
 {
-    [StationeersMod("kreezy.customspeakersounds", "Custom Speaker Sounds", "0.1.3")]
+    [StationeersMod("kreezy.customspeakersounds", "Custom SoundAlerts", "0.2.0")]
     public class Plugin : ModBehaviour
     {
         static readonly SortedDictionary<int, GameAudioClipsData> clips = new SortedDictionary<int, GameAudioClipsData>();
@@ -44,7 +44,7 @@ namespace CustomSpeakerSounds
             try
             {
                 new Harmony("kreezy.customspeakersounds").PatchAll(typeof(Plugin).Assembly);
-                Info("0.1.3 loaded; waiting for the game's existing initialized AudioManager. No singleton creation. IDs 100..199; sounds/<id>_<name>.<ext>");
+                Info("0.2.0 loaded; waiting for the game's existing initialized AudioManager. No singleton creation. IDs 100..199; sounds/<id>_<name>.<ext>");
             }
             catch (Exception ex) { enabled = false; Error("Patch installation failed: " + ex); }
         }
@@ -94,7 +94,7 @@ namespace CustomSpeakerSounds
                     AudioClip clip = DownloadHandlerAudioClip.GetContent(req);
                     if (clip == null) { Error("Decoder returned no clip for " + Path.GetFileName(file)); continue; }
                     clip.name = "KreeZy.CustomSpeaker." + id;
-                    var data = new GameAudioClipsData { Name = clip.name, NameHash = Animator.StringToHash(clip.name), ChannelName = "Large", Looping = false, RandomStartTime = false, ConcurrencyIds = new List<int>() };
+                    var data = new GameAudioClipsData { Name = clip.name, NameHash = Animator.StringToHash(clip.name), ChannelName = "Large", Looping = false, RandomStartTime = false, ConcurrencyIds = new List<int>(), SoundAlert = (SoundAlert)id };
                     data.Clips.Add(clip);
                     var audio = new AudioData(); audio.AudioClipsData.Add(data);
                     try
@@ -128,6 +128,7 @@ namespace CustomSpeakerSounds
             AccessTools.Field(typeof(Speaker), "modeStrings").SetValue(null, names);
             AccessTools.Field(typeof(Speaker), "ModeHashes").SetValue(null, hashes);
             foreach (var page in speakerPages) RefreshPage(page);
+            RefreshGlobalSoundAlertPage();
             Info("Sound list committed: " + string.Join(", ", labels.Select(x => x.Key + "=" + x.Value)));
         }
         static IEnumerable<KeyValuePair<int, string>> VisibleModes() => ModeCatalog.Visible(originalNames, labels);
@@ -160,6 +161,47 @@ namespace CustomSpeakerSounds
                     foreach (var entry in VisibleModes())
                         __1.Text += string.Format("\n" + Stationpedia.ModeStringItem.Parsed, entry.Key, entry.Value);
                 return false;
+            }
+        }
+        static void RefreshGlobalSoundAlertPage()
+        {
+            if (Stationpedia.StationpediaPages == null) return;
+            foreach (var page in Stationpedia.StationpediaPages.Where(p => p.Key == "LogicType.SoundAlert"))
+            {
+                page.ModeInsert.RemoveAll(x => int.TryParse(x.LogicAccessTypes, out int id) && id >= 100 && id <= 199);
+                foreach (var entry in labels)
+                    page.ModeInsert.Add(new StationLogicInsert { LogicAccessTypes = entry.Key.ToString(), LogicName = entry.Value });
+            }
+        }
+        [HarmonyPatch(typeof(Stationpedia), "PopulateLogicVariables")]
+        class GlobalListPatch { static void Postfix() => RefreshGlobalSoundAlertPage(); }
+        [HarmonyPatch]
+        class EquipmentAlertPatch
+        {
+            static IEnumerable<MethodBase> TargetMethods()
+            {
+                // Include inherited implementations: some equipment handles logic in a base class.
+                return typeof(Thing).Assembly.GetTypes()
+                    .Where(t => !t.IsInterface && typeof(ISoundAlert).IsAssignableFrom(t))
+                    .Select(t => AccessTools.Method(t, "SetLogicValue", new[] { typeof(LogicType), typeof(double) }))
+                    .Where(m => m != null && !m.IsAbstract).Distinct().Cast<MethodBase>();
+            }
+            static bool Prefix(object __instance, LogicType __0, double __1)
+            {
+                var logicType = __0; var value = __1;
+                if (logicType != LogicType.SoundAlert || !(__instance is ISoundAlert) ||
+                    double.IsNaN(value) || double.IsInfinity(value) || value < 100 || value > 199 ||
+                    value != Math.Truncate(value) || !clips.ContainsKey((int)value)) return true;
+                var setter = AccessTools.Property(__instance.GetType(), "SoundAlert")?.GetSetMethod(true);
+                if (setter == null) { Warn("No SoundAlert setter on " + __instance.GetType().FullName); return true; }
+                try
+                {
+                    // Native setter preserves existing networking and playback; only bypass vanilla ID clamp.
+                    setter.Invoke(__instance, new object[] { (byte)value });
+                    Info("Custom SoundAlert " + (int)value + " written to " + __instance.GetType().Name);
+                    return false;
+                }
+                catch (Exception ex) { Error("Custom SoundAlert write failed: " + ex); return true; }
             }
         }
         static void Attach(Speaker speaker)
