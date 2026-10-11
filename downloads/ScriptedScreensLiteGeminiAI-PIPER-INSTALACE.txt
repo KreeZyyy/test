@@ -1,0 +1,45 @@
+PIPER — lokální český hlas (0.1.3)
+
+Piper vytvoří WAV místně; přehrává ho zařízení ScriptedScreens ve hře.
+Gemini nadále poskytuje text. Lokální hlas nečerpá Gemini TTS kvótu.
+Výchozí Provider zůstává Gemini, změnu na Piper nastav výslovně.
+
+1. Rozbal CELÝ piper_windows_amd64.zip do vlastní složky, například E:\Piper.
+   Zachovej DLL a espeak-ng-data. Vedle piper.exe vytvoř složku voices.
+2. Do voices dej cs_CZ-jirka-medium.onnx a cs_CZ-jirka-medium.onnx.json.
+   Model nepatří do espeak-ng-data/voices. Oba názvy musí souhlasit.
+3. Po prvním spuštění nové DLL ukonči hru. V existující sekci [Speech]
+   uprav tyto položky (nepřidávej druhou sekci stejného názvu):
+
+[Speech]
+Enabled = true
+Provider = Piper
+PiperExecutable = E:\Piper\piper.exe
+PiperModel = E:\Piper\voices\cs_CZ-jirka-medium.onnx
+PiperTimeoutSeconds = 60
+PiperLengthScale = 1
+
+4. Použij skutečné absolutní cesty ke svým souborům. Restartuj hru a nahraj
+   nový examples/OASIS.lua s vlastním Bridge Tokenem.
+5. Zapni hlas a klikni Test Piperu. Připraví českou větu bez Gemini a bez
+   API klíče; tento test nemění chat. Test tónů ověří samotné přehrávání.
+6. Pak odešli otázku: text vytvoří Gemini, hlas Piper. Textová kvóta stále platí.
+
+Piper používá hlas vybraného ONNX modelu (Jirka je mužský). Gemini Voice a
+speech_style v Lua místní hlas nemění. Rychlost lze změnit PiperLengthScale:
+nižší hodnota je rychlejší; povolený rozsah 0.5 až 2. Lua nemůže vybírat
+spustitelný soubor ani místní model. Jeden proces připravuje hlas v jednom čase.
+Při chybě nebo timeoutu zůstane text; mod automaticky nepřepíná na Gemini TTS.
+Pro vědomý návrat k online hlasu nastav Provider = Gemini.
+
+Stažení samostatného Windows runtime:
+https://github.com/rhasspy/piper/releases/download/2023.11.14-2/piper_windows_amd64.zip
+Český model:
+https://huggingface.co/rhasspy/piper-voices/resolve/main/cs/cs_CZ/jirka/medium/cs_CZ-jirka-medium.onnx?download=true
+Konfigurace modelu:
+https://huggingface.co/rhasspy/piper-voices/resolve/main/cs/cs_CZ/jirka/medium/cs_CZ-jirka-medium.onnx.json?download=true
+
+Runtime ani hlasový model nejsou součástí ZIPu modu. Použij důvěryhodný runtime
+pro svůj systém a respektuj licence runtime/modelu. Linux potřebuje Linux binary.
+Skutečná syntéza českým modelem na Windows vyžaduje ověření ve hře; procesní
+kontroly zde používají náhradní CLI, nikoli neuronový model.

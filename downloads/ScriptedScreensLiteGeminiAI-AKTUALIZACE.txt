@@ -1,4 +1,10 @@
-ScriptedScreensLiteGeminiAI 0.1.2 — KreeZy
+ScriptedScreensLiteGeminiAI 0.1.3 — KreeZy
+
+NOVÉ V 0.1.3:
+Volitelný lokální Piper místo Gemini TTS. Postup a cesty viz PIPER-INSTALACE.txt.
+Výchozí Provider=Gemini zůstává pro kompatibilitu, nastav Provider=Piper.
+Nové tlačítko Test Piperu vytvoří český hlas bez Google a bez ukládání chatu.
+Žádný automatický přechod na online TTS při chybě. Gemini dál poskytuje text.
 
 AKTUALIZACE:
 1. Vypni hru.
@@ -12,7 +18,7 @@ AKTUALIZACE:
 NEJDŘÍV TESTY BEZ GEMINI:
 - Test paměti: zápis, přepsání a čtení z konverzační složky. Nezmění chat,
   nevolá Gemini a dočasný testovací soubor smaže. Při úspěchu se ukáže potvrzení.
-- Zapni hlas a klikni Test bez Gemini: mají zaznít tři krátké tóny JEDNOU,
+- Zapni hlas a klikni Test tónů: mají zaznít tři krátké tóny JEDNOU,
   potom ticho. Soubor vytvoří mod místně, bez textového nebo hlasového API.
   Tento soubor se počítá do limitu pěti WAV. Při plné chráněné cache počkej.
 - Znovu hlas: přehraje poslední uloženou hlasovou odpověď, bez dalšího
@@ -46,6 +52,6 @@ Audio úklid nevymazává textovou historii. Startup uklidí starší nechráně
 Obrázek: široký, bez textu, větší okraje pro ořez LaunchPadu, standardní RGBA PNG
 pod 1 MiB. Zobrazení v herním Workshop menu vyžaduje kontrolu po restartu.
 
-OVĚŘENÍ: 77 C# a 40 Lua kontrol, Release DLL bez chyb a varování.
+OVĚŘENÍ: 79 C#, 22 procesních Piper a 45 Lua kontrol, Release DLL bez chyb a varování.
 Žádné živé Google požadavky nebo uživatelské klíče nebyly použity.
 Windows herní test, běh Linux loaderu a multiplayer zatím neprovedeny.

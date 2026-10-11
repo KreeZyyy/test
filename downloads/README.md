@@ -1,3 +1,15 @@
+## ScriptedScreensLiteGeminiAI 0.1.3 — KreeZy
+
+[Stáhnout ZIP](ScriptedScreensLiteGeminiAI-0.1.3.zip?raw=true) · [Nový OASIS.lua](ScriptedScreensLiteGeminiAI-OASIS-0.1.3.lua?raw=true) · [Návod Piper](ScriptedScreensLiteGeminiAI-PIPER-INSTALACE.txt) · [Zdrojový projekt](ScriptedScreensLiteGeminiAI-0.1.3-source.zip?raw=true)
+
+Gemini vytváří text, volitelný místní Piper vytváří hlas bez Gemini TTS kvóty. V konfiguraci nastav `[Speech] Provider = Piper` a absolutní cesty k piper.exe a českému ONNX modelu. Výchozí Provider zůstává Gemini. Runtime/model stáhni samostatně podle návodu; nejsou součástí mod ZIPu. Při chybě není automatický přechod na online TTS.
+
+Aktualizuj **DLL i Lua**, konfiguraci a data zachovej. Nové tlačítko **Test Piperu** připraví českou větu bez Google a bez ukládání chatu. **Test tónů** kontroluje přehrávání, **Test paměti** disk. Cache stále drží maximálně 5 WAV a používá ochranné ticho proti opakování.
+
+Prošlo 79 C#, 45 Lua a 22 procesních Piper kontrol. Piper testy používají náhradní CLI, nikoli skutečný neuronový model; českou syntézu a přehrávání na Windows je třeba ověřit ve hře. Release sestavení bez chyb/varování. Žádné živé Google požadavky. Multiplayer a Linux loader nejsou ověřeny.
+
+---
+
 ## ScriptedScreensLiteGeminiAI 0.1.2 — KreeZy
 
 [Stáhnout ZIP](ScriptedScreensLiteGeminiAI-0.1.2.zip?raw=true) · [Nový OASIS.lua](ScriptedScreensLiteGeminiAI-OASIS-0.1.2.lua?raw=true) · [Aktualizace](ScriptedScreensLiteGeminiAI-AKTUALIZACE.txt) · [Zdrojový projekt](ScriptedScreensLiteGeminiAI-0.1.2-source.zip?raw=true)
