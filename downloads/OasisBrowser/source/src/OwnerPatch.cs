@@ -10,7 +10,7 @@ internal static class OwnerPatch
 {
     public static readonly Dictionary<int,Component> Owners=new Dictionary<int,Component>();
     public static object? Member(object obj,string name)
-    { try { return obj.GetType().GetField(name)?.GetValue(obj)??obj.GetType().GetProperty(name)?.GetValue(obj); } catch { return null; } }
+    { try { return obj.GetType().GetField(name,BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic)?.GetValue(obj)??obj.GetType().GetProperty(name,BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic)?.GetValue(obj); } catch { return null; } }
     public static bool Install()
     {
         var type=AccessTools.TypeByName("ScriptedScreens.ScriptableUi.ScriptedScreensScriptableUiSystem");
@@ -21,6 +21,7 @@ internal static class OwnerPatch
         stateIndex=Array.FindIndex(parameters,p=>p.Name=="state" || p.ParameterType.Name=="BoardState");
         elementIndex=Array.FindIndex(parameters,p=>p.Name=="element" || p.ParameterType.Name=="UiElement");
         surfaceIndex=Array.FindIndex(parameters,p=>p.Name=="surface");
+        if(surfaceIndex<0)surfaceIndex=Array.FindIndex(parameters,p=>p.ParameterType==typeof(string));
         if(stateIndex<0 || elementIndex<0 || surfaceIndex<0)return false;
         new Harmony("kreezyyy.oasisbrowser.owner").Patch(target,postfix:new HarmonyMethod(typeof(OwnerPatch),nameof(Applied)));
         return true;
@@ -37,7 +38,11 @@ internal static class OwnerPatch
             var roots=tables?[surface] as IDictionary;
             var host=roots?["oasis_browser_view"] as GameObject;
             var owner=__args.OfType<Component>().FirstOrDefault();
-            if(host!=null && owner!=null) Owners[host.GetInstanceID()]=owner;
-        } catch(Exception e) { Debug.LogWarning("Oasis Browser owner probe: "+e.Message); }
+            if(host!=null)
+            {
+                if(owner!=null)Owners[host.GetInstanceID()]=owner;
+                BrowserPlugin.Current?.AttachHost(host,owner);
+            }
+        } catch(Exception e) { BrowserLog.Warn("Oasis Browser owner probe: "+e.Message); }
     }
 }

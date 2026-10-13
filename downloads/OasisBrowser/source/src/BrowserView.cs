@@ -19,14 +19,12 @@ public sealed class BrowserView : MonoBehaviour
     {
         get
         {
-            if(!gameObject.activeInHierarchy) return false;
-            if(Owner==null) return true;
-            foreach(var name in new[]{"On","Powered","IsOn","IsPowered"})
-            {
-                var value=OwnerPatch.Member(Owner,name);
-                if(value is bool b && !b) return false;
-            }
-            return true;
+            if(Owner==null) return gameObject.activeInHierarchy;
+            bool hasOn=OwnerPatch.Member(Owner,"HasOnState") is bool flag && flag;
+            bool hasPower=OwnerPatch.Member(Owner,"HasPoweredState") is bool powerFlag && powerFlag;
+            bool? on=(OwnerPatch.Member(Owner,"On")??OwnerPatch.Member(Owner,"IsOn")) as bool?;
+            bool? power=(OwnerPatch.Member(Owner,"Powered")??OwnerPatch.Member(Owner,"IsPowered")) as bool?;
+            return PanelPower.IsActive(gameObject.activeInHierarchy || Owner.gameObject.activeInHierarchy,hasOn,on,hasPower,power);
         }
     }
     private void Update()

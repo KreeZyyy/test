@@ -1,6 +1,11 @@
-# Oasis Browser 0.2.0 — test
+# Oasis Browser 0.2.1 — test
 
 YouTube jako webová stránka uvnitř ScriptedScreens. Mod spouští nainstalovaný Chrome v režimu bez viditelného okna až poté, co najde aktivní browser panel. Nemusíš ručně otevírat další okno ani spouštět Chrome. Je to prohlížeč běžící na pozadí, nikoli browser engine zabudovaný do Unity.
+
+## Aktualizace 0.2.1
+Přidává přímé napojení při vytváření browser UI, místo spoléhání výhradně na sken názvů objektů. Kontrola napájení už nezaměňuje generický On/Powered čipu za skutečné podporované stavy zařízení. Směrování do lokálního Chrome nepoužívá systémový proxy.
+Veškerá diagnostika pluginu jde nově do BepInEx/LogOutput.log pod OasisBrowser: čekání na panel, Panel attached, první autorizovaný Lua HTTP požadavek, Starting Chrome, Chrome connected, First webpage image a podrobnosti případné výjimky. Dodaný předchozí log obsahoval pouze zrušené StationeersLua HTTP úlohy a neměl tyto údaje, takže přesná příčina šedé plochy zatím není potvrzená.
+Pro aktualizaci stačí přepsat OasisBrowser.dll a About, úplně restartovat hru a použít stávající čip. Lua kód, token a port se nemění. Pokud zůstane plocha šedá, nový LogOutput.log by už měl určit fázi selhání.
 
 ## Instalace
 1. Ukonči hru. Rozbal OasisBrowser do Dokumenty\My Games\Stationeers\mods. Při aktualizaci přepiš soubory původního OasisBrowser, nevytvářej druhou kopii.
@@ -22,8 +27,8 @@ Web Audio zachytává běžná HTML video/audio média jako mono PCM 24 kHz. Chr
 Je to experimentální napojení: skutečné YouTube video, jeho reklamy/změny přehrávače, křížové domény, umístění zdroje na hardwaru, herní směšovač a vliv atmosféry nejsou ověřené. Není to plná integrace do atmosférického zvukového systému Stationeers. Pokud nejde zjistit vlastník panelu, mod experimentální audio nepřehraje místo toho na celé PC.
 
 ## Co bylo ověřeno
-DLL se sestavila proti BepInEx, rozhraní LaunchPadu a Unity referencím. Build má 18 upozornění, převážně nullability starého reflektivního UI kódu a nečekané asynchronní návraty; žádné chyby sestavení.
-18 kontrol prošlo se skutečným Chromiem na Linuxu proti lokální testovací stránce: spuštění headless, načtení stránky, skutečný obraz, klikání podle souřadnic, převod a omezení PCM fronty, přenos nenulového zvuku z přehrávaného WAVu, autorizace bridge a omezení adres na YouTube.
+DLL se sestavila proti BepInEx, rozhraní LaunchPadu a Unity referencím. Build má 15 upozornění, převážně nullability starého reflektivního UI kódu a nečekané asynchronní návraty; žádné chyby sestavení.
+22 kontrol prošlo se skutečným Chromiem na Linuxu proti lokální testovací stránce: spuštění headless, načtení stránky, skutečný obraz, klikání podle souřadnic, převod a omezení PCM fronty, přenos nenulového zvuku z přehrávaného WAVu, autorizace bridge a omezení adres na YouTube.
 Linuxový test má zvláštní sandbox přepínač kvůli kontejneru. Windows mod ho nezapíná; běžný sandbox nainstalovaného Chrome zůstává zapnutý. Omezení browser politik v testovacím prostředí se neměnila.
 Stationeers/Unity, Windows Chrome a skutečné YouTube v tomto prostředí neběží v ověřeném herním scénáři. Není potvrzená hotová podpora ve hře; tento ZIP je určen pro první test.
 

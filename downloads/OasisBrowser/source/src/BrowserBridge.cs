@@ -21,6 +21,8 @@ public sealed class BrowserBridge : IDisposable
 	private readonly string token;
 
 	private int busy;
+    private int diagnosed;
+    public Action<string>? Diagnostic;
 
 	public volatile bool Ready;
 
@@ -75,6 +77,7 @@ public sealed class BrowserBridge : IDisposable
 				});
 				return;
 			}
+            if(System.Threading.Interlocked.Exchange(ref diagnosed,1)==0)Diagnostic?.Invoke("First authenticated Lua HTTP request received.");
 			string text = c.Request.Url?.AbsolutePath;
 			if (c.Request.HttpMethod == "GET" && text == "/health")
 			{

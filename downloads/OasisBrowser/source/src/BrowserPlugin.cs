@@ -8,10 +8,11 @@ using UnityEngine;
 
 namespace OasisBrowser;
 
-[StationeersMod("kreezyyy.stationeers.oasisbrowser", "Oasis Browser", "0.2.0")]
+[StationeersMod("kreezyyy.stationeers.oasisbrowser", "Oasis Browser", "0.2.1")]
 public sealed class BrowserPlugin : ModBehaviour
 {
-	private BrowserEngine? browser;
+	internal static BrowserPlugin? Current;
+    private BrowserEngine? browser;
 
 	private BrowserBridge? bridge;
 
@@ -26,9 +27,11 @@ public sealed class BrowserPlugin : ModBehaviour
     private CancellationTokenSource? run;
     private Task closing=Task.CompletedTask;
     private float inactiveSince=-1;
+    private bool firstFrame;
 
 	public override void OnLoaded(ContentHandler handler)
 	{
+        BrowserLog.Initialize();Current=this;
 		base.OnLoaded(handler);
 		if (browser != null || Application.isBatchMode)
 		{
@@ -46,16 +49,17 @@ public sealed class BrowserPlugin : ModBehaviour
 			string value2 = base.Config.Bind("Bridge", "Token", Guid.NewGuid().ToString("N"), "Copy only this Oasis Browser token into browser.lua.").Value;
 			browser = new BrowserEngine();
 			bridge = new BrowserBridge(browser, value2, value);
+            bridge.Diagnostic=BrowserLog.Info;
 			bridge.Start();
             headless=Config.Bind("Browser","Hidden",true,"Run Chrome without a visible window. Normal Chrome sandbox remains enabled. Restart after changes.").Value;
-            if(!OwnerPatch.Install()) Debug.LogWarning("Oasis Browser: ownership hook unavailable; in-game positional audio cannot be attached.");
-            Debug.Log("Oasis Browser 0.2.0: waiting for an active browser panel; no Chrome process started yet.");
+            if(!OwnerPatch.Install()) BrowserLog.Warn("Oasis Browser: ownership hook unavailable; in-game positional audio cannot be attached.");
+            BrowserLog.Info("Oasis Browser 0.2.1: waiting for an active browser panel; no Chrome process started yet.");
 		}
-		catch
+		catch(Exception ex)
 		{
 			bridge?.Dispose();
 			browser?.Dispose();
-			Debug.LogError("Oasis Browser: bridge startup failed. Check ports and configuration.");
+			BrowserLog.Error("Oasis Browser initialization failed: "+ex);
 		}
 	}
 
@@ -95,32 +99,8 @@ public sealed class BrowserPlugin : ModBehaviour
 				{
 					continue;
 				}
-				try
-				{
-					Type type = BrowserView.FindType("UnityEngine.UI.Image");
-					Component component = ((type == null) ? null : gameObject.GetComponent(type));
-					if (component != null)
-					{
-						type.GetProperty("color").SetValue(component, Color.clear);
-						type.GetProperty("raycastTarget").SetValue(component, false);
-					}
-					GameObject obj = new GameObject("OasisBrowserImage", typeof(RectTransform));
-					obj.layer = gameObject.layer;
-					obj.transform.SetParent(gameObject.transform, worldPositionStays: false);
-					RectTransform obj2 = (RectTransform)obj.transform;
-					obj2.anchorMin = Vector2.zero;
-					obj2.anchorMax = Vector2.one;
-					obj2.offsetMin = Vector2.zero;
-					obj2.offsetMax = Vector2.zero;
-					BrowserView browserView = obj.AddComponent<BrowserView>();
-                    if(OwnerPatch.Owners.TryGetValue(gameObject.GetInstanceID(),out var owner))browserView.Owner=owner;
-					browserView.Initialize(browser);
-					views.Add(browserView);
-				}
-				catch
-				{
-					Debug.LogWarning("Oasis Browser: could not attach webpage to ScriptedScreens host.");
-				}
+                OwnerPatch.Owners.TryGetValue(gameObject.GetInstanceID(),out var owner);
+                AttachHost(gameObject,owner);
 			}
 		}
         BrowserView? active=null;
@@ -142,6 +122,7 @@ public sealed class BrowserPlugin : ModBehaviour
 		{
 			return;
 		}
+        if(!firstFrame) { firstFrame=true;BrowserLog.Info("First webpage image received: "+array2.Length+" bytes; views="+views.Count); }
 		foreach (BrowserView view in views)
 		{
 			try
@@ -153,14 +134,38 @@ public sealed class BrowserPlugin : ModBehaviour
 			}
 			catch
 			{
-				Debug.LogWarning("Oasis Browser: webpage texture update failed.");
+				BrowserLog.Warn("Oasis Browser: webpage texture update failed.");
 			}
 		}
 	}
 
+    internal void AttachHost(GameObject host,Component? owner)
+    {
+        if(browser==null)return;
+        GameObject? child=null;
+        try
+        {
+            var imageType=BrowserView.FindType("UnityEngine.UI.Image");
+            var fallback=imageType==null?null:host.GetComponent(imageType);
+            if(fallback!=null)
+            {
+                imageType!.GetProperty("color")?.SetValue(fallback,Color.clear);
+                imageType.GetProperty("raycastTarget")?.SetValue(fallback,false);
+            }
+            var existing=host.GetComponentInChildren<BrowserView>(true);
+            if(existing!=null) { if(owner!=null)existing.Owner=owner;if(!views.Contains(existing))views.Add(existing);return; }
+            child=new GameObject("OasisBrowserImage",typeof(RectTransform));child.layer=host.layer;
+            child.transform.SetParent(host.transform,false);
+            var rect=(RectTransform)child.transform;rect.anchorMin=Vector2.zero;rect.anchorMax=Vector2.one;rect.offsetMin=Vector2.zero;rect.offsetMax=Vector2.zero;
+            var view=child.AddComponent<BrowserView>();view.Owner=owner;view.Initialize(browser);views.Add(view);
+            BrowserLog.Info("Panel attached. UI active="+host.activeInHierarchy+" owner="+(owner?.GetType().FullName??"unknown")+" hasOnState="+(owner==null?"unknown":OwnerPatch.Member(owner,"HasOnState")?.ToString()??"unknown"));
+        }
+        catch(Exception ex) { if(child!=null)Destroy(child);BrowserLog.Error("Panel attachment failed: "+ex); }
+    }
     private void StartBrowser()
     {
-        browser=new BrowserEngine();bridge!.SetEngine(browser);
+        BrowserLog.Info("Starting Chrome for active panel. Hidden="+headless+" DebugPort="+debugPort);
+        browser=new BrowserEngine();browser.Diagnostic=BrowserLog.Error;bridge!.SetEngine(browser);
         foreach(var v in views)if(v!=null)v.Browser=browser;
         started=true;run=CancellationTokenSource.CreateLinkedTokenSource(stop.Token);
         var engine=browser;var cancellation=run.Token;
@@ -171,16 +176,17 @@ public sealed class BrowserPlugin : ModBehaviour
                 await engine.StartAsync(executable,debugPort,cancellation,headless);
                 await engine.NavigateAsync("https://www.youtube.com/",cancellation);
                 if(cancellation.IsCancellationRequested)return;
-                bridge.Ready=true;
+                bridge.Ready=true;BrowserLog.Info("Chrome connected; YouTube navigation accepted; starting image capture.");
                 await engine.CaptureLoop(cancellation);
             }
             catch(OperationCanceledException) { }
-            catch(Exception e) { bridge.StartupError=e.Message;Debug.LogError("Oasis Browser: "+e.Message); }
+            catch(Exception e) { bridge.StartupError=e.Message;BrowserLog.Error("Browser startup/connection failed: "+e); }
         });
     }
     private void StopBrowser()
     {
-        started=false;run?.Cancel();bridge!.Ready=false;
+        BrowserLog.Info("No active panel; closing browser session.");
+        started=false;firstFrame=false;run?.Cancel();bridge!.Ready=false;
         var engine=browser;closing=Task.Run(async()=> { if(engine!=null)await engine.CloseAsync(); });
     }
 	private void OnDestroy()

@@ -19,6 +19,7 @@ public sealed class BrowserEngine : IDisposable
 
 	private readonly CdpClient cdp = new CdpClient();
     public readonly PcmBuffer Audio = new PcmBuffer();
+    public Action<string>? Diagnostic;
     public BrowserEngine()
     {
         cdp.EventReceived += evt =>
@@ -38,7 +39,7 @@ public sealed class BrowserEngine : IDisposable
 
 	private int closed;
 
-	private volatile string status = "Chrome se spouští…";
+	private volatile string status = "Čekám na aktivní browser panel…";
 
 	public string Status => status;
 
@@ -67,6 +68,7 @@ public sealed class BrowserEngine : IDisposable
 
 	public async Task StartAsync(string executable, int port, CancellationToken cancellation, bool headlessTest = false, bool allowTestNoSandbox = false)
 	{
+        status="Spouštím Chrome na pozadí…";
 		cancellation.ThrowIfCancellationRequested();
 		stop.Token.ThrowIfCancellationRequested();
 		if (!File.Exists(executable))
@@ -103,7 +105,7 @@ public sealed class BrowserEngine : IDisposable
 			chrome.StandardOutput.ReadToEndAsync();
 			chrome.StandardError.ReadToEndAsync();
 		}
-		using (HttpClient http = new HttpClient
+		using (HttpClient http = new HttpClient(new HttpClientHandler { UseProxy=false })
 		{
 			Timeout = TimeSpan.FromSeconds(2.0)
 		})
@@ -249,8 +251,9 @@ public sealed class BrowserEngine : IDisposable
 		catch (OperationCanceledException)
 		{
 		}
-		catch
+		catch(Exception ex)
 		{
+            Diagnostic?.Invoke("Webpage image capture failed: "+ex);
 			status = "Přenos obrazu skončil. Restartuj Oasis Browser/hru.";
 		}
 	}

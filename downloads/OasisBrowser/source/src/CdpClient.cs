@@ -26,6 +26,7 @@ public sealed class CdpClient : IDisposable
 
 	public async Task ConnectAsync(Uri endpoint, CancellationToken cancellation)
 	{
+        socket.Options.Proxy=null; // validated loopback endpoint only
 		await socket.ConnectAsync(endpoint, cancellation).ConfigureAwait(continueOnCapturedContext: false);
 		Task.Run((Func<Task>)Receive);
 	}
