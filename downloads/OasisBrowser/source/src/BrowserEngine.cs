@@ -182,6 +182,7 @@ public sealed class BrowserEngine : IDisposable
         await cdp.CallAsync("Runtime.enable", null, cancellation);
         await cdp.CallAsync("Runtime.addBinding", new { name="__oasisPcm" }, cancellation);
         await cdp.CallAsync("Page.addScriptToEvaluateOnNewDocument", new { source=AudioCapture.Script }, cancellation);
+        await cdp.CallAsync("Page.addScriptToEvaluateOnNewDocument", new { source=BrowserPage.Script }, cancellation);
         status = "Prohlížeč připraven • Chrome bez okna • experimentální zvuk ze zařízení";
 	}
 
@@ -199,6 +200,19 @@ public sealed class BrowserEngine : IDisposable
             deviceScaleFactor = 1, mobile = false
         }, cancellation).ConfigureAwait(false);
         Width = width; Height = height;
+    }
+
+    public async Task<JObject?> FocusedEditableAsync(CancellationToken cancellation)
+    {
+        var answer=await Command("Runtime.evaluate",new {expression="window.__oasisFocusedEditable ? window.__oasisFocusedEditable() : null",returnByValue=true},cancellation).ConfigureAwait(false);
+        return answer["result"]?["value"] as JObject;
+    }
+    public async Task ConfirmTextAsync(string fieldToken,string text,CancellationToken cancellation)
+    {
+        if(text.Length>1000)throw new InvalidOperationException("Text je příliš dlouhý.");
+        var selected=await Command("Runtime.evaluate",new {expression="window.__oasisSelectEditable && window.__oasisSelectEditable("+JsonConvert.SerializeObject(fieldToken)+")",returnByValue=true},cancellation).ConfigureAwait(false);
+        if((bool?)selected["result"]?["value"]!=true)throw new InvalidOperationException("Webové pole už není dostupné. Klikni do něj znovu.");
+        await Command("Input.insertText",new {text},cancellation).ConfigureAwait(false);
     }
 
     public async Task TypeAsync(string text, CancellationToken cancellation)

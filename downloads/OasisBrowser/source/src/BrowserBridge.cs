@@ -85,7 +85,7 @@ public sealed class BrowserBridge : IDisposable
 				{
 					ready = Ready,
 					status = (StartupError ?? browser.Status),
-					version = "0.2.4"
+					version = "0.2.5"
 				});
 				return;
 			}

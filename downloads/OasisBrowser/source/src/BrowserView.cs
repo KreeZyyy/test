@@ -27,25 +27,32 @@ public sealed class BrowserView : MonoBehaviour
             return PanelPower.IsActive(gameObject.activeInHierarchy || Owner.gameObject.activeInHierarchy,hasOn,on,hasPower,power);
         }
     }
-    private static BrowserView? keyboardOwner;
-    private string pendingText = "";
-    private Task? typing;
-    private static readonly Type? inputType = FindType("UnityEngine.Input");
+    private Task<JObject?>? editorProbe;
+    private BrowserEngine? editorBrowser;
     private void Update()
     {
-        if (keyboardOwner == this && Browser != null && Browser.KeyboardEnabled && ActiveScreen)
+        if(editorProbe!=null && editorProbe.IsCompleted)
         {
-            string typed = inputType?.GetProperty("inputString")?.GetValue(null) as string ?? "";
-            if (typed.IndexOf('\u001b') >= 0) { Browser.KeyboardEnabled=false; pendingText=""; }
-            else if(pendingText.Length + typed.Length <= 1000) pendingText += typed;
-            if ((typing == null || typing.IsCompleted) && pendingText.Length > 0)
+            var probe=editorProbe;editorProbe=null;
+            if(probe.IsFaulted)BrowserLog.Warn("Web text field detection failed: "+probe.Exception?.GetBaseException().Message);
+            else if(!probe.IsCanceled && probe.Result!=null && Browser!=null && Browser==editorBrowser && ActiveScreen)
             {
-                if(typing?.IsFaulted == true) BrowserLog.Error("Browser typing failed: " + typing.Exception);
-                string batch=pendingText; pendingText="";
-                typing=Browser.TypeAsync(batch,CancellationToken.None);
+                string fieldToken=(string?)probe.Result["token"]??"";
+                string initial=(string?)probe.Result["value"]??"";
+                var target=Browser;
+                try
+                {
+                    if(BrowserTextDialog.Show(initial,text=>{
+                        target.ConfirmTextAsync(fieldToken,text,CancellationToken.None).ContinueWith(t=>{
+                            if(t.IsFaulted)BrowserLog.Warn("Confirmed web text failed: "+t.Exception?.GetBaseException().Message);
+                            else BrowserLog.Info("Confirmed text sent to web field.");
+                        });
+                    })) BrowserLog.Info("Web text confirmation dialog opened.");
+                    else BrowserLog.Warn("Web text dialog unavailable or another input window is open.");
+                }
+                catch(Exception ex){BrowserLog.Warn("Web text dialog failed: "+ex.Message);}
             }
         }
-        else pendingText="";
         if(!AudioEnabled || !ActiveScreen || Owner==null || Browser==null)
         { if(source!=null && source.isPlaying)source.Stop(); return; }
         if(source==null)
@@ -116,7 +123,7 @@ public sealed class BrowserView : MonoBehaviour
         AddEvent(type2, type3, entries, "PointerDown", "Pressed");
 		AddEvent(type2, type3, entries, "PointerClick", "Clicked");
 		AddEvent(type2, type3, entries, "Scroll", "Scrolled");
-        AddEvent(type2, type3, entries, "PointerExit", "PointerLeft");
+
 	}
 
 	private void AddEvent(Type trigger, Type eventData, IList entries, string id, string handler)
@@ -141,9 +148,6 @@ public sealed class BrowserView : MonoBehaviour
 		}
 	}
 
-    public void PointerLeft<T>(T e)
-    { if(keyboardOwner==this) { keyboardOwner=null; pendingText=""; } }
-
     public void Pressed<T>(T e)
     { if(clickGate.Down(Time.realtimeSinceStartupAsDouble)) SendPointer(e,"down"); }
     public void Clicked<T>(T e)
@@ -151,7 +155,7 @@ public sealed class BrowserView : MonoBehaviour
     private void SendPointer<T>(T e,string phase)
     {
         if(Browser==null || e==null)return;
-        keyboardOwner=this;
+
         if(!pointerLogged)BrowserLog.Info("Browser pointer event received: "+phase);
 		try
 		{
@@ -189,10 +193,9 @@ public sealed class BrowserView : MonoBehaviour
 				double val2 = (rect.yMax - vector2.y) / rect.height * Browser.Height;
                 if(!pointerLogged)BrowserLog.Info("Pointer mapped to Chrome: "+val+","+val2+" camera="+(value==null?"none":value.GetType().Name));
                 pointerLogged=true;
-				Browser.ClickAsync(Math.Max(0.0, Math.Min(Browser.Width-1.0, val)), Math.Max(0.0, Math.Min(Browser.Height-1.0, val2)), CancellationToken.None).ContinueWith(delegate(Task t)
-				{
-					_ = t.Exception;
-				});
+                editorBrowser=Browser;
+                editorProbe=ClickAndProbe(Browser,Math.Max(0.0,Math.Min(Browser.Width-1.0,val)),Math.Max(0.0,Math.Min(Browser.Height-1.0,val2)));
+
 			}
 		}
 		catch(Exception ex)
@@ -200,6 +203,12 @@ public sealed class BrowserView : MonoBehaviour
             BrowserLog.Error("Browser pointer conversion failed: "+ex);
 		}
 	}
+
+    private static async Task<JObject?> ClickAndProbe(BrowserEngine browser,double x,double y)
+    {
+        await browser.ClickAsync(x,y,CancellationToken.None).ConfigureAwait(false);
+        return await browser.FocusedEditableAsync(CancellationToken.None).ConfigureAwait(false);
+    }
 
 	public void Scrolled<T>(T e)
 	{
