@@ -27,8 +27,25 @@ public sealed class BrowserView : MonoBehaviour
             return PanelPower.IsActive(gameObject.activeInHierarchy || Owner.gameObject.activeInHierarchy,hasOn,on,hasPower,power);
         }
     }
+    private static BrowserView? keyboardOwner;
+    private string pendingText = "";
+    private Task? typing;
+    private static readonly Type? inputType = FindType("UnityEngine.Input");
     private void Update()
     {
+        if (keyboardOwner == this && Browser != null && Browser.KeyboardEnabled && ActiveScreen)
+        {
+            string typed = inputType?.GetProperty("inputString")?.GetValue(null) as string ?? "";
+            if (typed.IndexOf('\u001b') >= 0) { Browser.KeyboardEnabled=false; pendingText=""; }
+            else if(pendingText.Length + typed.Length <= 1000) pendingText += typed;
+            if ((typing == null || typing.IsCompleted) && pendingText.Length > 0)
+            {
+                if(typing?.IsFaulted == true) BrowserLog.Error("Browser typing failed: " + typing.Exception);
+                string batch=pendingText; pendingText="";
+                typing=Browser.TypeAsync(batch,CancellationToken.None);
+            }
+        }
+        else pendingText="";
         if(!AudioEnabled || !ActiveScreen || Owner==null || Browser==null)
         { if(source!=null && source.isPlaying)source.Stop(); return; }
         if(source==null)
@@ -99,6 +116,7 @@ public sealed class BrowserView : MonoBehaviour
         AddEvent(type2, type3, entries, "PointerDown", "Pressed");
 		AddEvent(type2, type3, entries, "PointerClick", "Clicked");
 		AddEvent(type2, type3, entries, "Scroll", "Scrolled");
+        AddEvent(type2, type3, entries, "PointerExit", "PointerLeft");
 	}
 
 	private void AddEvent(Type trigger, Type eventData, IList entries, string id, string handler)
@@ -123,6 +141,9 @@ public sealed class BrowserView : MonoBehaviour
 		}
 	}
 
+    public void PointerLeft<T>(T e)
+    { if(keyboardOwner==this) { keyboardOwner=null; pendingText=""; } }
+
     public void Pressed<T>(T e)
     { if(clickGate.Down(Time.realtimeSinceStartupAsDouble)) SendPointer(e,"down"); }
     public void Clicked<T>(T e)
@@ -130,6 +151,7 @@ public sealed class BrowserView : MonoBehaviour
     private void SendPointer<T>(T e,string phase)
     {
         if(Browser==null || e==null)return;
+        keyboardOwner=this;
         if(!pointerLogged)BrowserLog.Info("Browser pointer event received: "+phase);
 		try
 		{
@@ -163,11 +185,11 @@ public sealed class BrowserView : MonoBehaviour
 				Vector2 vector2 = (Vector2)array[3];
 				Rect rect = rectTransform.rect;
                 if(rect.width<=0 || rect.height<=0)throw new InvalidOperationException("Browser rectangle is empty.");
-				double val = (vector2.x - rect.xMin) / rect.width * 1280f;
-				double val2 = (rect.yMax - vector2.y) / rect.height * 720f;
+				double val = (vector2.x - rect.xMin) / rect.width * Browser.Width;
+				double val2 = (rect.yMax - vector2.y) / rect.height * Browser.Height;
                 if(!pointerLogged)BrowserLog.Info("Pointer mapped to Chrome: "+val+","+val2+" camera="+(value==null?"none":value.GetType().Name));
                 pointerLogged=true;
-				Browser.ClickAsync(Math.Max(0.0, Math.Min(1279.0, val)), Math.Max(0.0, Math.Min(719.0, val2)), CancellationToken.None).ContinueWith(delegate(Task t)
+				Browser.ClickAsync(Math.Max(0.0, Math.Min(Browser.Width-1.0, val)), Math.Max(0.0, Math.Min(Browser.Height-1.0, val2)), CancellationToken.None).ContinueWith(delegate(Task t)
 				{
 					_ = t.Exception;
 				});

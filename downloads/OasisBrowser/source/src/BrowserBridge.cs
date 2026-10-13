@@ -85,7 +85,7 @@ public sealed class BrowserBridge : IDisposable
 				{
 					ready = Ready,
 					status = (StartupError ?? browser.Status),
-					version = "0.1.0"
+					version = "0.2.4"
 				});
 				return;
 			}
@@ -146,7 +146,13 @@ public sealed class BrowserBridge : IDisposable
 				{
 					timeout.CancelAfter(12000);
 					switch (text2)
-					{
+                    {
+                    case "viewport":
+                        await browser.SetViewportAsync((int?)input["value"]?["w"] ?? 1280, (int?)input["value"]?["h"] ?? 720, timeout.Token);
+                        break;
+                    case "keyboard":
+                        browser.KeyboardEnabled = (bool?)input["value"] == true;
+                        break;
 					case "navigate":
 						await browser.NavigateAsync(((string?)input["value"]) ?? "", timeout.Token);
 						break;

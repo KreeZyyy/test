@@ -1,6 +1,10 @@
-# Oasis Browser 0.2.3 — test
+# Oasis Browser 0.2.4 — test
 
 YouTube jako webová stránka uvnitř ScriptedScreens. Mod spouští nainstalovaný Chrome v režimu bez viditelného okna až poté, co najde aktivní browser panel. Nemusíš ručně otevírat další okno ani spouštět Chrome. Je to prohlížeč běžící na pozadí, nikoli browser engine zabudovaný do Unity.
+
+## Plocha a psaní 0.2.4
+Web zabírá celou šířku a výšku kromě kompaktní spodní lišty. Viewport Chrome se přizpůsobí poměru panelu, včetně screenWidth/screenHeight pro zvětšení videa. Klikání používá aktuální rozměry.
+Nahraj nový scripts/browser.lua se svým tokenem. Ovládat web zapne předávání psaného textu; klikni do webového pole a piš. Podporované jsou i Backspace a Enter. Kurzor při psaní ponech nad webem; opuštění webové plochy uvolní předávání klávesnice. Alt/Escape ukončuje režim. Zkratky Ctrl a složitější editace zatím nejsou implementované. Herní napojení klávesnice vyžaduje ověření; spodní Vložit text zůstává jako záloha.
 
 ## Obraz 0.2.3
 Průběžný JPEG screencast nahrazuje periodické PNG screenshoty. Pro aktualizaci z 0.2.2 stačí přepsat DLL a About a restartovat hru; Lua ani token se nemění.
@@ -28,7 +32,7 @@ Browser.Hidden=true je výchozí. Změny nastavení vyžadují restart. ChromePa
 Pro diagnostiku můžeš nastavit Hidden=false, ale normální provoz viditelné okno nevyžaduje.
 Bez aktivního panelu se Chrome vůbec nespustí. Po ztrátě všech aktivních panelů se asi po 10 sekundách zavře a při dalším zapnutí se založí nová relace. Při ovládání napájení se používá stav nalezeného herního zařízení; toto napojení vyžaduje ověření na tvém screenu.
 Prototyp sdílí jednu stránku mezi panely. Zvuk má vycházet pouze z prvního aktivního zařízení, jehož vlastníka se podaří zjistit, ne současně ze všech panelů. Více nezávislých browserů a multiplayer nejsou implementované.
-Obraz se přenáší průběžným Chrome screencastem jako JPEG, 960×540 při kvalitě 75. Logická plocha pro klikání zůstává 1280×720. Uchovává se jen nejnovější snímek, bez fronty starých obrázků. Skutečné FPS závisí na CPU, Chrome a Unity; 60 FPS není zaručeno.
+Obraz se přenáší průběžným Chrome screencastem jako JPEG při kvalitě 75, s maximálním rozměrem 960×960 při zachování poměru stran. Viewport se přizpůsobuje ploše Lua panelu. Uchovává se jen nejnovější snímek, bez fronty starých obrázků. Skutečné FPS závisí na CPU, Chrome a Unity; 60 FPS není zaručeno.
 
 ## Zvuk
 Web Audio zachytává běžná HTML video/audio média jako mono PCM 24 kHz. Chrome přitom nemá posílat zachycený zvuk přímo do desktopového výstupu. Unity dostává omezenou frontu zvuku a audio zdroj se umístí na transform vlastníka panelu, s prostorovým útlumem 1 až 20 metrů.
@@ -36,7 +40,7 @@ Je to experimentální napojení: skutečné YouTube video, jeho reklamy/změny 
 
 ## Co bylo ověřeno
 DLL se sestavila proti BepInEx, rozhraní LaunchPadu a Unity referencím. Build má 16 upozornění, převážně nullability starého reflektivního UI kódu a nečekané asynchronní návraty; žádné chyby sestavení.
-29 kontrol prošlo se skutečným Chromiem na Linuxu proti lokální testovací stránce: spuštění headless, načtení stránky, skutečný obraz, klikání podle souřadnic, převod a omezení PCM fronty, přenos nenulového zvuku z přehrávaného WAVu, autorizace bridge a omezení adres na YouTube.
+31 kontrol prošlo se skutečným Chromiem na Linuxu proti lokální testovací stránce: spuštění headless, načtení stránky, skutečný obraz, klikání podle souřadnic, převod a omezení PCM fronty, přenos nenulového zvuku z přehrávaného WAVu, autorizace bridge a omezení adres na YouTube.
 Linuxový test má zvláštní sandbox přepínač kvůli kontejneru. Windows mod ho nezapíná; běžný sandbox nainstalovaného Chrome zůstává zapnutý. Omezení browser politik v testovacím prostředí se neměnila.
 Stationeers/Unity, Windows Chrome a skutečné YouTube v tomto prostředí neběží v ověřeném herním scénáři. Není potvrzená hotová podpora ve hře; tento ZIP je určen pro první test.
 

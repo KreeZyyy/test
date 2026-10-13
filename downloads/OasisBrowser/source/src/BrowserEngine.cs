@@ -13,9 +13,10 @@ namespace OasisBrowser;
 
 public sealed class BrowserEngine : IDisposable
 {
-	public const int Width = 1280;
+	public int Width { get; private set; } = 1280;
 
-	public const int Height = 720;
+	public int Height { get; private set; } = 720;
+    public volatile bool KeyboardEnabled;
 
 	private readonly CdpClient cdp = new CdpClient();
     public readonly PcmBuffer Audio = new PcmBuffer();
@@ -172,8 +173,9 @@ public sealed class BrowserEngine : IDisposable
 		await cdp.CallAsync("Page.enable", null, cancellation);
 		await cdp.CallAsync("Emulation.setDeviceMetricsOverride", new
 		{
-			width = 1280,
-			height = 720,
+			width = Width,
+			height = Height,
+            screenWidth = Width, screenHeight = Height,
 			deviceScaleFactor = 1,
 			mobile = false
 		}, cancellation);
@@ -187,6 +189,33 @@ public sealed class BrowserEngine : IDisposable
 	{
 		return cdp.CallAsync(method, args, cancellation);
 	}
+
+    public async Task SetViewportAsync(int width, int height, CancellationToken cancellation)
+    {
+        if (width < 320 || width > 1920 || height < 240 || height > 1920)
+            throw new InvalidOperationException("Neplatné rozměry webu.");
+        await Command("Emulation.setDeviceMetricsOverride", new {
+            width, height, screenWidth = width, screenHeight = height,
+            deviceScaleFactor = 1, mobile = false
+        }, cancellation).ConfigureAwait(false);
+        Width = width; Height = height;
+    }
+
+    public async Task TypeAsync(string text, CancellationToken cancellation)
+    {
+        foreach (char ch in text)
+        {
+            if (ch == '\b' || ch == '\r' || ch == '\n')
+            {
+                string key = ch == '\b' ? "Backspace" : "Enter";
+                int code = ch == '\b' ? 8 : 13;
+                await Command("Input.dispatchKeyEvent", new { type="keyDown", key, windowsVirtualKeyCode=code }, cancellation).ConfigureAwait(false);
+                await Command("Input.dispatchKeyEvent", new { type="keyUp", key, windowsVirtualKeyCode=code }, cancellation).ConfigureAwait(false);
+            }
+            else if (!char.IsControl(ch))
+                await Command("Input.insertText", new { text=ch.ToString() }, cancellation).ConfigureAwait(false);
+        }
+    }
 
 	public async Task NavigateAsync(string query, CancellationToken cancellation)
 	{
@@ -202,7 +231,7 @@ public sealed class BrowserEngine : IDisposable
 
 	public async Task ClickAsync(double x, double y, CancellationToken cancellation)
 	{
-		if (x < 0.0 || x >= 1280.0 || y < 0.0 || y >= 720.0)
+		if (x < 0.0 || x >= Width || y < 0.0 || y >= Height)
 		{
 			throw new ArgumentOutOfRangeException();
 		}
@@ -229,8 +258,8 @@ public sealed class BrowserEngine : IDisposable
 		return Command("Input.dispatchMouseEvent", new
 		{
 			type = "mouseWheel",
-			x = 640,
-			y = 360,
+			x = Width / 2,
+			y = Height / 2,
 			deltaX = 0,
 			deltaY = Math.Max(-1500.0, Math.Min(1500.0, amount))
 		}, cancellation);
@@ -264,7 +293,7 @@ public sealed class BrowserEngine : IDisposable
         try
         {
             await Command("Page.startScreencast", new {
-                format = "jpeg", quality = 75, maxWidth = 960, maxHeight = 540, everyNthFrame = 1
+                format = "jpeg", quality = 75, maxWidth = 960, maxHeight = 960, everyNthFrame = 1
             }, linked.Token).ConfigureAwait(false);
             started = true;
             Diagnostic?.Invoke("Continuous JPEG screencast started: 960x540; latest frame only.");
