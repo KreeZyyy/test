@@ -52,7 +52,8 @@ public sealed class BrowserView : MonoBehaviour
 
 	private MethodInfo? loadImage;
 
-	private double nextClick;
+	private readonly ClickGate clickGate=new ClickGate();
+    private bool pointerLogged;
 
 	public static Type? FindType(string fullName)
 	{
@@ -95,6 +96,7 @@ public sealed class BrowserView : MonoBehaviour
 		}
 		Component obj = base.gameObject.AddComponent(type2);
 		IList entries = (IList)type2.GetProperty("triggers").GetValue(obj);
+        AddEvent(type2, type3, entries, "PointerDown", "Pressed");
 		AddEvent(type2, type3, entries, "PointerClick", "Clicked");
 		AddEvent(type2, type3, entries, "Scroll", "Scrolled");
 	}
@@ -121,19 +123,26 @@ public sealed class BrowserView : MonoBehaviour
 		}
 	}
 
-	public void Clicked<T>(T e)
-	{
-		if (Browser == null || e == null || Time.realtimeSinceStartupAsDouble < nextClick)
-		{
-			return;
-		}
-		nextClick = Time.realtimeSinceStartupAsDouble + 0.15;
+    public void Pressed<T>(T e)
+    { if(clickGate.Down(Time.realtimeSinceStartupAsDouble)) SendPointer(e,"down"); }
+    public void Clicked<T>(T e)
+    { if(clickGate.Click(Time.realtimeSinceStartupAsDouble)) SendPointer(e,"click"); }
+    private void SendPointer<T>(T e,string phase)
+    {
+        if(Browser==null || e==null)return;
+        if(!pointerLogged)BrowserLog.Info("Browser pointer event received: "+phase);
 		try
 		{
 			object obj = e;
 			Type type = obj.GetType();
 			Vector2 vector = (Vector2)type.GetProperty("position").GetValue(obj);
-			object value = type.GetProperty("pressEventCamera").GetValue(obj);
+			object? value = type.GetProperty("pressEventCamera")?.GetValue(obj) ?? type.GetProperty("enterEventCamera")?.GetValue(obj);
+            if(value==null)
+            {
+                var canvasType=FindType("UnityEngine.Canvas");
+                var canvas=canvasType==null?null:GetComponentInParent(canvasType);
+                if(canvas!=null)value=canvasType!.GetProperty("worldCamera")?.GetValue(canvas);
+            }
 			RectTransform rectTransform = (RectTransform)base.transform;
 			MethodInfo method = FindType("UnityEngine.RectTransformUtility").GetMethod("ScreenPointToLocalPointInRectangle", new Type[4]
 			{
@@ -153,17 +162,20 @@ public sealed class BrowserView : MonoBehaviour
 			{
 				Vector2 vector2 = (Vector2)array[3];
 				Rect rect = rectTransform.rect;
+                if(rect.width<=0 || rect.height<=0)throw new InvalidOperationException("Browser rectangle is empty.");
 				double val = (vector2.x - rect.xMin) / rect.width * 1280f;
 				double val2 = (rect.yMax - vector2.y) / rect.height * 720f;
+                if(!pointerLogged)BrowserLog.Info("Pointer mapped to Chrome: "+val+","+val2+" camera="+(value==null?"none":value.GetType().Name));
+                pointerLogged=true;
 				Browser.ClickAsync(Math.Max(0.0, Math.Min(1279.0, val)), Math.Max(0.0, Math.Min(719.0, val2)), CancellationToken.None).ContinueWith(delegate(Task t)
 				{
 					_ = t.Exception;
 				});
 			}
 		}
-		catch
+		catch(Exception ex)
 		{
-			Debug.LogWarning("Oasis Browser: pointer conversion failed; use the Chrome window for this prototype.");
+            BrowserLog.Error("Browser pointer conversion failed: "+ex);
 		}
 	}
 

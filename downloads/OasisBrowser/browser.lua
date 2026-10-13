@@ -1,4 +1,4 @@
--- Oasis Browser 0.2.0. Starts installed Chrome headlessly for an active panel. Separate token.
+-- Oasis Browser 0.2.2. Starts installed Chrome headlessly for an active panel. Separate token.
 local TOKEN="PASTE_OASIS_BROWSER_TOKEN_HERE"
 local BASE="http://localhost:18767"
 local headers={["X-Oasis-Browser-Token"]=TOKEN}
@@ -45,6 +45,14 @@ for i,v in ipairs(labels) do
  el(name,"button",M+(i-1)*160*S,H-72*S,150*S,36*S,{text=label},{on_click=function() action(name,name=="text" and text or nil) end})
 end
 el("note","label",M,H-28*S,W-2*M,24*S,{text="Prototyp • Chrome bez okna • experimentální zvuk ze zařízení"})
+el("interface","interface_button",M+6*160*S,H-72*S,150*S,36*S,{text="Ovládat web"},{on_click=function(value)
+ if tostring(value)=="1" then message("Ovládání webu zapnuto • Alt/Escape pro návrat") else message("Ovládání webu vypnuto") end
+end})
+if type(ui.on_keydown)=="function" then
+ ui:on_keydown(function(key)
+  if key=="Escape" or key=="LeftAlt" then ss.exit_interface_mode() end
+ end)
+end
 ui:commit()
 function tick(dt)
  dt=tonumber(dt) or 0;next_health=next_health-dt
