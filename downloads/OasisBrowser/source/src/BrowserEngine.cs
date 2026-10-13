@@ -24,6 +24,20 @@ public sealed class BrowserEngine : IDisposable
     {
         cdp.EventReceived += evt =>
         {
+            if ((string?)evt["method"] == "Page.screencastFrame")
+            {
+                var args = evt["params"];
+                int? session = (int?)args?["sessionId"];
+                if (session.HasValue) _ = AcknowledgeFrame(session.Value);
+                try
+                {
+                    string data = (string?)args?["data"] ?? "";
+                    if (data.Length > 0 && data.Length <= 6291456)
+                        Interlocked.Exchange(ref frame, Convert.FromBase64String(data));
+                }
+                catch (FormatException) { }
+                return;
+            }
             if ((string?)evt["method"] != "Runtime.bindingCalled" || (string?)evt["params"]?["name"] != "__oasisPcm") return;
             try { string data=(string?)evt["params"]?["payload"]??""; if(data.Length<=45000) Audio.Write(Convert.FromBase64String(data)); } catch(FormatException) { }
         };
@@ -237,26 +251,44 @@ public sealed class BrowserEngine : IDisposable
 		Interlocked.Exchange(ref frame, Convert.FromBase64String(text));
 	}
 
-	public async Task CaptureLoop(CancellationToken cancellation)
-	{
-		_ = 1;
-		try
-		{
-			while (!cancellation.IsCancellationRequested)
-			{
-				await CaptureAsync(cancellation);
-				await Task.Delay(100, cancellation);
-			}
-		}
-		catch (OperationCanceledException)
-		{
-		}
-		catch(Exception ex)
-		{
-            Diagnostic?.Invoke("Webpage image capture failed: "+ex);
-			status = "Přenos obrazu skončil. Restartuj Oasis Browser/hru.";
-		}
-	}
+    private async Task AcknowledgeFrame(int session)
+    {
+        try { await cdp.CallAsync("Page.screencastFrameAck", new { sessionId = session }, stop.Token).ConfigureAwait(false); }
+        catch (Exception ex) { if (!stop.IsCancellationRequested) Diagnostic?.Invoke("Screencast acknowledgement failed: " + ex.Message); }
+    }
+
+    public async Task CaptureLoop(CancellationToken cancellation)
+    {
+        using var linked = CancellationTokenSource.CreateLinkedTokenSource(cancellation, stop.Token);
+        bool started = false;
+        try
+        {
+            await Command("Page.startScreencast", new {
+                format = "jpeg", quality = 75, maxWidth = 960, maxHeight = 540, everyNthFrame = 1
+            }, linked.Token).ConfigureAwait(false);
+            started = true;
+            Diagnostic?.Invoke("Continuous JPEG screencast started: 960x540; latest frame only.");
+            await Task.Delay(Timeout.Infinite, linked.Token).ConfigureAwait(false);
+        }
+        catch (OperationCanceledException) { }
+        catch (Exception ex)
+        {
+            Diagnostic?.Invoke("Webpage screencast failed: " + ex);
+            status = "Přenos obrazu skončil. Restartuj Oasis Browser/hru.";
+        }
+        finally
+        {
+            if (started && !stop.IsCancellationRequested)
+            {
+                try
+                {
+                    using var timeout = new CancellationTokenSource(2000);
+                    await Command("Page.stopScreencast", null, timeout.Token).ConfigureAwait(false);
+                }
+                catch (Exception) { }
+            }
+        }
+    }
 
 	public async Task CloseAsync()
 	{
