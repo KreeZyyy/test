@@ -1,0 +1,1 @@
+Requires .NET SDK 8. Copy Stationeers.User.props.example to Stationeers.User.props and set local installed dependency paths. Run dotnet build -c Release. Do not redistribute game or LaunchPad assemblies. Put OasisBrowser.dll and Newtonsoft.Json.dll in the mod root.

@@ -1,0 +1,1 @@
+<Project><PropertyGroup><BepInExDirectory>PATH_TO_BepInEx_core</BepInExDirectory><LaunchPadDirectory>PATH_TO_LaunchPad_DLL_DIRECTORY</LaunchPadDirectory><UnityManagedDirectory>PATH_TO_rocketstation_Data_Managed</UnityManagedDirectory></PropertyGroup></Project>
