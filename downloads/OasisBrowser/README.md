@@ -1,11 +1,13 @@
-# Oasis Browser 0.2.6 — test
+# Oasis Browser 0.2.7 — test
 
 Web na panelu ScriptedScreens, ovládaný místním Chromem bez viditelného okna. Jedna společná relace, dočasný profil a experimentální prostorový zvuk. Chrome není součástí balíčku.
 
-## Zvuk a diagnostika 0.2.6
-Zvukové bloky jsou nyní 1024 vzorků (asi 43 ms) místo 4096 (asi 171 ms). Fronta má nejvýše 4800 vzorků, tedy 200 ms místo dvou sekund. Při přeplnění se zahazují nejstarší vzorky; při pozastavení, posunu a ukončení média se fronta vymaže. Přehrávání u zařízení začíná po jednom bloku. Skutečná celková latence obsahuje i Chrome, přenos a Unity směšovač a není tímto limitem zaručená.
-Dodané LogOutput.log potvrzuje funkční Confirm, ale neobsahuje příčinu chyby YouTube. V této verzi se nově zapisují media_error (kód média), player_error (zobrazená chyba přehrávače) a stav audio hooku. Tato diagnostika sama chybu YouTube neopravuje.
-Browser.CaptureAudio=false je srovnávací test: úplně restartuj hru a přehraj stejný problémový odkaz. Zvuk při vypnutém zachytávání nemíří do zařízení; samotný monitor chyb zůstává aktivní. Pokud chyba zmizí jen bez zachytávání audia, bude to důležitá stopa, nikoli samo o sobě důkaz příčiny.
+## Zvuk a obraz 0.2.7
+Verze reaguje na trhaný zvuk v 0.2.6: zvuk má vlastní CDP websocket, oddělený od JPEG snímků. Blok má 2048 vzorků (85 ms), fronta pojme nejvýše 12000 vzorků (500 ms) a zařízení začne hrát po dvou blocích. Jde o kompromis mezi latencí a rezervou proti nepravidelnému přenosu; plynulost a celková latence ve hře nejsou zaručené.
+Obraz zůstává průběžným JPEG screencastem, se stejnými rozměry a kvalitou. Chrome posílá každý druhý snímek a přijímání zahazuje snímky vzdálené méně než 30 ms; běžně tedy cílí přibližně na 30 FPS. Skutečné FPS může být nižší. Uchovává se jen nejnovější obraz.
+Nová spodní volba **Video / Web** přepíná načtené video na stránce /watch přes celý panel. Nejdřív otevři video a dej Play. Stránka výsledků hledání na screenshotu není otevřené video; na ní se režim neaktivuje. Tlačítko vyžaduje nový Lua skript.
+Log nyní uvádí Device audio buffers: počet vzorků ve frontě, největší callback Unity a počet vzorků chybějících nebo zahozených. To umožní rozlišit nedostatek dat od rostoucího zpoždění.
+Příčina chyby YouTube stále není potvrzená. Diagnostika media_error a player_error zůstává. Browser.CaptureAudio=false lze použít pro srovnávací test po úplném restartu; samotný monitor chyb zůstává zapnutý.
 
 ## Zachované opravy 0.2.5
 Kliknutí do textového pole webu otevře herní okno **Oasis Browser • text do webu**. Confirm posílá celý potvrzený text do konkrétního webového pole a nahrazuje jeho původní obsah. Není potřeba sledovat jednotlivé stisky kláves přes inputString. Cancel nic neposílá. Pokud se stránka mezitím změní nebo původní pole odstraní, potvrzení se odmítne. Hesla se tímto dialogem nezpracovávají. Prázdný text nemusí standardní herní dialog přijmout.
@@ -13,8 +15,9 @@ Spodní Hledat/Otevřít a Vložit text zůstávají záložním ovládáním. R
 
 Zvětšení videa nyní používá režim přes celý webový viewport, místo fullscreen skrytého okna Chrome. Player/video zachovává poměr stran pomocí object-fit:contain; na panelu na výšku mohou zůstat černé pruhy. Stránka dostává událost fullscreenchange, aby ovladače mohly přepnout režim. Opuštění fullscreen obnoví původní stránku. Přesné chování ovladačů skutečného YouTube vyžaduje herní test.
 
-## Aktualizace z 0.2.5
-Ukonči hru, přepiš OasisBrowser.dll a About ze ZIPu a znovu spusť hru. Stávající Lua a token se nemění. Můžeš přepsat i celý mod, ale zachovej vlastní token v uloženém browser.lua. Skript už uložený v čipu se přepsáním složky nezmění.
+## Aktualizace z 0.2.6
+Ukonči hru, přepiš soubory ze ZIPu a restartuj. Pro novou volbu Video / Web nahraj nový scripts/browser.lua do čipu a vlož do něj svůj stávající token. Token v nastavení se nemění.
+
 
 ## První instalace
 1. Rozbal složku OasisBrowser do Dokumenty\\My Games\\Stationeers\\mods a povol ji v LaunchPadu. Potřebuje StationeersLua a ScriptedScreens a nainstalovaný Google Chrome.
@@ -28,7 +31,7 @@ Web vyplňuje panel nad nízkou spodní lištou. Viewport Chrome respektuje pom�
 Audio je mono PCM 24 kHz, omezená fronta a běžný Unity prostorový AudioSource u prvního aktivního vlastníka panelu. Není to plná integrace atmosférického zvuku Stationeers. Pokud se vlastník nezjistí, zvuk se neaktivuje. Skutečné YouTube audio, reklamy, přeshraniční média a chování ve Windows vyžadují další ověření.
 
 ## Ověření a omezení
-38 kontrol prošlo se skutečným Chromiem na Linuxu: animované snímky, klikání, audio, autorizace, rozměry panelu na výšku, potvrzený český text a odmítnutí odstraněného pole. Zvětšené testovací video mělo rozměry 1280×1400 a object-fit:contain; ukončení obnovilo původních 200 px. DLL se sestavila bez chyb, s 16 upozorněními převážně nullability reflektivního UI.
+39 kontrol prošlo se skutečným Chromiem na Linuxu: animované snímky, klikání, audio, autorizace, rozměry panelu na výšku, potvrzený český text a odmítnutí odstraněného pole. Zvětšené testovací video mělo rozměry 1280×1400 a object-fit:contain; ukončení obnovilo původních 200 px. DLL se sestavila bez chyb, s 16 upozorněními převážně nullability reflektivního UI.
 Podpis callbacku ShowInputPanel/Confirm byl ověřen v dodané herní Assembly-CSharp.dll. Samotné vyvolání dialogu v běžící hře a chování skutečného YouTube se zde nedají potvrdit. ZIP je testovací verze, nikoli záruka opraveného provozu ve hře.
 Linuxový integrační test má kontejnerový sandbox přepínač; Windows mod jej nepoužívá. Chrome používá standardní sandbox a nový dočasný profil bez rozšíření a kopírování osobního profilu. Přihlášení Google může odmítnout tento browser; přihlášení tímto modem není zaručené.
 Podporovaná je jedna místní relace, bez multiplayeru a samostatných browserů pro každý panel. Debug port 9223 a Bridge port 18767 jsou pouze loopback. Neotevírej je do sítě. Při ukončení se vlastní proces Chrome zavře a profil smaže; po pádu může zůstat TEMP/OasisBrowser.

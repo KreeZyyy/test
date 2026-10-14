@@ -23,6 +23,13 @@ Element.prototype.requestFullscreen = function(options){
  return originalRequest.call(this,options);
 };
 document.exitFullscreen = function(){return leave()?Promise.resolve():originalExit();};
+window.__oasisVideoMode = async () => {
+ if(expanded){leave();return true;}
+ if(location.pathname!=='/watch')return false;
+ const video=document.querySelector('#movie_player video');
+ if(!video || !video.videoWidth)return false;
+ await document.getElementById('movie_player').requestFullscreen();return true;
+};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&expanded){leave();e.preventDefault();}},true);
 window.__oasisFocusedEditable = () => {
  const e=document.activeElement;

@@ -14,7 +14,7 @@ public static class AudioCapture
         try {
           context=context||new AudioContext({sampleRate:24000,latencyHint:'interactive'});
           const src=context.createMediaElementSource(v);
-          const proc=context.createScriptProcessor(1024,2,1);
+          const proc=context.createScriptProcessor(2048,2,1);
           const mute=context.createGain(); mute.gain.value=0;
           proc.onaudioprocess=e=>{
             if(v.paused||v.ended) return;

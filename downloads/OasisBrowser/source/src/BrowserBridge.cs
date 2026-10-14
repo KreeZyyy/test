@@ -85,7 +85,7 @@ public sealed class BrowserBridge : IDisposable
 				{
 					ready = Ready,
 					status = (StartupError ?? browser.Status),
-					version = "0.2.6"
+					version = "0.2.7"
 				});
 				return;
 			}
@@ -147,6 +147,10 @@ public sealed class BrowserBridge : IDisposable
 					timeout.CancelAfter(12000);
 					switch (text2)
                     {
+                    case "video_mode":
+                        var videoMode=await browser.Command("Runtime.evaluate",new {expression="window.__oasisVideoMode && window.__oasisVideoMode()",awaitPromise=true,returnByValue=true,userGesture=true},timeout.Token);
+                        if((bool?)videoMode["result"]?["value"]!=true)throw new InvalidOperationException("Nejdřív otevři video a dej Play. Stránka s výsledky není přehrávač.");
+                        break;
                     case "viewport":
                         await browser.SetViewportAsync((int?)input["value"]?["w"] ?? 1280, (int?)input["value"]?["h"] ?? 720, timeout.Token);
                         break;

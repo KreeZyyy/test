@@ -19,6 +19,8 @@ public sealed class BrowserEngine : IDisposable
     public volatile bool KeyboardEnabled;
 
 	private readonly CdpClient cdp = new CdpClient();
+    private readonly CdpClient mediaCdp = new CdpClient();
+    private long lastFrameTicks;
     public readonly PcmBuffer Audio = new PcmBuffer();
     public Action<string>? Diagnostic;
     public Action<string>? Information;
@@ -26,13 +28,19 @@ public sealed class BrowserEngine : IDisposable
     public bool CaptureAudio = true;
     public BrowserEngine()
     {
-        cdp.EventReceived += evt =>
-        {
+        cdp.EventReceived += ReceiveEvent;
+        mediaCdp.EventReceived += ReceiveEvent;
+    }
+    private void ReceiveEvent(JObject evt)
+    {
             if ((string?)evt["method"] == "Page.screencastFrame")
             {
                 var args = evt["params"];
                 int? session = (int?)args?["sessionId"];
                 if (session.HasValue) _ = AcknowledgeFrame(session.Value);
+                long now=Stopwatch.GetTimestamp();
+                if((now-lastFrameTicks)*1000.0/Stopwatch.Frequency<30)return;
+                lastFrameTicks=now;
                 try
                 {
                     string data = (string?)args?["data"] ?? "";
@@ -61,7 +69,6 @@ public sealed class BrowserEngine : IDisposable
             }
             if ((string?)evt["method"] != "Runtime.bindingCalled" || (string?)evt["params"]?["name"] != "__oasisPcm") return;
             try { string data=(string?)evt["params"]?["payload"]??""; if(data.Length<=45000) Audio.Write(Convert.FromBase64String(data)); } catch(FormatException) { }
-        };
     }
 
 	private readonly CancellationTokenSource stop = new CancellationTokenSource();
@@ -189,6 +196,7 @@ public sealed class BrowserEngine : IDisposable
 				throw new InvalidOperationException("Neplatné místní spojení Chrome.");
 			}
 			await cdp.ConnectAsync(uri, cancellation).ConfigureAwait(continueOnCapturedContext: false);
+            await mediaCdp.ConnectAsync(uri,cancellation).ConfigureAwait(false);
 		}
 		await cdp.CallAsync("Page.enable", null, cancellation);
 		await cdp.CallAsync("Emulation.setDeviceMetricsOverride", new
@@ -199,11 +207,12 @@ public sealed class BrowserEngine : IDisposable
 			deviceScaleFactor = 1,
 			mobile = false
 		}, cancellation);
-        await cdp.CallAsync("Runtime.enable", null, cancellation);
-        await cdp.CallAsync("Runtime.addBinding", new { name="__oasisPcm" }, cancellation);
-        await cdp.CallAsync("Runtime.addBinding", new { name="__oasisMedia" }, cancellation);
-        if(CaptureAudio) await cdp.CallAsync("Page.addScriptToEvaluateOnNewDocument", new { source=AudioCapture.Script }, cancellation);
-        await cdp.CallAsync("Page.addScriptToEvaluateOnNewDocument", new { source=AudioCapture.MonitorScript }, cancellation);
+        await mediaCdp.CallAsync("Page.enable",null,cancellation);
+        await mediaCdp.CallAsync("Runtime.enable", null, cancellation);
+        await mediaCdp.CallAsync("Runtime.addBinding", new { name="__oasisPcm" }, cancellation);
+        await mediaCdp.CallAsync("Runtime.addBinding", new { name="__oasisMedia" }, cancellation);
+        if(CaptureAudio) await mediaCdp.CallAsync("Page.addScriptToEvaluateOnNewDocument", new { source=AudioCapture.Script }, cancellation);
+        await mediaCdp.CallAsync("Page.addScriptToEvaluateOnNewDocument", new { source=AudioCapture.MonitorScript }, cancellation);
         await cdp.CallAsync("Page.addScriptToEvaluateOnNewDocument", new { source=BrowserPage.Script }, cancellation);
         status = "Prohlížeč připraven • Chrome bez okna • experimentální zvuk ze zařízení";
 	}
@@ -329,10 +338,10 @@ public sealed class BrowserEngine : IDisposable
         try
         {
             await Command("Page.startScreencast", new {
-                format = "jpeg", quality = 75, maxWidth = 960, maxHeight = 960, everyNthFrame = 1
+                format = "jpeg", quality = 75, maxWidth = 960, maxHeight = 960, everyNthFrame = 2
             }, linked.Token).ConfigureAwait(false);
             started = true;
-            Information?.Invoke("Continuous JPEG screencast started: maximum 960x960; latest frame only.");
+            Information?.Invoke("Continuous JPEG screencast started: maximum 960x960; latest frame only, every second Chrome frame, capped at approximately 33 accepted frames/s; separate audio connection.");
             await Task.Delay(Timeout.Infinite, linked.Token).ConfigureAwait(false);
         }
         catch (OperationCanceledException) { }
@@ -371,6 +380,7 @@ public sealed class BrowserEngine : IDisposable
 		{
 		}
 		cdp.Dispose();
+        mediaCdp.Dispose();
 		try
 		{
 			if (chrome != null && !chrome.WaitForExit(2000))

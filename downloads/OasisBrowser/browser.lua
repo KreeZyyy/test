@@ -1,4 +1,4 @@
--- Oasis Browser 0.2.6. Starts installed Chrome headlessly for an active panel. Separate token.
+-- Oasis Browser 0.2.7. Starts installed Chrome headlessly for an active panel. Separate token.
 local TOKEN="PASTE_OASIS_BROWSER_TOKEN_HERE"
 local BASE="http://localhost:18767"
 local headers={["X-Oasis-Browser-Token"]=TOKEN}
@@ -38,13 +38,13 @@ end
 local input
 input=el("query","textinput",M,H-94*S,W-2*M-172*S,42*S,{value="",placeholder="Hledat na YouTube nebo vložit odkaz…",title="Oasis Browser"},{on_change=function(v) text=tostring(v or "");input:set_props({value=text});ui:commit() end})
 el("navigate","button",W-M-160*S,H-94*S,160*S,42*S,{text="Hledat / Otevřít"},{on_click=function() action("navigate",text) end})
-local labels={{"home","YouTube"},{"reload","Obnovit"},{"scroll_up","Nahoru"},{"scroll_down","Dolů"},{"text","Vložit text"},{"enter","Enter"}}
+local labels={{"home","YouTube"},{"reload","Obnovit"},{"scroll_up","Nahoru"},{"scroll_down","Dolů"},{"text","Vložit text"},{"enter","Enter"},{"video_mode","Video / Web"}}
 for i,v in ipairs(labels) do
  local name,label=v[1],v[2]
- el(name,"button",M+(i-1)*160*S,H-46*S,150*S,36*S,{text=label},{on_click=function() action(name,name=="text" and text or nil) end})
+ el(name,"button",M+(i-1)*150*S,H-46*S,140*S,36*S,{text=label},{on_click=function() action(name,name=="text" and text or nil) end})
 end
 
-el("interface","interface_button",M+6*160*S,H-46*S,150*S,36*S,{text="Ovládat web"},{on_click=function(value)
+el("interface","interface_button",M+7*150*S,H-46*S,140*S,36*S,{text="Ovládat web"},{on_click=function(value)
  action("keyboard",tostring(value)=="1")
  if tostring(value)=="1" then message("Ovládání webu zapnuto • Alt/Escape pro návrat") else message("Ovládání webu vypnuto") end
 end})

@@ -65,8 +65,11 @@ public sealed class BrowserView : MonoBehaviour
             audioClip=AudioClip.Create("OasisBrowser PCM",24000,1,24000,true,ReadAudio);
             source.clip=audioClip;
         }
-        if(!source.isPlaying && Browser.Audio.Count>=1024) source.Play();
+        if(!source.isPlaying && Browser.Audio.Count>=4096) source.Play();
     }
+    private float nextAudioReport;
+    private void LateUpdate()
+    {if(AudioEnabled && source!=null && Browser!=null && Time.realtimeSinceStartup>=nextAudioReport){nextAudioReport=Time.realtimeSinceStartup+15;BrowserLog.Info("Device audio buffers: "+Browser.Audio.Statistics);}}
     private void ReadAudio(float[] data)
     { if(Browser!=null) Browser.Audio.Read(data);else Array.Clear(data,0,data.Length); }
 
