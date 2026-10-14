@@ -3,7 +3,7 @@ namespace OasisBrowser;
 public sealed class PcmBuffer
 {
     private readonly object gate = new object();
-    private readonly float[] ring = new float[48000];
+    private readonly float[] ring = new float[4800];
     private int read, count;
     public int Count { get { lock(gate) return count; } }
     public void Clear() { lock(gate) { read=0;count=0; } }

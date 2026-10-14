@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace OasisBrowser;
 
-[StationeersMod("kreezyyy.stationeers.oasisbrowser", "Oasis Browser", "0.2.5")]
+[StationeersMod("kreezyyy.stationeers.oasisbrowser", "Oasis Browser", "0.2.6")]
 public sealed class BrowserPlugin : ModBehaviour
 {
 	internal static BrowserPlugin? Current;
@@ -24,6 +24,7 @@ public sealed class BrowserPlugin : ModBehaviour
     private string executable="";
     private int debugPort;
     private bool headless=true,started;
+    private bool captureAudio=true;
     private CancellationTokenSource? run;
     private Task closing=Task.CompletedTask;
     private float inactiveSince=-1;
@@ -52,8 +53,9 @@ public sealed class BrowserPlugin : ModBehaviour
             bridge.Diagnostic=BrowserLog.Info;
 			bridge.Start();
             headless=Config.Bind("Browser","Hidden",true,"Run Chrome without a visible window. Normal Chrome sandbox remains enabled. Restart after changes.").Value;
+            captureAudio=Config.Bind("Browser","CaptureAudio",true,"Capture browser audio into the device. Disable temporarily to compare YouTube errors with and without Web Audio capture. Restart after changes.").Value;
             if(!OwnerPatch.Install()) BrowserLog.Warn("Oasis Browser: ownership hook unavailable; in-game positional audio cannot be attached.");
-            BrowserLog.Info("Oasis Browser 0.2.5: waiting for an active browser panel; no Chrome process started yet.");
+            BrowserLog.Info("Oasis Browser 0.2.6: waiting for an active browser panel; no Chrome process started yet.");
 		}
 		catch(Exception ex)
 		{
@@ -165,7 +167,7 @@ public sealed class BrowserPlugin : ModBehaviour
     private void StartBrowser()
     {
         BrowserLog.Info("Starting Chrome for active panel. Hidden="+headless+" DebugPort="+debugPort);
-        browser=new BrowserEngine();browser.Diagnostic=BrowserLog.Error;bridge!.SetEngine(browser);
+        browser=new BrowserEngine();browser.Diagnostic=BrowserLog.Error;browser.Information=BrowserLog.Info;browser.MediaDiagnostic=BrowserLog.Warn;browser.CaptureAudio=captureAudio;bridge!.SetEngine(browser);
         foreach(var v in views)if(v!=null)v.Browser=browser;
         started=true;run=CancellationTokenSource.CreateLinkedTokenSource(stop.Token);
         var engine=browser;var cancellation=run.Token;

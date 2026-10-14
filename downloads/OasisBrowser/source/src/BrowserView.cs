@@ -65,7 +65,7 @@ public sealed class BrowserView : MonoBehaviour
             audioClip=AudioClip.Create("OasisBrowser PCM",24000,1,24000,true,ReadAudio);
             source.clip=audioClip;
         }
-        if(!source.isPlaying && Browser.Audio.Count>=2048) source.Play();
+        if(!source.isPlaying && Browser.Audio.Count>=1024) source.Play();
     }
     private void ReadAudio(float[] data)
     { if(Browser!=null) Browser.Audio.Read(data);else Array.Clear(data,0,data.Length); }

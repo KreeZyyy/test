@@ -21,6 +21,9 @@ public sealed class BrowserEngine : IDisposable
 	private readonly CdpClient cdp = new CdpClient();
     public readonly PcmBuffer Audio = new PcmBuffer();
     public Action<string>? Diagnostic;
+    public Action<string>? Information;
+    public Action<string>? MediaDiagnostic;
+    public bool CaptureAudio = true;
     public BrowserEngine()
     {
         cdp.EventReceived += evt =>
@@ -37,6 +40,23 @@ public sealed class BrowserEngine : IDisposable
                         Interlocked.Exchange(ref frame, Convert.FromBase64String(data));
                 }
                 catch (FormatException) { }
+                return;
+            }
+            if ((string?)evt["method"] == "Runtime.bindingCalled" && (string?)evt["params"]?["name"] == "__oasisMedia")
+            {
+                try
+                {
+                    string data=(string?)evt["params"]?["payload"]??"";
+                    if(data.Length<=2048)
+                    {
+                        var media=JObject.Parse(data);
+                        string kind=(string?)media["kind"]??"unknown";
+                        if(kind=="reset")Audio.Clear();
+                        else if(kind=="audio_hooked") Information?.Invoke("Browser audio: "+(string?)media["detail"]);
+                        else MediaDiagnostic?.Invoke("Browser media: "+media.ToString(Formatting.None));
+                    }
+                }
+                catch(JsonException) { }
                 return;
             }
             if ((string?)evt["method"] != "Runtime.bindingCalled" || (string?)evt["params"]?["name"] != "__oasisPcm") return;
@@ -181,7 +201,9 @@ public sealed class BrowserEngine : IDisposable
 		}, cancellation);
         await cdp.CallAsync("Runtime.enable", null, cancellation);
         await cdp.CallAsync("Runtime.addBinding", new { name="__oasisPcm" }, cancellation);
-        await cdp.CallAsync("Page.addScriptToEvaluateOnNewDocument", new { source=AudioCapture.Script }, cancellation);
+        await cdp.CallAsync("Runtime.addBinding", new { name="__oasisMedia" }, cancellation);
+        if(CaptureAudio) await cdp.CallAsync("Page.addScriptToEvaluateOnNewDocument", new { source=AudioCapture.Script }, cancellation);
+        await cdp.CallAsync("Page.addScriptToEvaluateOnNewDocument", new { source=AudioCapture.MonitorScript }, cancellation);
         await cdp.CallAsync("Page.addScriptToEvaluateOnNewDocument", new { source=BrowserPage.Script }, cancellation);
         status = "Prohlížeč připraven • Chrome bez okna • experimentální zvuk ze zařízení";
 	}
@@ -310,7 +332,7 @@ public sealed class BrowserEngine : IDisposable
                 format = "jpeg", quality = 75, maxWidth = 960, maxHeight = 960, everyNthFrame = 1
             }, linked.Token).ConfigureAwait(false);
             started = true;
-            Diagnostic?.Invoke("Continuous JPEG screencast started: 960x540; latest frame only.");
+            Information?.Invoke("Continuous JPEG screencast started: maximum 960x960; latest frame only.");
             await Task.Delay(Timeout.Infinite, linked.Token).ConfigureAwait(false);
         }
         catch (OperationCanceledException) { }

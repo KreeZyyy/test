@@ -1,4 +1,4 @@
--- Oasis Browser 0.2.5. Starts installed Chrome headlessly for an active panel. Separate token.
+-- Oasis Browser 0.2.6. Starts installed Chrome headlessly for an active panel. Separate token.
 local TOKEN="PASTE_OASIS_BROWSER_TOKEN_HERE"
 local BASE="http://localhost:18767"
 local headers={["X-Oasis-Browser-Token"]=TOKEN}
