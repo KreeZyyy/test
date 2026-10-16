@@ -1,13 +1,21 @@
-# Modular Switchboards — 0.6.7 test
+# Modular Switchboards — 0.6.8 test
 
 Prázdná nástěnná skříň 400 × 500 × 180 mm. Nativní elektrické moduly, DIN lišty a
 kabeláž nejsou součástí této verze.
+
+## Změna v 0.6.8
+
+Přidána skutečná reference na dodaný Workshop `LibConstruct.dll`, závislost na
+ModID `LibConstructReloaded` a pořadí načítání. Při startu se ověří dostupnost API,
+před registrací skříně také inicializace knihovny. DLL závislosti se nepřibaluje.
+Kompilace i API probe proti přesně dodané DLL prošly. Načítání ve hře ještě ověřeno není.
+Tato verze připravuje závislost; DIN lišty, board host a montáž modulů ještě nepřidává.
 
 ## Instalace a stavění
 
 Úplně vypni Stationeers a nahraď celou složku
 `Documents/My Games/Stationeers/mods/ModularSwitchboards` složkou z testovacího ZIPu.
-Potřebuje BepInEx, StationeersLaunchPad a LaunchPadBooster. Ve složce mods ponech
+Potřebuje BepInEx, StationeersLaunchPad, LaunchPadBooster a zapnutý **LibConstructReloaded 0.3.0 (Workshop 3751750326)** před naším modem. Jeho knihovna se jmenuje `LibConstruct.dll`; do našeho modu ji nekopíruj. Ve složce mods ponech
 jen jednu verzi DLL. Zdrojový ZIP do mods nepatří.
 
 **Electronics Printer: 10 Copper + 10 Iron + 10 Electrum → 1 kit.**
@@ -35,7 +43,7 @@ deska zůstává světlá; madlo, panty a výstražný znak mají pevné barvy.
 ID předmětů jsou zachovaná; původní dokončený stav 2 se při načtení převádí na 1.
 Uložená poloha, rotace, otevření a barva předmětu používají nativní mechanismus.
 
-## Značka APC v 0.6.7
+## Značka APC v 0.6.8
 
 Značka je nově **nahoře uprostřed a má 65 % původní velikosti APC**. Tvar,
 černý obrys, blesk a materiály pocházejí z původní geometrie. Pod ní zůstává
@@ -73,7 +81,7 @@ Nativní herní soubory není potřeba kopírovat ani měnit.
 
 Důležité řádky logu:
 
-- `0.6.7 loaded`
+- `0.6.8 loaded`
 - `Flat wall measured: ...`
 - `Cabinet fitted to ...; wall thickness=...; clearance=0.000500 m`
 - `APC geometry exported: ... meshes`
@@ -97,7 +105,7 @@ výplně, černého obrysu a blesku a vyřazení nesouvisejících dílů. Test 
 JSON zapisovače ověřil platné pole meshů, číselné souřadnice, escapování názvů a
 nezávislost na desetinné čárce systému. To neověřuje výběr z reálného APC.
 
-**0.6.7 zde nebyla spuštěna ve Stationeers.** Ve hře ověř z boku téměř těsné přiléhání ke stěně, umístění náhledu a kolizí
+**0.6.8 zde nebyla spuštěna ve Stationeers.** Ve hře ověř z boku téměř těsné přiléhání ke stěně, umístění náhledu a kolizí
 a menší značku nahoře uprostřed. Zkontroluj také otevření a barvení.
 Pokud znak stále chybí, pošli nový export a Player.log.
 
@@ -106,7 +114,7 @@ Pokud znak stále chybí, pošli nový export a Player.log.
 Windows s .NET SDK 8+:
 
 ```powershell
-dotnet build -c Release '-p:GamePath=C:\Program Files (x86)\Steam\steamapps\common\Stationeers' '-p:LaunchPadDirectory=C:\Program Files (x86)\Steam\steamapps\common\Stationeers\BepInEx\plugins\StationeersLaunchPad'
+dotnet build -c Release '-p:GamePath=C:\Program Files (x86)\Steam\steamapps\common\Stationeers' '-p:LaunchPadDirectory=C:\Program Files (x86)\Steam\steamapps\common\Stationeers\BepInEx\plugins\StationeersLaunchPad' '-p:LibConstructPath=E:\SteamLibrary\steamapps\workshop\content\544550\3751750326\LibConstruct.dll'
 ```
 
 `blender -b --python Tools/create_simple_cabinet.py` vytvoří vlastní model,
