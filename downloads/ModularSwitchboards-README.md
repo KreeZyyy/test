@@ -1,8 +1,13 @@
-# Modular Switchboards — 0.2.0 test
+# Modular Switchboards — 0.2.1 test
 
-Kit už má stavební variantu **Switchboard Cabinet** a výrobní recept v **Autolathe**.
+Kit už má stavební variantu **Switchboard Cabinet** a výrobní recept v **Electronics Printer**.
 Identita `ItemKitModularSwitchboard` zůstává stejná jako v 0.1.0, takže dříve
 uložené kity mohou stavět nový rozvaděč. Ve hře to musí potvrdit test.
+
+## Změna v 0.2.1
+
+Kit se vyrábí v Electronics Printeru místo Autolathe. Cena za jeden kit je
+10 Copper + 10 Iron + 10 Electrum. Montážní materiály a stavební postup jsou stejné.
 
 ## Instalace / aktualizace
 
@@ -11,14 +16,14 @@ uložené kity mohou stavět nový rozvaděč. Ve hře to musí potvrdit test.
    novou složkou `ModularSwitchboards` z testovacího ZIPu. Neponechávej druhou kopii
    staré DLL v jiné podsložce mods; LaunchPad načítá DLL i z podsložek.
 3. Zapni mod v LaunchPadu a načti testovací svět.
-4. Ve spawn menu nebo v Autolathe hledej **Kit (Switchboard)**.
+4. Ve spawn menu nebo v Electronics Printer hledej **Kit (Switchboard)**.
 
 Potřebuje BepInEx a StationeersLaunchPad s LaunchPadBooster. Další knihovny ani
 Unity projekt se neinstalují. Zdrojový ZIP do složky mods nepatří.
 
 ## Výroba kitu
 
-**Autolathe, Tier 1: 20 jednotek Iron → 1 Kit (Switchboard)**.
+**Electronics Printer, Tier 1: 10 Copper + 10 Iron + 10 Electrum → 1 Kit (Switchboard)**.
 Základní recept má čas 5 s a energii 1000 J; výsledný čas a energie podléhají
 běžným násobičům výrobního stroje. Jde o první návrh ceny pro testování.
 
@@ -62,14 +67,16 @@ jističe, měření, kontrolky), následně propojení se současnou sítí Stat
 Kompilace proti dodané Assembly-CSharp.dll, LaunchPadBooster.dll, 0Harmony.dll
 prošla. Pro sestavení zde byly použity referenční UnityEngine.Modules 2021.3.33
 z NuGet; pro vlastní build použij knihovny ze své instalace hry.
-Stationeers zde nelze spustit. 0.2.0 tedy zatím nemá herní ověření výroby,
-stavby, demontáže, ukládání skříně ani multiplayeru. Verzi 0.1.0 už hráč ověřil
+Stationeers zde nelze spustit. Hráč ověřil ve verzi 0.2.0 tisk v Autolathe,
+umístění skříně a dokončení všech montážních fází. Ve verzi 0.2.1 je potřeba
+ověřit nový recept v Electronics Printeru. Demontáž, ukládání skříně a multiplayer
+zůstávají bez herního ověření. Verzi 0.1.0 už hráč ověřil
 pro registraci, spawn, držení kitu a načtení uloženého kitu.
 
 Ověř ve zkušebním světě:
 
 - Starý kit z uložené hry nabízí Switchboard Cabinet.
-- Nově vyrobený kit se objeví v Autolathe a výrobní suroviny se odečtou.
+- Nově vyrobený kit se objeví v Electronics Printer a výrobní suroviny se odečtou.
 - Jedna stavba v survival režimu spotřebuje přesně jeden kit, dva plechy a dva kabely.
 - V každé rozestavěné fázi lze uložit a načíst svět a pokračovat.
 - Demontáž podle tabulky vrátí stejný kit i montážní materiály.
@@ -77,10 +84,10 @@ Ověř ve zkušebním světě:
 
 V `BepInEx/LogOutput.log` hledej:
 
-- `[Modular Switchboards] 0.2.0 loaded.`
+- `[Modular Switchboards] 0.2.1 loaded.`
 - `Registration verified: kit + cabinet, 3 build states.`
-- `Autolathe recipe added: 20 Iron -> 1 kit.`
-- `Autolathe recipe verified.`
+- `Electronics Printer recipe added: 10 Copper + 10 Iron + 10 Electrum -> 1 kit.`
+- `Electronics Printer recipe verified.`
 
 Při potížích pošli celý log a napiš, který krok selhal.
 
@@ -103,7 +110,7 @@ Tři stavební stavy mají vlastní ToolUse a seznamy; zachovávají data vykres
 z kopie skříňky. Hra zajišťuje stavbu, ukládání stavebního stavu a demontáž.
 
 Prefix `DynamicThingRecipeComparable.GenerateRecipieList` přidává recept jen pro
-Autolathe, po načtení datových souborů a před tvorbou seznamů a hashů receptů.
+ElectronicsPrinter.RecipeComparable, po načtení datových souborů a před tvorbou seznamů a hashů receptů.
 Používá nativní AddRecipe, včetně registrace recyklace a synchronizace receptů.
 Přítomnost receptu i záznamu v tiskové nabídce kontroluje callback po načtení dat.
 
