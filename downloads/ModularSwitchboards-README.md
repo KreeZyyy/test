@@ -1,8 +1,14 @@
-# Modular Switchboards — 0.3.2 test
+# Modular Switchboards — 0.3.3 test
 
-Oprava 0.3.2: resetuje zděděné přichytávání původní skříňky. Vypíná její
+Oprava 0.3.3: používá SmallGrid.SmallGridSize=0.5 a SmallGrid.SmallGridOffset=0.25.
+Předchozí nulový offset byl chybný: nativní GridCenter přičítá polovinu velikosti
+buňky. S nulovým offsetem tak rovinu stěny posunul o čtvrt metru a nativní
+CanMountOnWall mohl odmítnout pozici mimo Face/Edge/Corner. Nyní odpovídá offset
+malému rastru hry a základna modelu zůstává v lokální rovině Z=0.
+
+Předchozí oprava 0.3.2: resetuje zděděné přichytávání původní skříňky. Vypíná její
 privátní snapování podle os (které jinak přebíjí veřejné GridSize/GridOffset),
-ponechává rovnoměrný 0,5m rastr s nulovým offsetem a vypíná požadavek výhradně
+nastavovala rovnoměrný 0,5m rastr, ale ještě s chybným nulovým offsetem a vypíná požadavek výhradně
 na podpěrný rám, aby fungovala i montáž na podporovanou stěnu. Resetuje také
 zděděné rozšíření registračních bounds. Nativní kontrola podpěry a kolizí zůstává aktivní.
 Tuto úpravu je nutné ověřit ve hře. Uživatel upřesnil, že 0.3.0 nešlo umístit
@@ -76,7 +82,7 @@ Ověřena integrita zabalené geometrie: 4 části, 14 641 trojúhelníků, plat
 normály, rozměry a přesná shoda vloženého resource s exportem z Blenderu.
 ZIP je kontrolován na integritu a obsahuje jedinou mod DLL.
 
-**Verze 0.3.0 se ve hře načetla, ale hráč nahlásil růžový model/náhled. Opravy materiálu a uchycení z 0.3.2 dosud nemají herní ověření.** Barvy/shadery, viditelnost,
+**Verze 0.3.0 se ve hře načetla, ale hráč nahlásil růžový model/náhled. Hráč potvrdil odstranění růžové ve 0.3.2, ale uchycení zůstalo chybné. Korekce rastru ve 0.3.3 ještě nemá herní ověření.** Barvy/shadery, viditelnost,
 kolize, FaceMount, stavební náhled, otevírání, save/load a multiplayer vyžadují test.
 Hráč dříve potvrdil tisk a kompletní stavbu ve 0.2.0 i nový tiskový recept ve 0.2.1.
 
@@ -90,8 +96,8 @@ Doporučený krátký test:
 
 V `BepInEx/LogOutput.log` hledej:
 
-- `[Modular Switchboards] 0.3.2 loaded.`
-- `Wall mount reset: uniform 0.5 m snap, zero offset, wall/frame support.`
+- `[Modular Switchboards] 0.3.3 loaded.`
+- `Wall mount reset: native small grid (0.5 m, offset 0.25 m), wall/frame support.`
 - `Cabinet native shader: ...`
 - `Native cursor shader applied: ...` (při vytvoření stavebního náhledu)
 - `Blender geometry loaded: housing, mounting, wiring, door.`
