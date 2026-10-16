@@ -1,4 +1,4 @@
-# Modular Switchboards — 0.6.2 test
+# Modular Switchboards — 0.6.3 test
 
 Prázdná nástěnná skříň, 400 × 500 × 180 mm. Dvě skutečné stavební fáze a vlastní
 náhledy rámu a hotové skříně; kit má standardní herní ikonu elektrické stavebnice. DIN lišty, kabeláž a elektrické moduly přijdou později.
@@ -26,11 +26,18 @@ odstraněné. Kit má původní ikonku i model elektrické stavebnice (Logic Swi
 ne obrázek hotové skříně. Vlastní obrázky F1 pocházejí z offline modelu; nativní
 výstražný znak se doplňuje až ve hře a na těchto obrázcích není.
 
-## Změny 0.6.2
+## Změny 0.6.3
+
+Sprej nově barví celou skříň včetně vnitřních boků, horní a spodní stěny a obou
+stran dvířek. Pouze samostatná zadní montážní deska zůstává světle šedá. Madlo
+a případný výstražný znak mají stále pevné barvy. Odsazení, panty a výroba se nemění.
+Hledání znaku APC je stejné jako v 0.6.2 a není potvrzené ve hře.
+
+## Diagnostika znaku z 0.6.2
 
 Dodané `Player.log` potvrdilo `Native APC warning not located`, bez chyby při
 čtení textur. 0.6.1 tedy znak nevytvořila, protože ho omezené hledání nenašlo.
-0.6.2 prohledává barevné vlastnosti materiálů všech rendererů APC včetně skinned
+0.6.3 prohledává barevné vlastnosti materiálů všech rendererů APC včetně skinned
 meshů, všechny vrstvy texturových polí a nativní index materiálu/property blocku.
 Respektuje také scale/offset UV příslušné textury.
 
@@ -75,9 +82,9 @@ uvnitř tohoto trojúhelníku. Nejde o překopírování celého atlasu na každ
 o reprodukci větracích drážek APC. Normálové mapování používá přepočítané tangenty.
 Nativní herní textury nejsou součástí ZIPu a originální APC se neupravuje.
 
-- Plášť a vnější strana dvířek používají nativní `CustomColorMapping` a barvu objektu.
-- Pevné vnitřní plochy používají světlý herní odstín; výstražný znak žlutou a černou.
-- Po nativní změně barvy se znovu nastaví pevné indexy vnitřku a znaku.
+- Celý plášť včetně vnitřních boků a obě strany dvířek používají nativní `CustomColorMapping` a barvu objektu.
+- Pouze samostatná zadní montážní deska má pevný světlý herní odstín; výstražný znak žlutou a černou.
+- Po nativní změně barvy se znovu nastaví pevné indexy montážní desky a znaku.
 - Nastavení světelných sond, stínů, odrazů a index lesku se přebírají z APC.
 - Nepřidává se světlo ani umělé svícení povrchu.
 
@@ -106,7 +113,7 @@ přebírá nativní ikonku. Test detekce znaku prošel pro čtyři orientace v a
 odmítnutí jednolité žluté plochy; skutečná textura APC v tomto prostředí není. Prošel výpočet
 84 případů montážního rastru a integrita ZIPu.
 
-**0.6.2 zde nebyla spuštěna ve Stationeers.** Správnost načtení nativních UV,
+**0.6.3 zde nebyla spuštěna ve Stationeers.** Správnost načtení nativních UV,
 světla, barvení, F1, montáže a načítání uložené skříně musí potvrdit test ve hře:
 
 1. Ve F1 se pro konstrukci zobrazí rám a hotová skříň; kit má běžný herní obrázek stavebnice.
@@ -115,11 +122,11 @@ světla, barvení, F1, montáže a načítání uložené skříně musí potvrd
 4. Panty jsou při pohledu zepředu vpravo, madlo vlevo a otevření zleva doprava směřuje ven.
    Dokončená skříň ani její vnitřek neprocházejí plnou stěnou.
 5. Nativní znak APC je dole vlevo, špičkou nahoru, s černým obrysem a bleskem.
-   Sprej mění plášť a dvířka; vnitřek a výstražný znak zachovávají barvu.
+   Sprej mění plášť i zevnitř a obě strany dvířek; jen zadní montážní deska, madlo a výstražný znak zachovávají barvu.
 6. Uložení a načtení zachová stav, barvu a otevření.
 
 Pokud kit zmizí nebo materiály selžou, pošli `BepInEx/LogOutput.log`.
-Důležité řádky: `0.6.2 loaded`, `APC painted panel UV anchor`,
+Důležité řádky: `0.6.3 loaded`, `APC painted panel UV anchor`,
 `Native APC panel textures retained`, `Native APC texture mapping ready`,
 `Native APC warning reused`, `Native APC warning not located`,
 `Registration verified` nebo `Prefab setup failed`.
