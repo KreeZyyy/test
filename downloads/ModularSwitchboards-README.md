@@ -1,4 +1,10 @@
-# Modular Switchboards — 0.3.0 test
+# Modular Switchboards — 0.3.1 test
+
+Oprava 0.3.1: materiály už nevybírají Standard/URP shader přes Shader.Find.
+Kopírují nativní barevné materiály hry včetně nastavení a vazeb textur.
+Stavební náhled při vytvoření použije CursorManager.CursorShader. Pokud není
+k dispozici, ponechá podporovaný nativní materiál. Odstíny modelu jsou zatím
+přibližné podle herní palety. Tvar, recept i montážní fáze jsou stejné.
 
 Nový model nástěnné skříně **400 × 500 × 180 mm** je součástí modu:
 
@@ -62,7 +68,7 @@ Ověřena integrita zabalené geometrie: 4 části, 14 641 trojúhelníků, plat
 normály, rozměry a přesná shoda vloženého resource s exportem z Blenderu.
 ZIP je kontrolován na integritu a obsahuje jedinou mod DLL.
 
-**Verze 0.3.0 dosud nebyla spuštěná ve Stationeers.** Barvy/shadery, viditelnost,
+**Verze 0.3.0 se ve hře načetla, ale hráč nahlásil růžový model/náhled. Oprava 0.3.1 dosud nemá herní ověření.** Barvy/shadery, viditelnost,
 kolize, FaceMount, stavební náhled, otevírání, save/load a multiplayer vyžadují test.
 Hráč dříve potvrdil tisk a kompletní stavbu ve 0.2.0 i nový tiskový recept ve 0.2.1.
 
@@ -76,7 +82,9 @@ Doporučený krátký test:
 
 V `BepInEx/LogOutput.log` hledej:
 
-- `[Modular Switchboards] 0.3.0 loaded.`
+- `[Modular Switchboards] 0.3.1 loaded.`
+- `Cabinet native shader: ...`
+- `Native cursor shader applied: ...` (při vytvoření stavebního náhledu)
 - `Blender geometry loaded: housing, mounting, wiring, door.`
 - `New wall cabinet mesh installed: 400x500x180 mm, two DIN rows.`
 - `Registration verified: kit + cabinet, 3 build states.`
@@ -108,5 +116,4 @@ blender -b --python Tools/export_runtime_mesh.py -- path/to/SwitchboardCabinet.b
 ```
 
 Nativní herní prefaby se nemění; veškeré zásahy a Harmony prefixy jsou omezené
-na vlastní skříň, kit a její recept. Importované Unity materiály modelu jsou
-jednoduché barevné PBR materiály s náhradou dostupným herním shaderem.
+na vlastní skříň, kit a její recept. Materiály vycházejí z nativní herní palety; klonují její materiály včetně shader variant a textur.
