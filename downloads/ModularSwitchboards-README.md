@@ -1,4 +1,4 @@
-# Modular Switchboards — 0.6.4 test
+# Modular Switchboards — 0.6.5 test
 
 Prázdná nástěnná skříň 400 × 500 × 180 mm. Nativní elektrické moduly, DIN lišty a
 kabeláž nejsou součástí této verze.
@@ -28,7 +28,10 @@ deska zůstává světlá; madlo, panty a výstražný znak mají pevné barvy.
 ID předmětů jsou zachovaná; původní dokončený stav 2 se při načtení převádí na 1.
 Uložená poloha, rotace, otevření a barva předmětu používají nativní mechanismus.
 
-## Značka APC v 0.6.4
+## Značka APC v 0.6.5
+
+Jedinou změnou proti ve hře potvrzené 0.6.4 je vodorovné vystředění značky dole
+na dvířkách. Původní rozměry, geometrie, materiály a výška umístění zůstávají stejné.
 
 Dodané podklady ukázaly, že ColorWhite/ColorRed/ColorOrange jsou barevné palety;
 žlutočerný výstražný symbol v nich jako samostatný obrázek není. Předchozí export
@@ -37,7 +40,7 @@ geometrie přes JsonUtility vytvořil pouze `{}`.
 Nový kód nejdřív čte původní geometrii dvířek APC. Podle vzorků palety vybere
 spojené žluté plochy v dolní části dvířek a sousední černé plochy obrysu/blesku.
 Přenáší tyto původní trojúhelníky, UV, materiály, rozměry a nastavení světla na
-naše dvířka, dole vlevo. Originální APC se nemění; herní data nejsou v ZIPu.
+naše dvířka, dole uprostřed. Originální APC se nemění; herní data nejsou v ZIPu.
 Nejde o ručně překreslený symbol. Výběr skutečného symbolu musí potvrdit herní test.
 
 Pokud geometrický výběr selže, zůstává starší hledání v barevných texturách.
@@ -60,7 +63,7 @@ Nativní herní soubory není potřeba kopírovat ani měnit.
 
 Důležité řádky logu:
 
-- `0.6.4 loaded`
+- `0.6.5 loaded`
 - `APC geometry exported: ... meshes`
 - `APC Door geometry: ... faces, ... yellow faces`
 - `Native APC warning geometry reused: ...`
@@ -77,7 +80,7 @@ výplně, černého obrysu a blesku a vyřazení nesouvisejících dílů. Test 
 JSON zapisovače ověřil platné pole meshů, číselné souřadnice, escapování názvů a
 nezávislost na desetinné čárce systému. To neověřuje výběr z reálného APC.
 
-**0.6.4 zde nebyla spuštěna ve Stationeers.** Ve hře ověř znak na zavřených
+**0.6.5 zde nebyla spuštěna ve Stationeers.** Ve hře ověř znak na zavřených
 nových dvířkách, jeho orientaci, černý obrys a blesk a zachování barev při spreji.
 Pokud znak stále chybí, pošli nový export a Player.log.
 
