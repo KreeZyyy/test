@@ -1,89 +1,85 @@
-# Modular Switchboards — 0.5.0 test
+# Modular Switchboards — 0.6.0 test
 
-Jednoduchá prázdná skříň. Žádné DIN lišty ani kabeláž; ty přijdou později jako
-samostatně osazované díly. Rozměry zůstávají 400 × 500 × 180 mm bez distančníků.
+Prázdná nástěnná skříň, 400 × 500 × 180 mm. Dvě skutečné stavební fáze a vlastní
+náhledy kitu, rámu a hotové skříně. DIN lišty, kabeláž a elektrické moduly přijdou později.
 
 ## Instalace
 
 Úplně vypni hru a nahraď celou složku
 `Documents/My Games/Stationeers/mods/ModularSwitchboards` složkou z testovacího ZIPu.
-Neponechávej starou DLL v podsložkách mods. Potřebuje BepInEx a StationeersLaunchPad
+Neponechávej staré DLL v podsložkách mods. Potřebuje BepInEx a StationeersLaunchPad
 s LaunchPadBooster. Zdrojový ZIP do mods nepatří.
 
-## Výroba a montáž
+## Výroba a stavění
 
 **Electronics Printer: 10 Copper + 10 Iron + 10 Electrum → 1 kit.**
 
-| Krok | Aktivní ruka | Spotřeba | Výsledek |
+| Krok | Nástroj / předmět | Spotřeba | Výsledek |
 | --- | --- | --- | --- |
-| Umístění | Kit (Switchboard) | 1 kit | Základ prázdné skříně |
-| Smontování | Wrench | 2 Iron Sheets v druhé ruce | Dokončená skříň s plným kovovým krytem |
+| Umístění | Kit (Switchboard) | 1 kit | Holý montážní rám, bez panelů a dvířek |
+| Dokončení | Wrench | 2 Iron Sheets v druhé ruce | Kompletní prázdná skříň s otevíracími dvířky |
 
-Kryt se objeví po dokončení. Jde otevřít a zavřít herní interakcí Open.
-Demontáž: **Wrench** vrátí 2 plechy, **Drill** vrátí kit.
-Kabely, šroubovák ani štípačky pro tuto skříň nejsou potřeba.
+Demontáž: Wrench vrátí plechy, Drill vrátí kit. Kabely nejsou potřeba.
+Před dokončením není dostupná interakce Open. Každá fáze má vlastní kolize a
+náhled v `BuildState.Thumbnail`. Kit i hotová skříň mají vlastní `Thing.Thumbnail`;
+zděděné barevné náhledy Lockeru jsou odstraněné. Fyzický kit v ruce zatím používá
+původní model stavebnice, jeho vlastní ikona ukazuje zabalenou skříň.
 
-## Vzhled a barvení
+## Materiály a opravy modelu
 
-- Plášť a vnější strana plného krytu jsou přebarvitelné sprejem.
-- Vnitřní povrchy, prázdná zadní deska a vnitřní strana krytu zůstávají světle šedé.
-- Žlutý trojúhelník s černým bleskem a černé madlo mají pevnou barvu.
-- Nejsou tu sklo, lišty, kabelové žlaby, kabely ani elektronické prvky.
+Předchozí export obracel trojúhelníky i při převodu souřadnic s determinantem +1.
+Pořadí vrcholů proto nesouhlasilo s normálami. Opravený export a kontrola všech
+1517 trojúhelníků nyní ověřují, že jejich orientace souhlasí s normálami.
+To opravuje konkrétní chybu geometrie; výsledné osvětlení je ještě nutné ověřit ve hře.
 
-Používá se nativní herní shader a nastavení odrazů, světelných sond, stínů a lesku
-podle dostupného APC. Každý renderer má vlastní kotvu světelných sond na geometrii,
-nikoli ve stěně. Nejsou přidaná světla ani umělé svícení materiálu.
+Nová verze už nenahrazuje herní textury jednobodovými texturami. Ponechává nativní
+materiál pro barvení včetně jeho textur a shaderu. Při registraci vyhledá velký
+lakovaný trojúhelník na nativním APC a UV našich plechů promítne do malého výřezu
+uvnitř tohoto trojúhelníku. Nejde o překopírování celého atlasu na každý plech ani
+o reprodukci větracích drážek APC. Normálové mapování používá přepočítané tangenty.
+Nativní herní textury nejsou součástí ZIPu a originální APC se neupravuje.
 
-Barevné pruhy z 0.4.0 byly důsledkem vzorkování nativního atlasu cizími UV.
-Nově mají povrchy jednobodové textury v nativním formátu Texture2DArray.
-Všechny vrstvy barvitelné textury mají aktuálně zvolenou herní barvu, takže UV
-ani volba vrstvy nemohou ukázat jiný atlasový výřez. Barva se aktualizuje při
-nativní změně barvy objektu. Pevné části mají vlastní jednobarevné textury.
+- Plášť a vnější strana dvířek používají nativní `CustomColorMapping` a barvu objektu.
+- Pevné vnitřní plochy používají světlý herní odstín; výstražný znak žlutou a černou.
+- Po nativní změně barvy se znovu nastaví pevné indexy vnitřku a znaku.
+- Nastavení světelných sond, stínů, odrazů a index lesku se přebírají z APC.
+- Nepřidává se světlo ani umělé svícení povrchu.
 
-## Uchycení
+Čtení UV podporuje čitelné CPU meshe i GPU vertex/index buffery pro importované
+meshe bez Read/Write. Pokud žádný lakovaný panel APC nejde přečíst, registrace
+skončí chybou v logu místo použití náhodného výřezu atlasu. Tento runtime přístup
+je nový a zde nebyl ověřen ve spuštěné hře.
 
-Bod uchycení používá opravený nativní malý rastr (0.5 m, offset 0.25 m).
-Orientace vizuálního modelu se přizpůsobí znaménku středu nativního APC vůči
-jeho montážní rovině. Pokud nativní rozměry neposkytují směr, použije se -Z.
-Model, kolize, náhled a bounds používají stejnou orientaci a odsazení 120 mm.
-Vnější pohled a odstup od skutečné stěny je ještě nutné potvrdit ve hře.
+## Uchycení a uložené předměty
 
-## Uložené skříně
+Uchycení zachovává rastr 0.5 m s offsetem 0.25 m, orientaci podle montážní roviny APC
+a distančníky 120 mm. Ověření uchycení na skutečné plné stěně zůstává herním testem.
+Prefab ID kitu i skříně zůstávají stejné. Starší dokončený stavební stav 2 se při
+načtení převede na stav 1; stav 1 zůstává dokončenou skříní. Starý stav 0 nově
+zobrazuje rám. Dříve spotřebované kabely se při migraci automaticky nevracejí.
+Barva a otevření používají nativní síťový a ukládací mechanismus.
 
-Prefab ID kitu i skříně zůstávají zachované. Dříve dokončený stavební stav 2 se
-při načtení převede na nový dokončený stav 1. Starší stav 1 už také znamená hotovou
-skříň. Dřívější barva skříně může zůstat uložená; pro výchozí šedou postav novou
-skříň nebo použij sprej. Barva, stav krytu a nový stavební stav používají herní save.
-Předchozí spotřebované kabely se při migraci automaticky nevracejí.
+## Ověření
 
-## Co je ověřeno
+Prošla kompilace proti dodané herní DLL a Unity referencím, kontrola vloženého
+modelu, rozsahů indexů, rozměrů všech částí, normálů a orientace trojúhelníků.
+Ikony jsou tři různé PNG 256 × 256 a jsou vložené přímo v DLL. Prošel výpočet
+84 případů montážního rastru a integrita ZIPu.
 
-Prošla kompilace proti dodané herní DLL a referenčním Unity knihovnám.
-Ověřena nová geometrie: 1085 trojúhelníků, tři části a pět materiálových rolí,
-platné indexy a normály, oddělené barvitelné plochy a žlutý/černý symbol.
-Prošel regresní výpočet malého rastru. Balíček se kontroluje na integritu.
-**0.5.0 zde nebyla spuštěna ve Stationeers**; mapování barev, světlo, orientace,
-montáž, barvení a migrace uložené skříně potřebují herní test.
+**0.6.0 zde nebyla spuštěna ve Stationeers.** Správnost načtení nativních UV,
+světla, barvení, F1, montáže a načítání uložené skříně musí potvrdit test ve hře:
 
-Krátký test:
+1. Ve F1 se pro konstrukci zobrazí rám a hotová skříň, ne Locker.
+2. Z nového kitu se položí pouze rám, bez plných panelů a dvířek.
+3. Wrench + 2 plechy přidají celou skříň a funkční kryt.
+4. Otevřený vnitřek zůstává světlý; baterka neukazuje černé převrácené plochy.
+5. Sprej mění plášť a dvířka; vnitřek a výstražný znak zachovávají barvu.
+6. Uložení a načtení zachová stav, barvu a otevření.
 
-1. Nově položená skříň se z boku celá nachází před stěnou.
-2. Klíč + 2 plechy dokončí skříň a objeví se kovový kryt.
-3. Otevřený vnitřek je světle šedý a prázdný.
-4. Pod baterkou nejsou barevné pruhy; srovnej reakci na světlo s APC.
-5. Sprej mění jen plášť a vnější kryt. Vnitřek, madlo a symbol se nemění.
-6. Po uložení a načtení přetrvají barva, stav konstrukce a otevření.
-
-V logu se hodí:
-
-- `[Modular Switchboards] 0.5.0 loaded.`
-- `APC mounting orientation: front sign ...; APC bounds centre ...`
-- `Simple native surfaces loaded; flat palette, no atlas UV tiles; shader ...`
-- `Selective paint mappings ready: 2; light-grey interior and fixed warning symbol.`
-- `Registration verified: kit + cabinet, 2 build states.`
-
-Při chybě pošli `BepInEx/LogOutput.log` a screenshot. Ikona kitu zůstává dočasná.
-Elektrická síť a osazované moduly nejsou součástí této verze.
+Pokud kit zmizí nebo materiály selžou, pošli `BepInEx/LogOutput.log`.
+Důležité řádky: `0.6.0 loaded`, `APC painted panel UV anchor`,
+`Native APC panel textures retained`, `Native APC texture mapping ready`,
+`Registration verified` nebo `Prefab setup failed`.
 
 ## Zdrojový projekt
 
@@ -93,8 +89,6 @@ Windows s .NET SDK 8+:
 dotnet build -c Release '-p:GamePath=C:\Program Files (x86)\Steam\steamapps\common\Stationeers' '-p:LaunchPadDirectory=C:\Program Files (x86)\Steam\steamapps\common\Stationeers\BepInEx\plugins\StationeersLaunchPad'
 ```
 
-`Art/SimpleSwitchboard.blend` a `.glb` obsahují nový jednoduchý model.
-`blender -b --python Tools/create_simple_cabinet.py` přegeneruje model i vložená
-mesh data v `Assets/Cabinet.meshbin`. Starý exportér pro složitou skříň již nepoužívej.
-`python Tools/validate_paint_masks.py` kontroluje geometrii a materiálové role.
-Herní balíček obsahuje jen About.xml a mod DLL s vloženými mesh daty.
+`blender -b --python Tools/create_simple_cabinet.py` vytvoří model, GLB, vložená
+mesh data i ikony. `python Tools/validate_paint_masks.py` ověří geometrii a ikony.
+Herní balíček obsahuje About.xml a jedinou DLL se všemi vlastními vizuálními daty.
