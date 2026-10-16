@@ -1,119 +1,112 @@
-# Modular Switchboards — 0.2.1 test
+# Modular Switchboards — 0.3.0 test
 
-Kit už má stavební variantu **Switchboard Cabinet** a výrobní recept v **Electronics Printer**.
-Identita `ItemKitModularSwitchboard` zůstává stejná jako v 0.1.0, takže dříve
-uložené kity mohou stavět nový rozvaděč. Ve hře to musí potvrdit test.
+Nový model nástěnné skříně **400 × 500 × 180 mm** je součástí modu:
 
-## Změna v 0.2.1
+- Prázdná skříň se dvířky, montážní deska se dvěma DIN lištami, kabelové žlaby a příprava vodičů.
+- Jednotlivé části se zobrazují podle stavební fáze.
+- Dvířka používají nativní herní interakci Open; jejich pohyb obstarává nový model.
+- Umísťování na stěny přes FaceMount, nové kolize a náhled při stavbě.
 
-Kit se vyrábí v Electronics Printeru místo Autolathe. Cena za jeden kit je
-10 Copper + 10 Iron + 10 Electrum. Montážní materiály a stavební postup jsou stejné.
+Model se načítá ze zabalených dat přímo do Unity meshů. Nevyžaduje Unity editor,
+asset bundle, LibConstruct ani externí GLB importer. DLL obsahuje veškerou geometrii.
+Identita kitu i skříně a nativní datový typ skříně zůstávají zachované.
 
 ## Instalace / aktualizace
 
-1. Úplně vypni hru.
-2. Nahraď předchozí složku `Documents/My Games/Stationeers/mods/ModularSwitchboards`
-   novou složkou `ModularSwitchboards` z testovacího ZIPu. Neponechávej druhou kopii
-   staré DLL v jiné podsložce mods; LaunchPad načítá DLL i z podsložek.
-3. Zapni mod v LaunchPadu a načti testovací svět.
-4. Ve spawn menu nebo v Electronics Printer hledej **Kit (Switchboard)**.
+1. Úplně vypni Stationeers.
+2. Nahraď celou starou složku `Documents/My Games/Stationeers/mods/ModularSwitchboards`
+   složkou `ModularSwitchboards` z nového testovacího ZIPu.
+3. Neponechávej druhou kopii staré DLL v podsložkách mods.
+4. Zapni mod v LaunchPadu. Ověř ho nejdřív ve zkušebním světě.
 
-Potřebuje BepInEx a StationeersLaunchPad s LaunchPadBooster. Další knihovny ani
-Unity projekt se neinstalují. Zdrojový ZIP do složky mods nepatří.
+Potřebuje BepInEx a StationeersLaunchPad s LaunchPadBooster.
+Zdrojový ZIP do složky mods nepatří.
 
-## Výroba kitu
+## Výroba
 
-**Electronics Printer, Tier 1: 10 Copper + 10 Iron + 10 Electrum → 1 Kit (Switchboard)**.
-Základní recept má čas 5 s a energii 1000 J; výsledný čas a energie podléhají
-běžným násobičům výrobního stroje. Jde o první návrh ceny pro testování.
+**Electronics Printer, Tier 1: 10 Copper + 10 Iron + 10 Electrum → 1 Kit (Switchboard).**
+Základní čas je 5 s a energie 1000 J před násobiči stroje.
+Cena ani počet potřebných kitů se oproti 0.2.1 nemění.
+Ikona a model samotného kitu jsou zatím stále převzaté z vanilla kitu.
 
-## Stavba a demontáž
+## Stavba
 
-| Krok | Aktivní ruka | Druhá ruka / spotřeba | Výsledek |
+Vyber variantu **Switchboard Cabinet** a zamiř na stěnu, která umožňuje montáž
+(například stěnu nebo rám podporující herní FaceMount). Připrav dost místa pro
+otevření levých dvířek. Geometrie má dvě lišty po 12 pozicích; moduly zatím nejsou dostupné.
+
+| Krok | Aktivní ruka | Druhá ruka / spotřeba | Co přibude |
 | --- | --- | --- | --- |
-| Umístění | Kit (Switchboard) | 1 kit | Skříň, stav 0 |
-| Montáž základu pro lišty | Wrench | 2 Iron Sheets | Stav 1 |
-| Příprava kabeláže | Screwdriver | 2 Cable Coil | Dokončená prázdná skříň, stav 2 |
+| Umístění | Kit (Switchboard) | 1 kit | Skříň a dvířka |
+| Montáž | Wrench | 2 Iron Sheets | Montážní deska a dvě DIN lišty |
+| Kabeláž | Screwdriver | 2 Cable Coil | Kabelové žlaby a příprava vodičů |
 
-Nástroje se nespotřebují. Akce mají základní délku 2 s před herními násobiči.
-Demontáž probíhá obráceně:
+Otevři dvířka běžnou interakcí a sleduj přidávání částí. Nástroje se nespotřebují.
+Demontáž jde obráceně: Wire Cutters → Wrench → Drill; vrací kabely, plechy a kit.
+Spotřebu a návrat materiálů řídí standardní ToolUse hry. Kreativní režim může spotřebu obejít.
+Skříň zatím nemá elektrické přívody, jističe, měření ani osazovací systém.
 
-1. **Wire Cutters**: vrátí 2 Cable Coil, stav 2 → 1.
-2. **Wrench**: vrátí 2 Iron Sheets, stav 1 → 0.
-3. **Drill**: odstraní skříň a vrátí 1 Kit (Switchboard).
+## Uložené předměty
 
-Návrat materiálů zajišťuje standardní herní ToolUse.Deconstruct. V kreativním
-režimu hra může spotřebu při umístění obejít; výrobní cenu a spotřebu ověř také
-v survival režimu. Při poničení skříně se uplatní běžná pravidla hry pro poškození.
+Kit používá `ItemKitModularSwitchboard`, skříň `StructureModularSwitchboard`.
+Existující skříň tedy dostane novou geometrii při načtení. Její stavební fáze a
+stav Open pocházejí z nativního save data. Změnu je ještě třeba ověřit ve hře.
+Dříve postavené skříně se automaticky nepřemístí ze svého uloženého místa na stěnu;
+pro test správného uchycení postav novou skříň.
 
-## Dočasný vzhled a další vývoj
+## Ověření
 
-Skříň používá kopii nativního prefabu třídy Locker (přednostně malou skříňku,
-pokud ji daná verze hry obsahuje). Velikost, umisťování a otevírání odpovídají
-této herní skříňce. Není to finální nástěnný model rozvaděče.
-Inventář skříňky je odstraněn; neslouží jako běžný sklad.
+Prošlo sestavení proti uživatelem dodaným Assembly-CSharp, LaunchPadBooster a Harmony.
+Pro sestavení zde slouží referenční UnityEngine.Modules 2021.3.33 z NuGet.
+Ověřena integrita zabalené geometrie: 4 části, 14 641 trojúhelníků, platné indexy,
+normály, rozměry a přesná shoda vloženého resource s exportem z Blenderu.
+ZIP je kontrolován na integritu a obsahuje jedinou mod DLL.
 
-**Všechny tři stavební stavy mají stejný dočasný vzhled.** Jejich postup určují
-herní stavební stavy a požadované nástroje. Popis ve Stationpedii uvádí postup.
+**Verze 0.3.0 dosud nebyla spuštěná ve Stationeers.** Barvy/shadery, viditelnost,
+kolize, FaceMount, stavební náhled, otevírání, save/load a multiplayer vyžadují test.
+Hráč dříve potvrdil tisk a kompletní stavbu ve 0.2.0 i nový tiskový recept ve 0.2.1.
 
-Tato verze připravuje jen skříň. Lišty a kabeláž jsou zatím montážní fáze,
-nikoli samostatné viditelné moduly. Skříň ještě nemá funkční přívod ani vývody,
-nepřepíná síť, neměří proud a nepodporuje osazení jističů.
-Další plán: vlastní skříň a viditelné lišty, osazované moduly (hlavní vypínač,
-jističe, měření, kontrolky), následně propojení se současnou sítí Stationeers.
+Doporučený krátký test:
 
-## Stav ověření a test u hráče
-
-Kompilace proti dodané Assembly-CSharp.dll, LaunchPadBooster.dll, 0Harmony.dll
-prošla. Pro sestavení zde byly použity referenční UnityEngine.Modules 2021.3.33
-z NuGet; pro vlastní build použij knihovny ze své instalace hry.
-Stationeers zde nelze spustit. Hráč ověřil ve verzi 0.2.0 tisk v Autolathe,
-umístění skříně a dokončení všech montážních fází. Ve verzi 0.2.1 je potřeba
-ověřit nový recept v Electronics Printeru. Demontáž, ukládání skříně a multiplayer
-zůstávají bez herního ověření. Verzi 0.1.0 už hráč ověřil
-pro registraci, spawn, držení kitu a načtení uloženého kitu.
-
-Ověř ve zkušebním světě:
-
-- Starý kit z uložené hry nabízí Switchboard Cabinet.
-- Nově vyrobený kit se objeví v Electronics Printer a výrobní suroviny se odečtou.
-- Jedna stavba v survival režimu spotřebuje přesně jeden kit, dva plechy a dva kabely.
-- V každé rozestavěné fázi lze uložit a načíst svět a pokračovat.
-- Demontáž podle tabulky vrátí stejný kit i montážní materiály.
-- Původní herní skříňky a Kit (Logic Switch) zůstaly funkční.
+1. Nový kit nabízí nový malý model a lze ho umístit na stěnu.
+2. Dvířka lze otevřít i zavřít a při otevření se nepřekrývají s původní skříňkou.
+3. Plechy přidají pouze montážní základ a lišty, kabely přidají až další části.
+4. Po uložení/načtení zůstane správný stavební stav a poloha dvířek.
+5. Obrácená demontáž vrátí správné materiály a kit.
 
 V `BepInEx/LogOutput.log` hledej:
 
-- `[Modular Switchboards] 0.2.1 loaded.`
+- `[Modular Switchboards] 0.3.0 loaded.`
+- `Blender geometry loaded: housing, mounting, wiring, door.`
+- `New wall cabinet mesh installed: 400x500x180 mm, two DIN rows.`
 - `Registration verified: kit + cabinet, 3 build states.`
-- `Electronics Printer recipe added: 10 Copper + 10 Iron + 10 Electrum -> 1 kit.`
 - `Electronics Printer recipe verified.`
 
-Při potížích pošli celý log a napiš, který krok selhal.
+Pokud je model růžový, chybí nebo nefunguje náhled/otevírání, pošli celý log a
+screenshot konkrétního kroku. Nativní poškozené modely původní skříňky jsou vypnuté;
+speciální vizuály poškození tohoto modelu zatím nejsou vytvořené.
 
-## Přestavení ze zdrojů (Windows, .NET SDK 8+)
+## Zdrojový projekt
+
+Windows, .NET SDK 8+:
 
 ```powershell
 dotnet build -c Release '-p:GamePath=C:\Program Files (x86)\Steam\steamapps\common\Stationeers' '-p:LaunchPadDirectory=C:\Program Files (x86)\Steam\steamapps\common\Stationeers\BepInEx\plugins\StationeersLaunchPad'
 ```
 
-`LaunchPadDirectory` musí obsahovat `LaunchPadBooster.dll`.
 Výstup: `ModularSwitchboards/Assemblies/ModularSwitchboards.dll`.
+Geometrie `Assets/Cabinet.meshbin` je vložený resource. Čte ji `CabinetGeometry.cs`.
+`CabinetModel.cs` při registraci nahradí vizuální a kolizní části kopie nativního
+prefabu, nastaví FaceMount a přiřadí tři renderery do BuildStates.
+`CabinetDoor.cs` zobrazuje uložený/synchronizovaný stav `Thing.IsOpen`.
+Identita modu a požadavek shodné multiplayer verze používají LaunchPadBooster.
 
-## Implementace
+Přegenerování mesh dat ze samostatně dodaného Blender projektu:
 
-LaunchPad volá `OnLoaded(List<GameObject>)`. Harmony prefix před `Prefab.LoadAll`
-připraví kopie herního kitu a skříňky pod neaktivním trvalým kontejnerem. Až po
-úplné konfiguraci zveřejní oba prefaby do `WorldManager.SourcePrefabs`.
-Každý má vlastní PrefabName a Animator.StringToHash. Nativní prefaby se nemění.
-Tři stavební stavy mají vlastní ToolUse a seznamy; zachovávají data vykreslování
-z kopie skříňky. Hra zajišťuje stavbu, ukládání stavebního stavu a demontáž.
+```text
+blender -b --python Tools/export_runtime_mesh.py -- path/to/SwitchboardCabinet.blend Assets/Cabinet.meshbin
+```
 
-Prefix `DynamicThingRecipeComparable.GenerateRecipieList` přidává recept jen pro
-ElectronicsPrinter.RecipeComparable, po načtení datových souborů a před tvorbou seznamů a hashů receptů.
-Používá nativní AddRecipe, včetně registrace recyklace a synchronizace receptů.
-Přítomnost receptu i záznamu v tiskové nabídce kontroluje callback po načtení dat.
-
-Lokalizační prefixy obsluhují pouze dvě jména tohoto modu a doplňují anglický
-název a popis bez chybového tokenu. Multiplayer vyžaduje shodnou verzi modu na
-obou stranách; praktický multiplayer test zatím neproběhl.
+Nativní herní prefaby se nemění; veškeré zásahy a Harmony prefixy jsou omezené
+na vlastní skříň, kit a její recept. Importované Unity materiály modelu jsou
+jednoduché barevné PBR materiály s náhradou dostupným herním shaderem.
