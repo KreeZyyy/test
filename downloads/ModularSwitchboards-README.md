@@ -1,122 +1,94 @@
-# Modular Switchboards — 0.6.8 test
+# Modular Switchboards — 0.7.0 test
 
-Prázdná nástěnná skříň 400 × 500 × 180 mm. Nativní elektrické moduly, DIN lišty a
-kabeláž nejsou součástí této verze.
+Dvě samostatně montovatelné DIN lišty pro nástěnnou skříň. Každá má vlastní kit,
+vlastní uložený předmět a vlastní profil TH35. Elektrické přístroje, kabeláž
+a jejich elektrické chování tato verze ještě neobsahuje.
 
-## Změna v 0.6.8
+## Instalace
 
-Přidána skutečná reference na dodaný Workshop `LibConstruct.dll`, závislost na
-ModID `LibConstructReloaded` a pořadí načítání. Při startu se ověří dostupnost API,
-před registrací skříně také inicializace knihovny. DLL závislosti se nepřibaluje.
-Kompilace i API probe proti přesně dodané DLL prošly. Načítání ve hře ještě ověřeno není.
-Tato verze připravuje závislost; DIN lišty, board host a montáž modulů ještě nepřidává.
-
-## Instalace a stavění
-
-Úplně vypni Stationeers a nahraď celou složku
+Vypni Stationeers a nahraď složku
 `Documents/My Games/Stationeers/mods/ModularSwitchboards` složkou z testovacího ZIPu.
-Potřebuje BepInEx, StationeersLaunchPad, LaunchPadBooster a zapnutý **LibConstructReloaded 0.3.0 (Workshop 3751750326)** před naším modem. Jeho knihovna se jmenuje `LibConstruct.dll`; do našeho modu ji nekopíruj. Ve složce mods ponech
-jen jednu verzi DLL. Zdrojový ZIP do mods nepatří.
+Potřebuje BepInEx, StationeersLaunchPad, LaunchPadBooster a zapnutý
+**LibConstructReloaded 0.3.0 (Workshop 3751750326)** před naším modem.
+Jeho knihovna se skutečně jmenuje `LibConstruct.dll`. Nekopíruj ji podruhé
+k našemu modu. Klient i server potřebují stejnou verzi modu i závislosti.
 
-**Electronics Printer: 10 Copper + 10 Iron + 10 Electrum → 1 kit.**
+## Jak získat a namontovat lišty
 
-| Fáze | Spotřeba / nástroj | Výsledek |
-| --- | --- | --- |
-| Umístění | 1 Kit (Switchboard) | Holý montážní rám |
-| Dokončení | Wrench + 2 Iron Sheets v druhé ruce | Prázdná skříň a otevírací dvířka |
+1. V Electronics Printeru vyrob **Kit (DIN Rail)**: **1 Iron → 1 kit**.
+   Recept je pouze v Electronics Printeru, Tier One.
+2. Otevři dokončenou skříň **Switchboard Cabinet**.
+3. Vezmi kit do ruky, pravým tlačítkem otevři režim stavění a zamiř na
+   horní nebo dolní polovinu zadní montážní desky. Náhled se vystředí
+   a přichytí k příslušné řadě.
+4. Umísti lištu. Druhým kitem osadíš druhou řadu. Jedna řada spotřebuje jeden kit.
+5. **Drill** lištu odmontuje a vrátí její kit. Dvířka musí být otevřená.
+   Před rozebráním skříně nejdřív vyjmi obě lišty.
 
-Demontáž: Wrench vrátí plechy, Drill vrátí kit. Panty jsou při pohledu zepředu
-vpravo, madlo vlevo; dvířka se otevírají zleva doprava směrem ven.
-Kit má běžný herní náhled elektrické stavebnice; rám a hotová skříň vlastní
-náhledy. Montáž používá nativní rastr 0.5 m / offset 0.25 m. Skříň při načtení změří
-nativní plochou stěnu a za běhu také konkrétní stěnu, na kterou je připevněná.
-Zadní plášť, rám, vnitřní deska, dvířka a jejich kolize leží před jejím povrchem
-s rezervou **0.0005 m (0.5 mm)**. Kořen předmětu zůstává na rastru.
-Předchozí pevné odsazení 120 + 80 mm a oba páry dlouhých držáků jsou odstraněné.
-Náhled a výběrové bounds se posouvají s modelem. U volně spawnuté skříně bez
-podpůrné stěny se použije předběžné měření dokončené nativní ploché stěny.
-Tloušťka a skutečný odstup se zapisují do Player.log; konkrétní hodnotu
-nativního modelu zde bez spuštěné hry neuvádíme.
+V kreativním spawneru hledej **Kit (DIN Rail)**, interní ID `ItemKitDinRail`.
+Spawnuj kit a montuj do skříně; samostatný spawn struktury bez hostitele není
+podporovaný způsob montáže. ID namontované struktury je `StructureSwitchboardDinRail`.
 
-Sprej mění plášť zvenku i zevnitř a obě strany dvířek. Samostatná zadní montážní
-deska zůstává světlá; madlo, panty a výstražný znak mají pevné barvy.
-ID předmětů jsou zachovaná; původní dokončený stav 2 se při načtení převádí na 1.
-Uložená poloha, rotace, otevření a barva předmětu používají nativní mechanismus.
+## Rozměry a závislosti
 
-## Značka APC v 0.6.8
+Skříň má 400 × 500 × 180 mm. Její vnitřní šířka určuje délku lišty zaokrouhlenou
+na celé modulové pozice po 18 mm, s rezervou po stranách. U současné skříně
+vychází **324 mm / 18 budoucích modulových pozic na řadu**. Profil je vysoký
+35 mm a hluboký 7,5 mm. Rozteč řad je 216 mm. Pro širší skříně lze použít stejný
+profil s jinou délkou; další velikosti skříní tato verze nepřidává.
 
-Značka je nově **nahoře uprostřed a má 65 % původní velikosti APC**. Tvar,
-černý obrys, blesk a materiály pocházejí z původní geometrie. Pod ní zůstává
-prostor pro budoucí tlačítka a kontrolky; tato verze je ještě nepřidává.
-Výchozí barva nové i právě dokončené skříně je bílá. Barvy už dokončených
-uložených skříní se zachovávají.
+Pravidla vyžadují dokončenou otevřenou skříň, jednu lištu na řadu a vodorovnou
+orientaci. Kontrola před spotřebováním kitu probíhá i na serveru. Lišty vlastní
+montážní plocha skříně v LibConstructu; ukládá se jejich hostitel, řada a natočení.
+Jsou zapojené i hooky pro připojení klienta a zničení hostitele.
 
-Dodané podklady ukázaly, že ColorWhite/ColorRed/ColorOrange jsou barevné palety;
-žlutočerný výstražný symbol v nich jako samostatný obrázek není. Předchozí export
-geometrie přes JsonUtility vytvořil pouze `{}`.
+Starší prázdné skříně zachovávají prefab ID a mají migrační cestu pro přidání
+prázdné montážní plochy. Nová uložená data osazených skříní vyžadují 0.7.0 nebo
+novější kompatibilní verzi; downgrade na 0.6.x jejich osazení neumí.
 
-Nový kód nejdřív čte původní geometrii dvířek APC. Podle vzorků palety vybere
-spojené žluté plochy v dolní části dvířek a sousední černé plochy obrysu/blesku.
-Přenáší tyto původní trojúhelníky, UV, materiály a nastavení světla na
-naše dvířka, nahoře uprostřed, s měřítkem 0.65. Originální APC se nemění; herní data nejsou v ZIPu.
-Nejde o ručně překreslený symbol. Výběr skutečného symbolu musí potvrdit herní test.
+## Stavění skříně a vzhled
 
-Pokud geometrický výběr selže, zůstává starší hledání v barevných texturách.
-Pokud neuspěje ani to, nevykreslí se přibližná náhrada a důvod bude v logu.
-F1 náhled skříně pochází z offline modelu; runtime znak APC na něm zatím není.
+**Electronics Printer: 10 Copper + 10 Iron + 10 Electrum → Kit (Switchboard).**
+Jeden kit vytvoří holý rám. Wrench + 2 Iron Sheets dokončí plášť a dvířka.
+Wrench vrací plechy, Drill poté vrací kit rámu, pokud uvnitř nejsou lišty.
 
-## Diagnostika
+Panty jsou vpravo, madlo vlevo; dvířka se otevírají zleva doprava ven.
+Nová a právě dokončená skříň je bílá. Sprej mění plášť a obě strany dvířek;
+montážní deska zůstává světlá a DIN lišty kovově šedé. Značka APC je menší
+nahoře uprostřed. Nativní APC geometrie, paletové materiály a osvětlení se
+přebírají za běhu; herní prostředky ani DLL závislostí nejsou v balíčku.
+Montážní rám i plášť mají podle měřeného povrchu stěny rezervu 0,5 mm.
 
-Geometrie APC se při registraci nově exportuje vždy, vlastním JSON zapisovačem:
+## Ověření a herní test
 
-```text
-%USERPROFILE%\AppData\LocalLow\Rocketwerkz\rocketstation\ModularSwitchboards\Diagnostics
-```
+Prošla kompilace proti dodané Assembly-CSharp, LaunchPadBooster a přesně dodané
+Workshop DLL LibConstructu. Prošly testy skutečného kódu pro volbu řad,
+obsazenost, přichycení náhledu, ochranu zavřené/nedokončené skříně a demontáž.
+Test s původními zdrojovými hooky LibConstructu a stuby herního prostředí ověřil
+XML roundtrip dvou lišt, obnovení vlastnictví, migraci staré prázdné skříně,
+síťové čtení/zápis hostitele a lišty a pořadí úklidu.
+Test skutečného generátoru geometrie ověřil 60 trojúhelníků, orientaci ploch
+a zachování profilu pro tři délky. Prošly také dřívější kontroly skříně a stěny.
 
-`APC-geometry.json` má obsahovat objekt `Meshes` s vrcholy, UV, trojúhelníky a
-přiřazenými materiály; nemá to být `{}`. Pokud se znak nenajde, doplní se také
-`APC-materials.txt` a PNG původních textur. Při problému pošli ZIP této složky a
-`Player.log` ze složky `Rocketwerkz/rocketstation` o dvě úrovně výše.
-Nativní herní soubory není potřeba kopírovat ani měnit.
+**Tady nebyla verze spuštěna ve Stationeers.** Ve hře je potřeba ověřit:
+vytištění/spawn kitu, montáž obou řad, odmítnutí třetí lišty, zavření/otevření,
+uložení a opětovné načtení, odmontování s vrácením kitu a případně připojení klienta.
+Změna vlastního typu skříně zachovává původní ID, ale vyžaduje tento herní test.
 
-Důležité řádky logu:
-
-- `0.6.8 loaded`
-- `Flat wall measured: ...`
-- `Cabinet fitted to ...; wall thickness=...; clearance=0.000500 m`
-- `APC geometry exported: ... meshes`
-- `APC Door geometry: ... faces, ... yellow faces`
-- `Native APC warning geometry reused: ...`
-- případně `Native APC warning not located` nebo `Native warning geometry read`
-
-## Ověření
-
-Test skutečné funkce pro průnik ploch stěny ověřil obě strany, posunutý model,
-vyřazení zvýšených okrajů při měření centrální plochy a rezervu 0.5 mm.
-Prošlo také 84 regresních případů malého rastru. Herní kontrola uchycení,
-kolizí a náhledu na skutečné stěně je ještě potřeba.
-
-Prošla kompilace proti dodané Assembly-CSharp a Unity referencím, kontroly 1512
-vložených trojúhelníků, jejich orientace vůči normálám, indexů, rozměrů a
-materiálových rolí. Jen samostatná montážní deska má pevné světlé plochy.
-
-Test skutečného výběrového kódu na syntetické geometrii ověřil převzetí žluté
-výplně, černého obrysu a blesku a vyřazení nesouvisejících dílů. Test skutečného
-JSON zapisovače ověřil platné pole meshů, číselné souřadnice, escapování názvů a
-nezávislost na desetinné čárce systému. To neověřuje výběr z reálného APC.
-
-**0.6.8 zde nebyla spuštěna ve Stationeers.** Ve hře ověř z boku téměř těsné přiléhání ke stěně, umístění náhledu a kolizí
-a menší značku nahoře uprostřed. Zkontroluj také otevření a barvení.
-Pokud znak stále chybí, pošli nový export a Player.log.
+Diagnostika: `%USERPROFILE%\AppData\LocalLow\Rocketwerkz\rocketstation\Player.log`.
+Hledej `0.7.0 loaded`, `DIN rail kit + structure registered` a `DIN rail recipe verified`.
+Při chybě pošli Player.log. Exporty APC zůstávají v podsložce
+`ModularSwitchboards/Diagnostics` vedle logu.
 
 ## Zdrojový projekt
 
-Windows s .NET SDK 8+:
+Windows, .NET SDK 8+:
 
 ```powershell
 dotnet build -c Release '-p:GamePath=C:\Program Files (x86)\Steam\steamapps\common\Stationeers' '-p:LaunchPadDirectory=C:\Program Files (x86)\Steam\steamapps\common\Stationeers\BepInEx\plugins\StationeersLaunchPad' '-p:LibConstructPath=E:\SteamLibrary\steamapps\workshop\content\544550\3751750326\LibConstruct.dll'
 ```
 
-`blender -b --python Tools/create_simple_cabinet.py` vytvoří vlastní model,
-GLB, vložená mesh data a vlastní náhledy. `python Tools/validate_paint_masks.py`
-ověří geometrii a materiálové role. Herní ZIP obsahuje About.xml a jedinou DLL.
+`Tools/create_simple_cabinet.py` vytváří model skříně a její náhledy.
+`Tools/create_din_rail.py` vytváří Blender podklad a náhled lišty; herní mesh
+profilu generuje `Source/DinRailModel.cs`. Testovací ZIP obsahuje jen náš mod
+s About.xml a vlastní DLL, nikoliv DLL knihovny nebo zdrojový projekt.
