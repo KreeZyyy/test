@@ -1,35 +1,26 @@
-# Modular Switchboards — 0.3.3 test
+# Modular Switchboards — 0.4.0 test
 
-Oprava 0.3.3: používá SmallGrid.SmallGridSize=0.5 a SmallGrid.SmallGridOffset=0.25.
-Předchozí nulový offset byl chybný: nativní GridCenter přičítá polovinu velikosti
-buňky. S nulovým offsetem tak rovinu stěny posunul o čtvrt metru a nativní
-CanMountOnWall mohl odmítnout pozici mimo Face/Edge/Corner. Nyní odpovídá offset
-malému rastru hry a základna modelu zůstává v lokální rovině Z=0.
+Tato verze řeší materiály, barvení a průnik skříně montážní konstrukcí:
 
-Předchozí oprava 0.3.2: resetuje zděděné přichytávání původní skříňky. Vypíná její
-privátní snapování podle os (které jinak přebíjí veřejné GridSize/GridOffset),
-nastavovala rovnoměrný 0,5m rastr, ale ještě s chybným nulovým offsetem a vypíná požadavek výhradně
-na podpěrný rám, aby fungovala i montáž na podporovanou stěnu. Resetuje také
-zděděné rozšíření registračních bounds. Nativní kontrola podpěry a kolizí zůstává aktivní.
-Tuto úpravu je nutné ověřit ve hře. Uživatel upřesnil, že 0.3.0 nešlo umístit
-a náhled byl odsazený od stěny.
+- Plášť a rám dvířek používají nativní systém herních barev; lze je přebarvovat sprejem.
+- Nová skříň začíná šedá. Barva samotného dočasného kitu se už nepřenáší na novou skříň.
+- Lišty, kabely, okénko, madlo, oranžový pruh a výstražný symbol mají pevné barvy.
+- Žlutý trojúhelník s černým bleskem je samostatná geometrie na přední straně dvířek.
+- Model je posunutý 120 mm před nativní montážní rovinu; dva kovové distančníky vyplňují odstup.
+- Stavební náhled, kolize a výběrové bounds zohledňují stejné odsazení.
+- Přichycení používá opravený nativní rastr z 0.3.3; bod podpěry zůstává na stěně.
 
-Součástí je také oprava materiálů z 0.3.1: materiály už nevybírají Standard/URP shader přes Shader.Find.
-Kopírují nativní barevné materiály hry včetně nastavení a vazeb textur.
-Stavební náhled při vytvoření použije CursorManager.CursorShader. Pokud není
-k dispozici, ponechá podporovaný nativní materiál. Odstíny modelu jsou zatím
-přibližné podle herní palety. Tvar, recept i montážní fáze jsou stejné.
+Inspirací je APC. Používá se stejný herní mechanismus palety a přebarvování jako
+u nativních zařízení; z dostupného AreaPowerControl se přebírá nastavení lesku a
+záložní materiál. Texturu APC nelze jednoduše natáhnout přes jinou geometrii bez
+odpovídající UV mapy. Tato verze má vlastní jednoduché projekční UV a nativní
+barevné materiály, nikoli překopírovaný vzhled celého APC.
 
-Nový model nástěnné skříně **400 × 500 × 180 mm** je součástí modu:
-
-- Prázdná skříň se dvířky, montážní deska se dvěma DIN lištami, kabelové žlaby a příprava vodičů.
-- Jednotlivé části se zobrazují podle stavební fáze.
-- Dvířka používají nativní herní interakci Open; jejich pohyb obstarává nový model.
-- Umísťování na stěny přes FaceMount, nové kolize a náhled při stavbě.
-
-Model se načítá ze zabalených dat přímo do Unity meshů. Nevyžaduje Unity editor,
-asset bundle, LibConstruct ani externí GLB importer. DLL obsahuje veškerou geometrii.
-Identita kitu i skříně a nativní datový typ skříně zůstávají zachované.
+Příčina předchozí červené: nativní CustomColorMapping automaticky přepsal všechny
+materiály s Texture2DArray a přiřadil jim společnou výchozí barvu. Nyní se pro
+vlastní prefaby renderery registrují výslovně a paint mapping vzniká pouze pro
+dva neprázdné submeshe (plášť a rám dvířek). Ostatní submeshe dostávají pevný
+barevný index a neúčastní se přebarvování. Materiály mají doplněné UV a tangenty.
 
 ## Instalace / aktualizace
 
@@ -68,46 +59,44 @@ Skříň zatím nemá elektrické přívody, jističe, měření ani osazovací 
 
 ## Uložené předměty
 
-Kit používá `ItemKitModularSwitchboard`, skříň `StructureModularSwitchboard`.
-Existující skříň tedy dostane novou geometrii při načtení. Její stavební fáze a
-stav Open pocházejí z nativního save data. Změnu je ještě třeba ověřit ve hře.
-Dříve postavené skříně se automaticky nepřemístí ze svého uloženého místa na stěnu;
-pro test správného uchycení postav novou skříň.
+Kit i skříň si zachovávají prefab ID a nativní save typ. Při načtení dostane i
+stará skříň nový vzhled a odsazení. **Dříve uložená červená barva může zůstat na
+plášti** — zkus ji přebarvit sprejem, nebo pro kontrolu výchozí šedé postav novou.
+Vnitřek a výstražný symbol mají být barevné nezávisle na barvě pláště.
+Nové distančníky jsou z téhož kitu, další materiály pro jejich stavbu nepřibyly.
 
-## Ověření
+## Stav ověření
 
-Prošlo sestavení proti uživatelem dodaným Assembly-CSharp, LaunchPadBooster a Harmony.
-Pro sestavení zde slouží referenční UnityEngine.Modules 2021.3.33 z NuGet.
-Ověřena integrita zabalené geometrie: 4 části, 14 641 trojúhelníků, platné indexy,
-normály, rozměry a přesná shoda vloženého resource s exportem z Blenderu.
-ZIP je kontrolován na integritu a obsahuje jedinou mod DLL.
+Kompilace prošla proti dodané herní DLL a referenčním Unity knihovnám.
+Ověřena vložená geometrie, rozsahy indexů, normály a materiálové role:
+barvitelná geometrie se nachází pouze v plášti a dvířkách; varovný trojúhelník,
+blesk, lišty a vodiče mají oddělené pevné materiály. Prošel regresní výpočet
+přichycení na stěnu z 0.3.3. Přebarvování, vzhled pod světlem a odstup ve 0.4.0
+zde nelze spustit ve Stationeers, vyžadují herní test.
 
-**Verze 0.3.0 se ve hře načetla, ale hráč nahlásil růžový model/náhled. Hráč potvrdil odstranění růžové ve 0.3.2, ale uchycení zůstalo chybné. Korekce rastru ve 0.3.3 ještě nemá herní ověření.** Barvy/shadery, viditelnost,
-kolize, FaceMount, stavební náhled, otevírání, save/load a multiplayer vyžadují test.
-Hráč dříve potvrdil tisk a kompletní stavbu ve 0.2.0 i nový tiskový recept ve 0.2.1.
+Hráč potvrdil ve 0.3.3 položení nové skříně, otevření dvířek a viditelný vnitřek;
+nahlásil průnik rámu a nesprávné červené/přesvětlené materiály. Předchozí verze
+mají ověřenou výrobu kitu a montáž. Nová verze zachovává výrobní i montážní cenu.
 
-Doporučený krátký test:
+Krátký test:
 
-1. Nový kit nabízí nový malý model a lze ho umístit na stěnu.
-2. Dvířka lze otevřít i zavřít a při otevření se nepřekrývají s původní skříňkou.
-3. Plechy přidají pouze montážní základ a lišty, kabely přidají až další části.
-4. Po uložení/načtení zůstane správný stavební stav a poloha dvířek.
-5. Obrácená demontáž vrátí správné materiály a kit.
+1. Postav novou skříň na stěnu a z boku zkontroluj, že rám neprochází vnitřkem.
+2. Otevři dvířka, dokonči montáž a pod baterkou ověř pevné barvy vnitřku.
+3. Zavři dvířka: musí být vidět žlutý trojúhelník s černým bleskem.
+4. Sprejem změň barvu skříně. Změnit se má plášť a rám dvířek; symbol a vnitřek zůstanou stejné.
+5. Ulož a načti svět: barva, stavební fáze a stav otevření se mají zachovat.
 
 V `BepInEx/LogOutput.log` hledej:
 
-- `[Modular Switchboards] 0.3.3 loaded.`
-- `Wall mount reset: native small grid (0.5 m, offset 0.25 m), wall/frame support.`
-- `Cabinet native shader: ...`
-- `Native cursor shader applied: ...` (při vytvoření stavebního náhledu)
-- `Blender geometry loaded: housing, mounting, wiring, door.`
-- `New wall cabinet mesh installed: 400x500x180 mm, two DIN rows.`
+- `[Modular Switchboards] 0.4.0 loaded.`
+- `APC paint style: ...`
+- `Selective paint mappings ready: 2; fixed internals and warning symbol.`
+- `New wall cabinet mesh installed: 400x500x180 mm, two DIN rows, 120 mm stand-off.`
 - `Registration verified: kit + cabinet, 3 build states.`
 - `Electronics Printer recipe verified.`
 
-Pokud je model růžový, chybí nebo nefunguje náhled/otevírání, pošli celý log a
-screenshot konkrétního kroku. Nativní poškozené modely původní skříňky jsou vypnuté;
-speciální vizuály poškození tohoto modelu zatím nejsou vytvořené.
+Při potížích pošli log a screenshot. Skříň zatím nemá funkční elektrickou síť,
+osazované jističe ani speciální vizuál poškození. Ikona kitu zůstává dočasná.
 
 ## Zdrojový projekt
 
@@ -118,6 +107,7 @@ dotnet build -c Release '-p:GamePath=C:\Program Files (x86)\Steam\steamapps\comm
 ```
 
 Výstup: `ModularSwitchboards/Assemblies/ModularSwitchboards.dll`.
+Pro kontrolu rolí materiálů spusť `python Tools/validate_paint_masks.py`.
 Geometrie `Assets/Cabinet.meshbin` je vložený resource. Čte ji `CabinetGeometry.cs`.
 `CabinetModel.cs` při registraci nahradí vizuální a kolizní části kopie nativního
 prefabu, nastaví FaceMount a přiřadí tři renderery do BuildStates.
