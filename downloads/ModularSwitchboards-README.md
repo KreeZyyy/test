@@ -1,124 +1,100 @@
-# Modular Switchboards — 0.4.0 test
+# Modular Switchboards — 0.5.0 test
 
-Tato verze řeší materiály, barvení a průnik skříně montážní konstrukcí:
+Jednoduchá prázdná skříň. Žádné DIN lišty ani kabeláž; ty přijdou později jako
+samostatně osazované díly. Rozměry zůstávají 400 × 500 × 180 mm bez distančníků.
 
-- Plášť a rám dvířek používají nativní systém herních barev; lze je přebarvovat sprejem.
-- Nová skříň začíná šedá. Barva samotného dočasného kitu se už nepřenáší na novou skříň.
-- Lišty, kabely, okénko, madlo, oranžový pruh a výstražný symbol mají pevné barvy.
-- Žlutý trojúhelník s černým bleskem je samostatná geometrie na přední straně dvířek.
-- Model je posunutý 120 mm před nativní montážní rovinu; dva kovové distančníky vyplňují odstup.
-- Stavební náhled, kolize a výběrové bounds zohledňují stejné odsazení.
-- Přichycení používá opravený nativní rastr z 0.3.3; bod podpěry zůstává na stěně.
+## Instalace
 
-Inspirací je APC. Používá se stejný herní mechanismus palety a přebarvování jako
-u nativních zařízení; z dostupného AreaPowerControl se přebírá nastavení lesku a
-záložní materiál. Texturu APC nelze jednoduše natáhnout přes jinou geometrii bez
-odpovídající UV mapy. Tato verze má vlastní jednoduché projekční UV a nativní
-barevné materiály, nikoli překopírovaný vzhled celého APC.
+Úplně vypni hru a nahraď celou složku
+`Documents/My Games/Stationeers/mods/ModularSwitchboards` složkou z testovacího ZIPu.
+Neponechávej starou DLL v podsložkách mods. Potřebuje BepInEx a StationeersLaunchPad
+s LaunchPadBooster. Zdrojový ZIP do mods nepatří.
 
-Příčina předchozí červené: nativní CustomColorMapping automaticky přepsal všechny
-materiály s Texture2DArray a přiřadil jim společnou výchozí barvu. Nyní se pro
-vlastní prefaby renderery registrují výslovně a paint mapping vzniká pouze pro
-dva neprázdné submeshe (plášť a rám dvířek). Ostatní submeshe dostávají pevný
-barevný index a neúčastní se přebarvování. Materiály mají doplněné UV a tangenty.
+## Výroba a montáž
 
-## Instalace / aktualizace
+**Electronics Printer: 10 Copper + 10 Iron + 10 Electrum → 1 kit.**
 
-1. Úplně vypni Stationeers.
-2. Nahraď celou starou složku `Documents/My Games/Stationeers/mods/ModularSwitchboards`
-   složkou `ModularSwitchboards` z nového testovacího ZIPu.
-3. Neponechávej druhou kopii staré DLL v podsložkách mods.
-4. Zapni mod v LaunchPadu. Ověř ho nejdřív ve zkušebním světě.
-
-Potřebuje BepInEx a StationeersLaunchPad s LaunchPadBooster.
-Zdrojový ZIP do složky mods nepatří.
-
-## Výroba
-
-**Electronics Printer, Tier 1: 10 Copper + 10 Iron + 10 Electrum → 1 Kit (Switchboard).**
-Základní čas je 5 s a energie 1000 J před násobiči stroje.
-Cena ani počet potřebných kitů se oproti 0.2.1 nemění.
-Ikona a model samotného kitu jsou zatím stále převzaté z vanilla kitu.
-
-## Stavba
-
-Vyber variantu **Switchboard Cabinet** a zamiř na stěnu, která umožňuje montáž
-(například stěnu nebo rám podporující herní FaceMount). Připrav dost místa pro
-otevření levých dvířek. Geometrie má dvě lišty po 12 pozicích; moduly zatím nejsou dostupné.
-
-| Krok | Aktivní ruka | Druhá ruka / spotřeba | Co přibude |
+| Krok | Aktivní ruka | Spotřeba | Výsledek |
 | --- | --- | --- | --- |
-| Umístění | Kit (Switchboard) | 1 kit | Skříň a dvířka |
-| Montáž | Wrench | 2 Iron Sheets | Montážní deska a dvě DIN lišty |
-| Kabeláž | Screwdriver | 2 Cable Coil | Kabelové žlaby a příprava vodičů |
+| Umístění | Kit (Switchboard) | 1 kit | Základ prázdné skříně |
+| Smontování | Wrench | 2 Iron Sheets v druhé ruce | Dokončená skříň s plným kovovým krytem |
 
-Otevři dvířka běžnou interakcí a sleduj přidávání částí. Nástroje se nespotřebují.
-Demontáž jde obráceně: Wire Cutters → Wrench → Drill; vrací kabely, plechy a kit.
-Spotřebu a návrat materiálů řídí standardní ToolUse hry. Kreativní režim může spotřebu obejít.
-Skříň zatím nemá elektrické přívody, jističe, měření ani osazovací systém.
+Kryt se objeví po dokončení. Jde otevřít a zavřít herní interakcí Open.
+Demontáž: **Wrench** vrátí 2 plechy, **Drill** vrátí kit.
+Kabely, šroubovák ani štípačky pro tuto skříň nejsou potřeba.
 
-## Uložené předměty
+## Vzhled a barvení
 
-Kit i skříň si zachovávají prefab ID a nativní save typ. Při načtení dostane i
-stará skříň nový vzhled a odsazení. **Dříve uložená červená barva může zůstat na
-plášti** — zkus ji přebarvit sprejem, nebo pro kontrolu výchozí šedé postav novou.
-Vnitřek a výstražný symbol mají být barevné nezávisle na barvě pláště.
-Nové distančníky jsou z téhož kitu, další materiály pro jejich stavbu nepřibyly.
+- Plášť a vnější strana plného krytu jsou přebarvitelné sprejem.
+- Vnitřní povrchy, prázdná zadní deska a vnitřní strana krytu zůstávají světle šedé.
+- Žlutý trojúhelník s černým bleskem a černé madlo mají pevnou barvu.
+- Nejsou tu sklo, lišty, kabelové žlaby, kabely ani elektronické prvky.
 
-## Stav ověření
+Používá se nativní herní shader a nastavení odrazů, světelných sond, stínů a lesku
+podle dostupného APC. Každý renderer má vlastní kotvu světelných sond na geometrii,
+nikoli ve stěně. Nejsou přidaná světla ani umělé svícení materiálu.
 
-Kompilace prošla proti dodané herní DLL a referenčním Unity knihovnám.
-Ověřena vložená geometrie, rozsahy indexů, normály a materiálové role:
-barvitelná geometrie se nachází pouze v plášti a dvířkách; varovný trojúhelník,
-blesk, lišty a vodiče mají oddělené pevné materiály. Prošel regresní výpočet
-přichycení na stěnu z 0.3.3. Přebarvování, vzhled pod světlem a odstup ve 0.4.0
-zde nelze spustit ve Stationeers, vyžadují herní test.
+Barevné pruhy z 0.4.0 byly důsledkem vzorkování nativního atlasu cizími UV.
+Nově mají povrchy jednobodové textury v nativním formátu Texture2DArray.
+Všechny vrstvy barvitelné textury mají aktuálně zvolenou herní barvu, takže UV
+ani volba vrstvy nemohou ukázat jiný atlasový výřez. Barva se aktualizuje při
+nativní změně barvy objektu. Pevné části mají vlastní jednobarevné textury.
 
-Hráč potvrdil ve 0.3.3 položení nové skříně, otevření dvířek a viditelný vnitřek;
-nahlásil průnik rámu a nesprávné červené/přesvětlené materiály. Předchozí verze
-mají ověřenou výrobu kitu a montáž. Nová verze zachovává výrobní i montážní cenu.
+## Uchycení
+
+Bod uchycení používá opravený nativní malý rastr (0.5 m, offset 0.25 m).
+Orientace vizuálního modelu se přizpůsobí znaménku středu nativního APC vůči
+jeho montážní rovině. Pokud nativní rozměry neposkytují směr, použije se -Z.
+Model, kolize, náhled a bounds používají stejnou orientaci a odsazení 120 mm.
+Vnější pohled a odstup od skutečné stěny je ještě nutné potvrdit ve hře.
+
+## Uložené skříně
+
+Prefab ID kitu i skříně zůstávají zachované. Dříve dokončený stavební stav 2 se
+při načtení převede na nový dokončený stav 1. Starší stav 1 už také znamená hotovou
+skříň. Dřívější barva skříně může zůstat uložená; pro výchozí šedou postav novou
+skříň nebo použij sprej. Barva, stav krytu a nový stavební stav používají herní save.
+Předchozí spotřebované kabely se při migraci automaticky nevracejí.
+
+## Co je ověřeno
+
+Prošla kompilace proti dodané herní DLL a referenčním Unity knihovnám.
+Ověřena nová geometrie: 1085 trojúhelníků, tři části a pět materiálových rolí,
+platné indexy a normály, oddělené barvitelné plochy a žlutý/černý symbol.
+Prošel regresní výpočet malého rastru. Balíček se kontroluje na integritu.
+**0.5.0 zde nebyla spuštěna ve Stationeers**; mapování barev, světlo, orientace,
+montáž, barvení a migrace uložené skříně potřebují herní test.
 
 Krátký test:
 
-1. Postav novou skříň na stěnu a z boku zkontroluj, že rám neprochází vnitřkem.
-2. Otevři dvířka, dokonči montáž a pod baterkou ověř pevné barvy vnitřku.
-3. Zavři dvířka: musí být vidět žlutý trojúhelník s černým bleskem.
-4. Sprejem změň barvu skříně. Změnit se má plášť a rám dvířek; symbol a vnitřek zůstanou stejné.
-5. Ulož a načti svět: barva, stavební fáze a stav otevření se mají zachovat.
+1. Nově položená skříň se z boku celá nachází před stěnou.
+2. Klíč + 2 plechy dokončí skříň a objeví se kovový kryt.
+3. Otevřený vnitřek je světle šedý a prázdný.
+4. Pod baterkou nejsou barevné pruhy; srovnej reakci na světlo s APC.
+5. Sprej mění jen plášť a vnější kryt. Vnitřek, madlo a symbol se nemění.
+6. Po uložení a načtení přetrvají barva, stav konstrukce a otevření.
 
-V `BepInEx/LogOutput.log` hledej:
+V logu se hodí:
 
-- `[Modular Switchboards] 0.4.0 loaded.`
-- `APC paint style: ...`
-- `Selective paint mappings ready: 2; fixed internals and warning symbol.`
-- `New wall cabinet mesh installed: 400x500x180 mm, two DIN rows, 120 mm stand-off.`
-- `Registration verified: kit + cabinet, 3 build states.`
-- `Electronics Printer recipe verified.`
+- `[Modular Switchboards] 0.5.0 loaded.`
+- `APC mounting orientation: front sign ...; APC bounds centre ...`
+- `Simple native surfaces loaded; flat palette, no atlas UV tiles; shader ...`
+- `Selective paint mappings ready: 2; light-grey interior and fixed warning symbol.`
+- `Registration verified: kit + cabinet, 2 build states.`
 
-Při potížích pošli log a screenshot. Skříň zatím nemá funkční elektrickou síť,
-osazované jističe ani speciální vizuál poškození. Ikona kitu zůstává dočasná.
+Při chybě pošli `BepInEx/LogOutput.log` a screenshot. Ikona kitu zůstává dočasná.
+Elektrická síť a osazované moduly nejsou součástí této verze.
 
 ## Zdrojový projekt
 
-Windows, .NET SDK 8+:
+Windows s .NET SDK 8+:
 
 ```powershell
 dotnet build -c Release '-p:GamePath=C:\Program Files (x86)\Steam\steamapps\common\Stationeers' '-p:LaunchPadDirectory=C:\Program Files (x86)\Steam\steamapps\common\Stationeers\BepInEx\plugins\StationeersLaunchPad'
 ```
 
-Výstup: `ModularSwitchboards/Assemblies/ModularSwitchboards.dll`.
-Pro kontrolu rolí materiálů spusť `python Tools/validate_paint_masks.py`.
-Geometrie `Assets/Cabinet.meshbin` je vložený resource. Čte ji `CabinetGeometry.cs`.
-`CabinetModel.cs` při registraci nahradí vizuální a kolizní části kopie nativního
-prefabu, nastaví FaceMount a přiřadí tři renderery do BuildStates.
-`CabinetDoor.cs` zobrazuje uložený/synchronizovaný stav `Thing.IsOpen`.
-Identita modu a požadavek shodné multiplayer verze používají LaunchPadBooster.
-
-Přegenerování mesh dat ze samostatně dodaného Blender projektu:
-
-```text
-blender -b --python Tools/export_runtime_mesh.py -- path/to/SwitchboardCabinet.blend Assets/Cabinet.meshbin
-```
-
-Nativní herní prefaby se nemění; veškeré zásahy a Harmony prefixy jsou omezené
-na vlastní skříň, kit a její recept. Materiály vycházejí z nativní herní palety; klonují její materiály včetně shader variant a textur.
+`Art/SimpleSwitchboard.blend` a `.glb` obsahují nový jednoduchý model.
+`blender -b --python Tools/create_simple_cabinet.py` přegeneruje model i vložená
+mesh data v `Assets/Cabinet.meshbin`. Starý exportér pro složitou skříň již nepoužívej.
+`python Tools/validate_paint_masks.py` kontroluje geometrii a materiálové role.
+Herní balíček obsahuje jen About.xml a mod DLL s vloženými mesh daty.
