@@ -1,4 +1,4 @@
-# Modular Switchboards — 0.6.1 test
+# Modular Switchboards — 0.6.2 test
 
 Prázdná nástěnná skříň, 400 × 500 × 180 mm. Dvě skutečné stavební fáze a vlastní
 náhledy rámu a hotové skříně; kit má standardní herní ikonu elektrické stavebnice. DIN lišty, kabeláž a elektrické moduly přijdou později.
@@ -26,9 +26,28 @@ odstraněné. Kit má původní ikonku i model elektrické stavebnice (Logic Swi
 ne obrázek hotové skříně. Vlastní obrázky F1 pocházejí z offline modelu; nativní
 výstražný znak se doplňuje až ve hře a na těchto obrázcích není.
 
-## Změny 0.6.1
+## Změny 0.6.2
 
-- Pant a madlo jsou zrcadlené vůči předchozímu modelu; znaménko animace je
+Dodané `Player.log` potvrdilo `Native APC warning not located`, bez chyby při
+čtení textur. 0.6.1 tedy znak nevytvořila, protože ho omezené hledání nenašlo.
+0.6.2 prohledává barevné vlastnosti materiálů všech rendererů APC včetně skinned
+meshů, všechny vrstvy texturových polí a nativní index materiálu/property blocku.
+Respektuje také scale/offset UV příslušné textury.
+
+Toto je rozšířené hledání a diagnostický build; nejde o potvrzenou opravu znaku
+na skutečné textuře APC. Pokud se znak znovu nenajde, automaticky uloží původní
+náhledy textur, seznam materiálů a geometrii APC do vlastní složky:
+
+`%USERPROFILE%/AppData/LocalLow/Rocketwerkz/Stationeers/ModularSwitchboards/Diagnostics`
+
+Pro další opravu pak stačí tuto složku zazipovat společně s `Player.log`.
+Díky skutečným podkladům půjde přesně určit nativní výřez nebo oddělenou geometrii
+znaku, pokud jeho vzhled nevzniká v jediné barevné textuře.
+Do této složky se zapisuje pouze diagnostika modu; nativní herní soubory se nemění.
+
+## Zachované změny a aktuální stav
+
+- Podle nového zadání je pant při pohledu zepředu vpravo a madlo vlevo; znaménko animace je
   obrácené současně s geometrií. Dveře se otvírají ven. Změna platí pro nově
   načtený model; rotace celého předmětu ve světě se nepřepisuje.
 - Zvětšené odsazení hotové skříně vůči nezměněnému montážnímu rámu o 80 mm.
@@ -87,20 +106,20 @@ přebírá nativní ikonku. Test detekce znaku prošel pro čtyři orientace v a
 odmítnutí jednolité žluté plochy; skutečná textura APC v tomto prostředí není. Prošel výpočet
 84 případů montážního rastru a integrita ZIPu.
 
-**0.6.1 zde nebyla spuštěna ve Stationeers.** Správnost načtení nativních UV,
+**0.6.2 zde nebyla spuštěna ve Stationeers.** Správnost načtení nativních UV,
 světla, barvení, F1, montáže a načítání uložené skříně musí potvrdit test ve hře:
 
 1. Ve F1 se pro konstrukci zobrazí rám a hotová skříň; kit má běžný herní obrázek stavebnice.
 2. Z nového kitu se položí pouze rám, bez plných panelů a dvířek.
 3. Wrench + 2 plechy přidají celou skříň a funkční kryt.
-4. Panty jsou při pohledu zepředu vlevo, madlo vpravo a otevření směřuje ven.
+4. Panty jsou při pohledu zepředu vpravo, madlo vlevo a otevření zleva doprava směřuje ven.
    Dokončená skříň ani její vnitřek neprocházejí plnou stěnou.
 5. Nativní znak APC je dole vlevo, špičkou nahoru, s černým obrysem a bleskem.
    Sprej mění plášť a dvířka; vnitřek a výstražný znak zachovávají barvu.
 6. Uložení a načtení zachová stav, barvu a otevření.
 
 Pokud kit zmizí nebo materiály selžou, pošli `BepInEx/LogOutput.log`.
-Důležité řádky: `0.6.1 loaded`, `APC painted panel UV anchor`,
+Důležité řádky: `0.6.2 loaded`, `APC painted panel UV anchor`,
 `Native APC panel textures retained`, `Native APC texture mapping ready`,
 `Native APC warning reused`, `Native APC warning not located`,
 `Registration verified` nebo `Prefab setup failed`.
