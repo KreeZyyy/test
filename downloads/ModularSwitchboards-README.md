@@ -1,8 +1,17 @@
-# Modular Switchboards — 0.10.3 test
+# Modular Switchboards — 0.10.4 test
 
 Dvě samostatně montovatelné DIN lišty pro nástěnnou skříň. Každá má vlastní kit,
 vlastní uložený předmět a vlastní profil TH35. Nově obsahuje mechanický prototyp jednomodulového jističe. Kabeláž, elektrické propojení,
 měření proudu a vybavování při přetížení tato verze ještě neobsahuje.
+
+## Změny v 0.10.4
+
+Odstraněny samostatné texty ON/OFF pod jističem; zůstávají původní popisy páčky APC.
+Páčka vyplňuje šířku výřezu a má vlastní neutrální polohu: aktuální animované
+natočení páčky zdrojového APC se již nezapéká do nového meshe. Překlápění kolem
+pevné osy, OFF dole/červená a ON nahoře/zelená zůstávají.
+Štítek rozvaděče zůstává na vnější straně i otevřených dvířek a otáčí se s nimi.
+Kompilace a test přepínání prošly; orientaci a velikost ověřit ve hře.
 
 ## Změny v 0.10.3
 
