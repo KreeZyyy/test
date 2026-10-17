@@ -1,8 +1,31 @@
-# Modular Switchboards — 0.9.2 test
+# Modular Switchboards — 0.10.0 test
 
 Dvě samostatně montovatelné DIN lišty pro nástěnnou skříň. Každá má vlastní kit,
 vlastní uložený předmět a vlastní profil TH35. Nově obsahuje mechanický prototyp jednomodulového jističe. Kabeláž, elektrické propojení,
 měření proudu a vybavování při přetížení tato verze ještě neobsahuje.
+
+## Změny v 0.10.0
+
+Jistič má **zaoblené tělo, měkké hrany zapuštěného čela a větší přepínač**.
+Rozteč je nyní 40,5 mm: **8 jističů na řadu, 16 v celém Switchboard Small**.
+Tělo je široké 39,6 mm a vysoké 101,25 mm. Délka lišt a samotná skříň se nemění.
+
+Za běhu se převezme skutečný mesh `MasterLever` z nativního APC, jeho původní UV,
+materiály a material property blocks. Geometrie se úměrně zmenší pro jistič.
+APC se neupravuje. Pokud nelze nativní páčku přečíst, použije se vlastní zaoblená
+oranžová páčka a důvod se zapíše do Player.log. Náhled v F1 je offline render
+vlastního zaobleného modelu; neobsahuje za běhu extrahovanou herní geometrii.
+
+Nový jistič je nadále OFF/červený, po zapnutí ON/zelený. Název DIN Breaker,
+štítek vpravo nahoře a přejmenování Labellerem zůstávají. Recepty jsou stejné.
+Při načtení staré řady zůstanou pozice 1–8; přebytky se vrátí jako kity u rozvaděče.
+
+Kompilace a test skutečného generátoru oblé geometrie prošly: zakřivené normály,
+2100 trojúhelníků těla, orientace ploch a šířka v novém rastru. Prošly také testy
+8 pozic, ukládacích hooků, vrácení přebytků, ukazatele a textu štítku.
+**Ve hře 0.10.0 zatím spuštěna nebyla.** Převzetí páčky APC ověří až herní test.
+V Player.log hledej `Native APC MasterLever reused`; při fallbacku
+`Native APC lever unavailable` nebo `APC lever extraction`.
 
 ## Změny v 0.9.2
 
