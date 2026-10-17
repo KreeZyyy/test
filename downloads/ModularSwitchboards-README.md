@@ -1,8 +1,20 @@
-# Modular Switchboards — 0.10.0 test
+# Modular Switchboards — 0.10.1 test
 
 Dvě samostatně montovatelné DIN lišty pro nástěnnou skříň. Každá má vlastní kit,
 vlastní uložený předmět a vlastní profil TH35. Nově obsahuje mechanický prototyp jednomodulového jističe. Kabeláž, elektrické propojení,
 měření proudu a vybavování při přetížení tato verze ještě neobsahuje.
+
+## Změny v 0.10.1
+
+Zaoblená je nyní také celá skříň: plášť, přední rám a dvířka mají
+vnější poloměr rohů 20 mm. Kolize dokončeného pláště a dvířek sledují mesh.
+Rozměry, osazení, štítek, směr otevírání a barvení zůstávají zachované.
+
+Opraveno falešné selhání kontroly registrace DIN lišty a jističe:
+hra klonuje zdrojové prefaby, proto se porovnává jejich stabilní ID,
+nikoli konkrétní instance objektu. Skutečně chybějící registrace stále hlásí chybu.
+
+Kompilace a kontroly geometrie prošly; spuštění ve hře zde není dostupné.
 
 ## Změny v 0.10.0
 
