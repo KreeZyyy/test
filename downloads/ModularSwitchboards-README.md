@@ -1,8 +1,26 @@
-# Modular Switchboards — 0.8.0 test
+# Modular Switchboards — 0.8.1 test
 
 Dvě samostatně montovatelné DIN lišty pro nástěnnou skříň. Každá má vlastní kit,
-vlastní uložený předmět a vlastní profil TH35. Nově obsahuje mechanický prototyp jednomodulového jističe. Kabeláž, funkční přepínání,
+vlastní uložený předmět a vlastní profil TH35. Nově obsahuje mechanický prototyp jednomodulového jističe. Kabeláž, elektrické propojení,
 měření proudu a vybavování při přetížení tato verze ještě neobsahuje.
+
+## Přepínání v 0.8.1
+
+Nový jistič začíná **vypnutý (OFF)**: páčka dole, ukazatel **červený**.
+V otevřené skříni zamiř na páčku a použij běžnou herní interakci On/Off.
+Po zapnutí je páčka nahoře a ukazatel **zelený**. Další interakce vypne.
+Ukazatel je barevný stavový proužek, nikoliv světlo. Barvy odpovídají zadání.
+
+Stav vlastní nativní `OnOff` interactable s `JoinInProgressSync=true`, takže
+používá herní ukládání a replikaci změn. Awake, načtení a vizuální komponenta
+uložené zapnutí nepřepisují. Starší jističe 0.8.0 bez stavu začnou OFF.
+Přepínání je blokované se zavřenými dvířky nebo bez namontované lišty.
+Jde stále o mechanické ovládání: zatím nic elektricky nespíná ani nechrání.
+
+Kompilace, test dvou poloh a barev s Unity stuby, kontrola geometrie a regresní
+testy montáže/ukládacích hooků prošly. Nativní uložení stavu OnOff a multiplayer
+je ještě nutné ověřit ve hře. Při herním testu přepni jistič ON, ulož a načti svět;
+měl by zůstat ON a zelený. Ověř také nově namontovaný jistič: OFF a červený.
 
 ## Jistič DIN Breaker 1P
 
@@ -15,7 +33,7 @@ měření proudu a vybavování při přetížení tato verze ještě neobsahuje
 - Drill v otevřené skříni vrací kit jističe. Nejprve vyjmi jističe, pak lišty,
   nakonec můžeš rozebrat skříň.
 - Bílý vlastní model s modrou páčkou, kovovými svorkami, nativními paletovými
-  materiály a vlastním náhledem. Páčka je zatím pouze součást modelu.
+  materiály a vlastním náhledem. Páčka se ručně přepíná mezi OFF a ON.
 
 Každá lišta nyní vlastní vlastní `DinModuleBoard` LibConstructu. Jistič ukládá
 hostitelskou lištu a pozici; lišta ukládá svou montážní plochu pro přístroje.
@@ -27,7 +45,7 @@ Nová ID: `StructureDinBreaker1P`, `ItemKitDinBreaker1P`.
 produkčního kódu se stuby enginu a zdrojovými hooky LibConstructu ověřily
 18 pozic, překryvy, hranice, natočení, zavřenou skříň, oddělené řady, zákaz
 vyjmutí osazené lišty, migraci staré lišty, XML roundtrip i vnořené síťové vazby.
-To nenahrazuje běh ve hře. Ve Stationeers zatím 0.8.0 spuštěná nebyla.
+To nenahrazuje běh ve hře. Ve Stationeers zatím 0.8.1 spuštěná nebyla.
 Ve hře ověř montáž dvou sousedních jističů a jednoho v druhé řadě, uložení/načtení,
 vrácení kitu a připojení klienta.
 
@@ -97,13 +115,13 @@ síťové čtení/zápis hostitele a lišty a pořadí úklidu.
 Test skutečného generátoru geometrie ověřil 60 trojúhelníků, orientaci ploch
 a zachování profilu pro tři délky. Prošly také dřívější kontroly skříně a stěny.
 
-**Tady nebyla verze 0.8.0 spuštěna ve Stationeers.** Ve hře je potřeba ověřit:
+**Tady nebyla verze 0.8.1 spuštěna ve Stationeers.** Ve hře je potřeba ověřit:
 vytištění/spawn kitu, montáž obou řad, odmítnutí třetí lišty, zavření/otevření,
 uložení a opětovné načtení, odmontování s vrácením kitu a případně připojení klienta.
 Změna vlastního typu skříně zachovává původní ID, ale vyžaduje tento herní test.
 
 Diagnostika: `%USERPROFILE%\AppData\LocalLow\Rocketwerkz\rocketstation\Player.log`.
-Hledej `0.8.0 loaded`, `Breaker 1P registered`, `Breaker recipe verified`, `DIN rail kit + structure registered` a `DIN rail recipe verified`.
+Hledej `0.8.1 loaded`, `Breaker 1P registered`, `Breaker recipe verified`, `DIN rail kit + structure registered` a `DIN rail recipe verified`.
 Při chybě pošli Player.log. Exporty APC zůstávají v podsložce
 `ModularSwitchboards/Diagnostics` vedle logu.
 
