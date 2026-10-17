@@ -1,8 +1,44 @@
-# Modular Switchboards — 0.11.2 test
+# Modular Switchboards — 0.11.3 test
 
 Dvě samostatně montovatelné DIN lišty pro nástěnnou skříň. Každá má vlastní kit,
-vlastní uložený předmět a vlastní profil TH35. Nově obsahuje mechanický prototyp jednomodulového jističe. Kabeláž, elektrické propojení,
+vlastní uložený předmět a vlastní profil TH35. Obsahuje mechanický prototyp jističe
+a vnější kabelové přípojky. Vnitřní kabeláž, přenos výkonu mezi přípojkami,
 měření proudu a vybavování při přetížení tato verze ještě neobsahuje.
+
+## Změny v 0.11.3 — funkční model napojení a čistý zaoblený zadek
+
+Opravená konkrétní chyba registrace: zařízení si rezervovalo také buňky,
+do kterých patří samotné kabely. Tyto buňky nyní zůstávají volné. Tělo a
+protilehlé konce přípojek se registrují pro nativní hledání připojeného zařízení.
+Rezervace z rozměrů původní skříňky se normalizují a nesmějí blokovat kabelový bod.
+
+Elektrický bod je oddělený od viditelného konektoru. Jeho polohu a směr
+určují konce nejkratších nativních přímých kabelů normal/heavy; ověřuje se,
+že oba typy mají stejné protilehlé uzly. Původní posun APC zůstává pouze
+na vizuální zásuvce. Po přizpůsobení stěně se obnoví také uložené souřadnice
+herních Connection. Tím se řeší skutečné párování používané při žlutém zvýraznění,
+nikoli jen vzdálenost mezi našimi třemi vývody.
+
+Přední barvitelná skříň, deska, lišty a jističe zůstávají na místě. Vzadu jsou
+nové uzavřené díly: užší mezikus uvnitř stěny, tmavá zadní krabice a menší
+vystouplý kryt se čtyřmi šrouby a originálním výstražným trojúhelníkem APC.
+Zadní obrys má stejně jako předek 20mm rádius nezávislý na tloušťce dílu.
+Kryt nemá staré výřezy do U ani natažené/ořezané plochy původního těla APC.
+Spodní T má vlastní souvislé barevné mapování a jeho díly nemají překrývající se
+koplanární plochy. Horní vstup používá stejnou úplnou zásuvku APC s bleskem
+jako oba výstupy, role Input/Output/Output2 jsou nadále samostatné.
+
+Kompilace proti herním DLL prošla. Testovací prostředí reprodukuje původní
+blokování a ověřuje původní herní metody IsConnected, FindConnectingEnd,
+FillConnected, WillJoinNetwork a kolizní kontrolu v 192 variantách kabelu,
+otočení a polohy. Herní prefaby nejsou offline k dispozici; test používá
+kabelové modely v simulovaném enginu. Testy skutečného generátoru zadních dílů
+ověřují uzavřenost, orientaci, rozměry, normály a rádiusy. Prošly i testy
+oddělených sítí, stavů konstrukce, uložení a modulů.
+**Zobrazení a připojení obou typů kabelů je stále potřeba ověřit přímo ve hře.**
+Player.log nově vypisuje skutečně vybrané nativní kabelové šablony a páry buněk.
+Vnitřní propojení ani přenos výkonu nejsou součástí této verze.
+Statický F1 obrázek nezahrnuje díly získávané nebo generované až za běhu.
 
 ## Změny v 0.11.2 — nativní přípojky APC a spodní T
 
