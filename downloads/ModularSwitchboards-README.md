@@ -1,8 +1,37 @@
-# Modular Switchboards — 0.11.1 test
+# Modular Switchboards — 0.11.2 test
 
 Dvě samostatně montovatelné DIN lišty pro nástěnnou skříň. Každá má vlastní kit,
 vlastní uložený předmět a vlastní profil TH35. Nově obsahuje mechanický prototyp jednomodulového jističe. Kabeláž, elektrické propojení,
 měření proudu a vybavování při přetížení tato verze ještě neobsahuje.
+
+## Změny v 0.11.2 — nativní přípojky APC a spodní T
+
+Jeden přívod nahoře, právě dva výstupy na koncích spodního T do stran.
+Konektory používají původní geometrii APC včetně kontaktního těla a plošky
+s bleskem. Výřez sahá od původního hitboxu až k nativnímu okraji těla;
+protínající trojúhelníky se ořezávají se zachováním původních UV a materiálů.
+Zadní tělo přebírá původní zadní plochy APC, jejich hloubku a materiály.
+Šířka/výška se přizpůsobí rozvaděči. Nosná část T vzorkuje původní zadní povrch.
+Pro přípojky je v zadním těle vytvořené místo, aby pod ním nezmizely.
+Předek, vnitřní deska, lišty a jističe zůstávají na místě.
+
+Logické kabelové body mají samostatné buňky: nahoře (0, +0.5), dole
+(-0.5, -0.5) a (+0.5, -0.5) metru od kořene skříně. Souřadnice zůstávají na původní mřížce i po přizpůsobení pláště povrchu stěny. Zachovává se nativní
+odsazení transformu APC uvnitř buňky a původní hloubka přípojky. Fyzický
+rozměr konektoru proto není určený rozměrem těchto logických buněk.
+Skříň nově přebírá kolizní masku APC místo blokování zděděného z lockeru;
+registruje vlastní tělo, kabelové body a jejich konce, nikoli plný obdélník T.
+
+Kompilace proti herním DLL prošla. Prošlo 7776 kontrol skutečného rozložení
+s nativní rovnicí mřížky, otočením, posunutím a odsazením uvnitř buňky;
+testy ořezu/výřezů ověřují plochu, orientaci, skupiny materiálů a UV.
+Testy v simulovaném enginu ověřují řídkou registraci T, samostatné sítě,
+odpojení kabelu, přestavbu sítí a ukládání modulů. **Vzhled a skutečné
+umístění kabelů je nutné ověřit ve Stationeers; herní runtime zde není.**
+Převzetí geometrie a kolizní masky se vypisuje do Player.log.
+
+Vnitřní propojení ani přenos výkonu stále není součástí této verze.
+Statický F1 obrázek stále neobsahuje přípojky získávané až za běhu.
 
 ## Změny v 0.11.1 — zadní tělo ve stěně
 
