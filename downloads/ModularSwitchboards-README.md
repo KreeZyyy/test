@@ -1,8 +1,39 @@
-# Modular Switchboards — 0.10.15 test
+# Modular Switchboards — 0.11.0 test
 
 Dvě samostatně montovatelné DIN lišty pro nástěnnou skříň. Každá má vlastní kit,
 vlastní uložený předmět a vlastní profil TH35. Nově obsahuje mechanický prototyp jednomodulového jističe. Kabeláž, elektrické propojení,
 měření proudu a vybavování při přetížení tato verze ještě neobsahuje.
+
+## Změny v 0.11.0 — vnější přípojky
+
+Dokončená skříň má horní vstup **Input** uprostřed a dva spodní výstupy
+**Output / Output2**. Spodní přípojky jsou na krátkých vyvedených úchytech,
+rozteč středů je 53 cm, aby každá měla vlastní buňku nativní kabelové mřížky.
+Počítej s volným místem pro oba spodní kabely. Konektory se neotáčejí s dvířky.
+
+Modely/UV/materiály se přebírají z nativního APC při přípravě prefabů.
+Použité jsou skutečné herní Connection / NetworkType.Power a nativní popisky.
+Vlastní úchyty přebírají barvu pláště, originální povrch konektorů se nepřebarvuje.
+Skříň sleduje samostatné registrace připojených kabelů i po přestavbě sítí.
+Nedostavěná konstrukce přípojky nemá aktivní; dokončení je povolí.
+
+**Vnitřní propojení zatím není.** Vstup není spojen s výstupy, skříň nemá vlastní
+spotřebu ani nepřenáší výkon. Jističe zůstávají mechanickým prototypem. Kabeláž
+uvnitř, elektrická funkce jističů, proudy a vybavování budou další krok.
+Identita prefabů a ukládací formát se nemění. Statický F1 náhled skříně zatím
+neobsahuje nativní konektory přebírané až za běhu.
+
+Kompilace proti herním DLL a dodanému LibConstruct prošla. Prošlo 288 kontrol
+rozmístění vůči nativní mřížce v otočených/posunutých scénářích, test stavebních
+stavů, oddělené registrace sítí, odebrání kabelu a přestavby sítě. Prošly i
+stávající testy ukládání/joinu/obsazování lišt a montáže na stěnu (engine je stubovaný).
+**Ve hře zde 0.11.0 spuštěna nebyla**: ověř vzhled všech tří přípojek, nasazení
+kabelů a načtení osazené skříně. Kabel na vstupu zatím nemá napájet výstupy.
+
+V Player.log hledej `Native APC connector captured`, `External ports installed`
+a `External connector registration verified`. Pokud převzetí konektorů selže,
+skříň zůstane registrovaná a chyba bude uvedena jako
+`External APC ports unavailable; cabinet preserved`.
 
 ## Změny v 0.10.15
 
