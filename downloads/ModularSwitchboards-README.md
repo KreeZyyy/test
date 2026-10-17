@@ -1,8 +1,26 @@
-# Modular Switchboards — 0.10.13 test
+# Modular Switchboards — 0.10.14 test
 
 Dvě samostatně montovatelné DIN lišty pro nástěnnou skříň. Každá má vlastní kit,
 vlastní uložený předmět a vlastní profil TH35. Nově obsahuje mechanický prototyp jednomodulového jističe. Kabeláž, elektrické propojení,
 měření proudu a vybavování při přetížení tato verze ještě neobsahuje.
+
+## Změny v 0.10.14
+
+DIN lišty mají hlubší profil TH35/15 (35 × 15 mm), 4mm koncové podložky
+pro odsazení od montážní desky a skutečné průchozí podélné otvory 16 × 6 mm
+se zaoblenými konci. Na délce 324 mm je osm otvorů. Celý profil používá
+jednotnou matnou šedou. Montážní rovina jističů je posunuta o stejných 11,5 mm
+jako čelo profilu; šířka, kapacita a pozice řad se nemění.
+F1 náhled a Blender model lišty vznikají přímo z exportu skutečného C# meshe.
+Opravena také chyba generátoru náhledů s nepodporovaným odšuměním; ikony lišty
+i jističe znovu vykresleny a vizuálně zkontrolovány.
+
+Boční žebrovaný panel je přesunut do spodní části boku (střed 155 mm pod
+středem skříně). Tvar žeber i barva sdílená s pláštěm zůstávají stejné.
+
+Kompilace a testy prošly: průchod paprsků otvory, pevné příruby, orientace ploch,
+rozměry ve třech délkách, barevné role skříně, ukládání a pravidla LibConstruct
+se stubovaným enginem. Ve hře ověřit vzhled i načtení již osazených jističů.
 
 ## Změny v 0.10.13
 
