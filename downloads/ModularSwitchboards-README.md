@@ -1,8 +1,21 @@
-# Modular Switchboards — 0.11.0 test
+# Modular Switchboards — 0.11.1 test
 
 Dvě samostatně montovatelné DIN lišty pro nástěnnou skříň. Každá má vlastní kit,
 vlastní uložený předmět a vlastní profil TH35. Nově obsahuje mechanický prototyp jednomodulového jističe. Kabeláž, elektrické propojení,
 měření proudu a vybavování při přetížení tato verze ještě neobsahuje.
+
+## Změny v 0.11.1 — zadní tělo ve stěně
+
+Tmavé zadní tělo prodlužuje skříň dozadu do stěny. Vnitřní deska, lišty,
+jističe a předek se neposouvají. Dolní úchyty i všechny tři přípojky jsou
+u roviny kabelové mřížky za vnitřkem. Rozteč výstupů zůstává 53 cm.
+Usazení používá dokončený povrch podpůrné stěny už od začátku, aby skříň
+při dostavění stěny neposkočila.
+
+Výběr originální geometrie APC nyní používá jeho konektorový BoxCollider
+namísto pevného odhadu výřezu. Zobrazení konektorů vyžaduje ověření ve hře;
+aktuální Player.log je potřeba, pokud i tato verze přípojky nezobrazí.
+Kompilace a testy mřížky nejsou náhradou za testování v herním runtime.
 
 ## Změny v 0.11.0 — vnější přípojky
 
@@ -13,7 +26,7 @@ Počítej s volným místem pro oba spodní kabely. Konektory se neotáčejí s 
 
 Modely/UV/materiály se přebírají z nativního APC při přípravě prefabů.
 Použité jsou skutečné herní Connection / NetworkType.Power a nativní popisky.
-Vlastní úchyty přebírají barvu pláště, originální povrch konektorů se nepřebarvuje.
+Od 0.11.1 jsou úchyty součástí tmavé zadní části; originální povrch konektorů se nepřebarvuje.
 Skříň sleduje samostatné registrace připojených kabelů i po přestavbě sítí.
 Nedostavěná konstrukce přípojky nemá aktivní; dokončení je povolí.
 
