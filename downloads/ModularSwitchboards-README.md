@@ -1,8 +1,15 @@
-# Modular Switchboards — 0.10.14 test
+# Modular Switchboards — 0.10.15 test
 
 Dvě samostatně montovatelné DIN lišty pro nástěnnou skříň. Každá má vlastní kit,
 vlastní uložený předmět a vlastní profil TH35. Nově obsahuje mechanický prototyp jednomodulového jističe. Kabeláž, elektrické propojení,
 měření proudu a vybavování při přetížení tato verze ještě neobsahuje.
+
+## Změny v 0.10.15
+
+DIN lišty mají o dva políčkové odstíny tmavší šedou v nativní paletě APC.
+Šedá vrstva i matný povrch zůstávají, posouvá se pouze UV výběr odstínu lišty.
+Tmavší i F1 náhled; profil, perforace, odsazení a osazení beze změn.
+Kompilace a geometrické testy včetně posunu UV prošly. Odstín ověřit ve hře.
 
 ## Změny v 0.10.14
 
