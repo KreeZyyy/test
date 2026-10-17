@@ -1,8 +1,31 @@
-# Modular Switchboards — 0.8.1 test
+# Modular Switchboards — 0.9.0 test
 
 Dvě samostatně montovatelné DIN lišty pro nástěnnou skříň. Každá má vlastní kit,
 vlastní uložený předmět a vlastní profil TH35. Nově obsahuje mechanický prototyp jednomodulového jističe. Kabeláž, elektrické propojení,
 měření proudu a vybavování při přetížení tato verze ještě neobsahuje.
+
+## Změny v 0.9.0
+
+- Jističe jsou o 50 % širší, o 20 % vyšší a o 10 % hlubší. Rozteč přístrojů
+  je nyní 27 mm; do stávající skříně se vejde **12 na řadu, 24 celkem**.
+  Skříň a délka lišty 324 mm jsou zachované.
+- Zobrazované názvy jsou **DIN Breaker** a **Kit (DIN Breaker)** bez „1P“.
+  Technická ID prefabů zůstávají stejná kvůli uloženým předmětům.
+- Na vnější straně dvířek vpravo je bílý štítek s černým rámečkem a názvem
+  rozvaděče. Zobrazuje se jen při zavřených dvířkách dokončené skříně.
+  Labeller přejmenuje skříň standardním herním způsobem; štítek čte `CustomName`.
+  Název se ukládá a synchronizuje nativně. Dlouhé názvy se zmenší/zkrátí na štítku;
+  skutečný název uloženého rozvaděče se tím nemění.
+
+**Převod osazení:** prvních 12 pozic každé staré řady se rozestoupí na nový rastr.
+Případné jističe v pozicích 13–18 vrátí server při načtení jako kity u rozvaděče.
+Ponechané jističe zachovávají název i uložené ON/OFF. Výchozí staré názvy s „1P“
+se převádějí; uživatelské vlastní názvy se nepřepisují.
+
+Kompilace, testy kapacity a vrácení přebytků, vnořeného ukládání, větší geometrie,
+přepínače a formátování českého textu prošly se simulovaným enginem.
+**0.9.0 tady nebyla spuštěna ve hře.** Ověř Labeller, čitelnost a orientaci štítku,
+zavření/otevření, starý zaplněný rozvaděč, větší náhled a opětovné načtení.
 
 ## Přepínání v 0.8.1
 
@@ -22,14 +45,14 @@ testy montáže/ukládacích hooků prošly. Nativní uložení stavu OnOff a mu
 je ještě nutné ověřit ve hře. Při herním testu přepni jistič ON, ulož a načti svět;
 měl by zůstat ON a zelený. Ověř také nově namontovaný jistič: OFF a červený.
 
-## Jistič DIN Breaker 1P
+## Jistič DIN Breaker
 
-- Electronics Printer, Tier One: **2 Iron + 1 Copper → Kit (DIN Breaker 1P)**.
+- Electronics Printer, Tier One: **2 Iron + 1 Copper → Kit (DIN Breaker)**.
   Jde o prozatímní recept pro první osazovací prototyp.
-- Kreativní spawner: `ItemKitDinBreaker1P` / **Kit (DIN Breaker 1P)**.
+- Kreativní spawner: `ItemKitDinBreaker1P` / **Kit (DIN Breaker)**.
 - Otevři dokončenou skříň s namontovanou lištou. Vezmi kit, pravým tlačítkem
   přejdi do stavění a zamiř na lištu. Zvolená volná pozice zabere jeden modul
-  (18 mm); na každé řadě je 18 pozic. Svislá poloha a natočení se přichytí k liště.
+  (27 mm); na každé řadě je 12 pozic. Svislá poloha a natočení se přichytí k liště.
 - Drill v otevřené skříni vrací kit jističe. Nejprve vyjmi jističe, pak lišty,
   nakonec můžeš rozebrat skříň.
 - Bílý vlastní model s modrou páčkou, kovovými svorkami, nativními paletovými
@@ -43,7 +66,7 @@ Nová ID: `StructureDinBreaker1P`, `ItemKitDinBreaker1P`.
 
 **Ověření:** kompilace proti dodaným herním DLL a LibConstructu prošla. Testy
 produkčního kódu se stuby enginu a zdrojovými hooky LibConstructu ověřily
-18 pozic, překryvy, hranice, natočení, zavřenou skříň, oddělené řady, zákaz
+12 pozic, překryvy, hranice, natočení, zavřenou skříň, oddělené řady, zákaz
 vyjmutí osazené lišty, migraci staré lišty, XML roundtrip i vnořené síťové vazby.
 To nenahrazuje běh ve hře. Ve Stationeers zatím 0.8.1 spuštěná nebyla.
 Ve hře ověř montáž dvou sousedních jističů a jednoho v druhé řadě, uložení/načtení,
@@ -77,8 +100,8 @@ podporovaný způsob montáže. ID namontované struktury je `StructureSwitchboa
 ## Rozměry a závislosti
 
 Skříň má 400 × 500 × 180 mm. Její vnitřní šířka určuje délku lišty zaokrouhlenou
-na celé modulové pozice po 18 mm, s rezervou po stranách. U současné skříně
-vychází **324 mm / 18 budoucích modulových pozic na řadu**. Profil je vysoký
+na celé modulové pozice po 27 mm, s rezervou po stranách. U současné skříně
+vychází **324 mm / 12 budoucích modulových pozic na řadu**. Profil je vysoký
 35 mm a hluboký 7,5 mm. Rozteč řad je 216 mm. Pro širší skříně lze použít stejný
 profil s jinou délkou; další velikosti skříní tato verze nepřidává.
 
@@ -121,7 +144,7 @@ uložení a opětovné načtení, odmontování s vrácením kitu a případně 
 Změna vlastního typu skříně zachovává původní ID, ale vyžaduje tento herní test.
 
 Diagnostika: `%USERPROFILE%\AppData\LocalLow\Rocketwerkz\rocketstation\Player.log`.
-Hledej `0.8.1 loaded`, `Breaker 1P registered`, `Breaker recipe verified`, `DIN rail kit + structure registered` a `DIN rail recipe verified`.
+Hledej `0.9.0 loaded`, `Breaker 1P registered`, `Breaker recipe verified`, `DIN rail kit + structure registered` a `DIN rail recipe verified`.
 Při chybě pošli Player.log. Exporty APC zůstávají v podsložce
 `ModularSwitchboards/Diagnostics` vedle logu.
 
