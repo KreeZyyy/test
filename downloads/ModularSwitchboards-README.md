@@ -1,8 +1,25 @@
-# Modular Switchboards — 0.10.4 test
+# Modular Switchboards — 0.10.5 test
 
 Dvě samostatně montovatelné DIN lišty pro nástěnnou skříň. Každá má vlastní kit,
 vlastní uložený předmět a vlastní profil TH35. Nově obsahuje mechanický prototyp jednomodulového jističe. Kabeláž, elektrické propojení,
 měření proudu a vybavování při přetížení tato verze ještě neobsahuje.
+
+## Změny v 0.10.5
+
+Páčka je plochá překlápěcí destička podle APC: 180° kolem krajní vodorovné osy,
+nikoli malý vyčnívající knoflík. Z nativního meshe se určí široká plocha,
+odstraní jeho výchozí náklon a rozměry se upraví na výřez jističe.
+Zůstávají původní UV a nápisy na obou stranách páčky. OFF dole/červená,
+ON nahoře/zelená, plynulý přechod a uložený/síťový stav zachovány.
+Orientaci původních nápisů musí potvrdit herní test.
+
+Text štítku se vykresluje jen při pohledu z vnější strany dvířek; otevření
+ho neschovává. Samostatný BoxCollider pokrývá celé madlo s malou rezervou
+(25 × 73 × 36 mm); fyzická kolize dveří dál sleduje přesný zaoblený mesh.
+
+Průhled do skříně ve spáře zakrývá souvislý zaoblený vratný lem, včetně rohů.
+Lem se barví se skříní. Kompilace, test překlápění a kontrola geometrie lemu
+včetně paprsků přes spáru prošly. Ve hře zde verze spuštěna nebyla.
 
 ## Změny v 0.10.4
 
