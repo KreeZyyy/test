@@ -1,8 +1,14 @@
-# Modular Switchboards — 0.10.2 test
+# Modular Switchboards — 0.10.3 test
 
 Dvě samostatně montovatelné DIN lišty pro nástěnnou skříň. Každá má vlastní kit,
 vlastní uložený předmět a vlastní profil TH35. Nově obsahuje mechanický prototyp jednomodulového jističe. Kabeláž, elektrické propojení,
 měření proudu a vybavování při přetížení tato verze ještě neobsahuje.
+
+## Změny v 0.10.3
+
+Značka interakce dvířek má počátek u madla místo pantu. Přesný zaoblený
+kolizní mesh se přesunem souřadnic nemění a stále následuje otevírání dvířek.
+Kompilace prošla, polohu zelené značky ověřit ve hře.
 
 ## Změny v 0.10.2
 
