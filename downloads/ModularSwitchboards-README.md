@@ -1,8 +1,15 @@
-# Modular Switchboards — 0.9.0 test
+# Modular Switchboards — 0.9.1 test
 
 Dvě samostatně montovatelné DIN lišty pro nástěnnou skříň. Každá má vlastní kit,
 vlastní uložený předmět a vlastní profil TH35. Nově obsahuje mechanický prototyp jednomodulového jističe. Kabeláž, elektrické propojení,
 měření proudu a vybavování při přetížení tato verze ještě neobsahuje.
+
+## Změny v 0.9.1
+
+Štítek je v pravém horním rohu vnější strany dvířek, 8 mm od hran.
+Výchozí název je **Switchboard**, bez slova Cabinet. Vlastní názvy z Labelleru
+zůstávají zachované; starý výchozí název se při načtení převede.
+Kompilace a test textu prošly; polohu ve hře je potřeba ověřit.
 
 ## Změny v 0.9.0
 
