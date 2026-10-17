@@ -1,8 +1,23 @@
-# Modular Switchboards — 0.10.11 test
+# Modular Switchboards — 0.10.12 test
 
 Dvě samostatně montovatelné DIN lišty pro nástěnnou skříň. Každá má vlastní kit,
 vlastní uložený předmět a vlastní profil TH35. Nově obsahuje mechanický prototyp jednomodulového jističe. Kabeláž, elektrické propojení,
 měření proudu a vybavování při přetížení tato verze ještě neobsahuje.
+
+## Změny v 0.10.12
+
+F1 náhled DIN Breakeru znovu sestaven: současné tělo a vyšší výřez,
+prodloužená žlutá páčka v OFF poloze, žlutá osička, dvě šedá boční uložení
+bez pevné příčky a červený ukazatel. Náhled používá referenční geometrii páčky;
+původní mesh a UV APC se nadále přebírají až za běhu hry.
+
+Na boku dokončené skříně je nový čtvercový panel 76 × 76 mm se šesti šikmými
+žebry nad tmavým podkladem. Žebra sdílejí barvu pláště, podklad je pevně tmavý.
+Je to vzhledová úprava; nemění montáž ani funkce skříně. Upraven také Blender
+model, GLB a náhled skříně. Barevné boky, pevná tmavá deska a šrouby zachovány.
+
+Kompilace, kontrola orientace ploch, rozměrů, barevných rolí a shody vložených
+assetů prošly. Výsledek ve hře zde ověřit nelze.
 
 ## Změny v 0.10.11
 
