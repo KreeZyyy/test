@@ -1,8 +1,17 @@
-# Modular Switchboards — 0.10.9 test
+# Modular Switchboards — 0.10.10 test
 
 Dvě samostatně montovatelné DIN lišty pro nástěnnou skříň. Každá má vlastní kit,
 vlastní uložený předmět a vlastní profil TH35. Nově obsahuje mechanický prototyp jednomodulového jističe. Kabeláž, elektrické propojení,
 měření proudu a vybavování při přetížení tato verze ještě neobsahuje.
+
+## Změny v 0.10.10
+
+DIN lišty místo bílé používají šedé boky a příruby s tmavším středovým žlábkem.
+Nativní základní matný povrch (smoothness index 0) je pevný, nezávislý na povrchu
+skříně. Cílem je čitelnější profil pod baterkou bez přepálených bílých ploch.
+Náhled F1 i Blender model mají stejnou kombinaci odstínů.
+Kompilace a kontrola přiřazení materiálů, orientace ploch a nezměněných rozměrů
+TH35 prošly. Výsledné osvětlení ověřit ve hře.
 
 ## Změny v 0.10.9
 
