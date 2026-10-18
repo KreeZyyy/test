@@ -8,7 +8,7 @@
 
 Zdravou vložku vyjmeš prázdnou rukou. Při přetížení se jedna vložka spotřebuje, větev se přeruší a v držáku zůstane model spálené. Kliknutím spálenou odstraníš; nevrací se z ní použitelný kit. Potom lze dalším kliknutím vložit nový kus ze stacku. Prázdný i spálený držák proud nepropouští. Stav spálené se ukládá a přenáší klientům; původní spálený/prázdný stav z 0.12.39 se nově vykreslí jako spálená vložka do jejího odstranění.
 
-**Popisky:** CB, EMPTY, FUSE a TRIP z čelních popisků zmizely. Na spodní čelní plošce těla je jen jednořádkový výkon v kW, bez předsazené bílé cedulky. Podrobnosti a akce jsou v tooltipu. Text se nezobrazuje přes zavřená dvířka. Změna barvy páčky nemění limit ani stav jističe.
+**Bez čelních popisků:** na těle ani páčce nejsou dodatečné nápisy CB, EMPTY, FUSE, TRIP ani kW. Výkon se rozlišuje barvou páčky a zdravé vložky. Přesná hodnota zůstává v názvu varianty při pokládání a v tooltipu. Stav pojistky je fyzicky vidět podle prázdné dutiny, zdravé nebo spálené vložky.
 
 Ochrana výkonu, účtování energie, ovládání Cable Coil / Wire Cutters a generování vodičů zůstávají z 0.12.39. Jistič při překročení skutečně předaného výkonu vypne a lze ho nahodit. Na přesném limitu drží. Není neutrální vodič ani časová vypínací charakteristika/selektivita sériových ochran. Původní uložený přímý bypass IN->Output stále obchází ochrany, dokud jej ručně nepřepojíš.
 
