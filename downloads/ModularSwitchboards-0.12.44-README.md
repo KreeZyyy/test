@@ -1,0 +1,11 @@
+# Modular Switchboards 0.12.44
+
+Pokus o barevné původní APC páčky se zachovaným ON/OFF: původní shader StandardInstanced nepoužívá _DiffuseIndex. Nově se přes GPU přečte původní textura a vznikne soukromá kopie pro každý barevný výkon. Mění se pouze syté žluté/oranžové pixely, jejich jas a alpha zůstávají. Neutrální bílý/šedý/černý potisk zůstává. Zelená 1kW, původní žlutá 5kW, oranžová 50kW, červená 100kW, fialová 500kW. Žlutá používá originální materiály i texturu. Sdílené herní APC materiály/textury se neupravují. Při chybě čtení zůstane originál a vznikne varování v logu. Nejde o potvrzení vzhledu bez testu ve hře.
+
+Diagnostika pojistek: po alespoň 120 aktualizacích umístěného držáku automaticky zapíše soubor ModularSwitchboards-fuse-diagnostics.json do Application.persistentDataPath hry. Přesná cesta se vypíše do konzole jako FUSE DIAG saved. Zpravidla jde ve Windows o %USERPROFILE%/AppData/LocalLow/RocketWerkz/Stationeers/. Otevři rozvaděč, nech osazenou pojistku chvíli zobrazit; vyjmi ji, chvíli počkej a vlož ji znovu. Export uloží první vzorek každé kombinace výkon/stav (prázdná, zdravá, spálená), maximálně 20 vzorků za běh. Obsahuje materiály a shadery všech částí držáku a vložky, oba rozsahy property blocks, podporu a hodnoty _DiffuseIndex, textury, zapnutí rendererů, stíny, skutečnou registraci v ThingRenderer a geometrii/UV/normály koncovek. Při selhání se vypíše FUSE DIAG failed bez opakovaného spamu.
+
+Prázdný držák má dál své vlastní kontakty; koncovky pojistkové vložky se zobrazují pouze se zdravou nebo spálenou vložkou. Černé koncovky se v této verzi záměrně diagnostikují, jejich skutečná příčina zatím není potvrzená. Elektrika, ochrany, kity a ukládání se nemění.
+
+Ověření: Release build bez chyb a varování; 1010 případů produkčního převodu pixelů proti skutečnému Unity Color (zachování neutrálního inkoustu, cílový odstín, jas, alpha a původní žlutá); všech pět nativních barevných indexů; produkční geometrie a přepínání stavů pojistek s náhradami Unity objektů. Skutečné GPU čtení atlasu, render a zápis diagnostiky je nutné ověřit ve hře.
+
+Instalace při vypnuté hře: nahraď složku ModularSwitchboards ve složce mods. Server i klienti musí mít stejnou verzi. Pro analýzu pošli soubor ModularSwitchboards-fuse-diagnostics.json; pokud páčky zůstanou žluté, také řádky LEVER TEXTURE nebo Lever texture stays native z logu.
