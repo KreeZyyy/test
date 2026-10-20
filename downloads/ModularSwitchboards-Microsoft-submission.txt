@@ -1,0 +1,9 @@
+Please review a suspected incorrect detection of ModularSwitchboards 0.13.9, a C# Unity mod for Stationeers. Windows 10 Defender reports Trojan:Script/Ulthar.A!ml when downloading the original release ZIP.
+
+Original ZIP SHA-256: ed171167f6c403a9ca5d12f7c59c3002deb4bd7b70357e665efc7f4f7d1705a9
+Embedded DLL SHA-256: 88c57b803c8f82237573f2267ffdd68a13478c451bb9a34dcc68b64bb08ac6cf
+Original release: https://raw.githubusercontent.com/KreeZyyy/test/33b6d6add45c3b0dfbf10001d88ee67907561dd9/downloads/ModularSwitchboards-0.13.9-test.zip
+
+User observations: 0.13.8 downloaded without an alert; 0.13.9 was blocked; 0.13.10 (0.13.8 geometry with only the 0.13.9 icon) downloaded without an alert. These are user observations, not controlled local AV scans.
+
+Static comparison of all 111 decompiled C# files in these three release DLLs found identical code after version normalization. All 25 embedded resources in each DLL match the source project. Between 0.13.8 and 0.13.9, only embedded kit icon and mesh data changed besides version/build metadata. The mesh loader is unchanged; it reads numeric geometry into Unity Mesh, not executable scripts. Both meshes reproduce byte-for-byte from authoring data and pass size, finite-value, normal and index checks. No malformed geometry was found. This does not prove a false positive or identify the exact classifier trigger. Please determine which component is detected and whether this is incorrect classification. Defender engine/definition versions are currently unknown. No exclusions or protection bypass have been requested.
